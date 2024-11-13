@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,git,java,gradle,visualstudiocode,intellij+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,git,java,gradle,visualstudiocode,intellij+all
 
+### application.yml 변수 디렉토리 ###
+src/main/resources/config
+
 ### QueryDSL ###
 src/main/generated
 
