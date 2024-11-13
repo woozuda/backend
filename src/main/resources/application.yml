@@ -9,9 +9,10 @@ spring:
     password: 2468
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    format-sql: true
     properties:
       hibernate:
-        show_sql: true
-        format_sql: true
-        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL8Dialect
