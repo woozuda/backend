@@ -2,17 +2,20 @@ spring:
   application:
     name: backend
 
+  config:
+    import: "classpath:./config/local-var.yml"
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/testdb
-    username: root
-    password: 2468
+    url: "${database.url}"
+    username: "${database.username}"
+    password: "${database.password}"
 
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: create
-    show-sql: true
-    format-sql: true
+      ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        format_sql: true
