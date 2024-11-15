@@ -21,18 +21,23 @@ public class JWTUtil {
     // 참조할만한 공식문서 구문
     // https://github.com/jwtk/jjwt?tab=readme-ov-file#quickstart
     // https://github.com/jwtk/jjwt?tab=readme-ov-file#parsing-of-custom-claim-types
+
+    // jwt bearer 토큰으로 부터 username 을 추출
     public String getUsername(String jws) {
         return Jwts.parser().verifyWith(key).build().parseSignedClaims(jws).getPayload().get("username", String.class);
     }
 
+    // jwt bearer 토큰으로 부터 role 을 추출
     public String getRole(String jws) {
         return Jwts.parser().verifyWith(key).build().parseSignedClaims(jws).getPayload().get("role", String.class);
     }
 
+    // jwt bearer 토큰이 만료 되었는지 검사
     public Boolean isExpired(String jws) {
         return Jwts.parser().verifyWith(key).build().parseSignedClaims(jws).getPayload().getExpiration().before(new Date());
     }
 
+    // jwt 토큰 자체를 생성
     public String createJwt(String username, String role, Long expiredMs) {
 
         return Jwts.builder()
