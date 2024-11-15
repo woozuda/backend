@@ -19,9 +19,6 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        //현재는 role 값 관련하여 하는 것은 없으니 주석 처리 .
-        /*
-
         Collection<GrantedAuthority> collection = new ArrayList<>();
 
         collection.add(new GrantedAuthority() {
@@ -32,10 +29,6 @@ public class CustomUserDetails implements UserDetails {
         });
 
         return collection;
-
-        */
-
-        return null;
     }
 
     @Override
