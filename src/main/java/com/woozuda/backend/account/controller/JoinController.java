@@ -5,6 +5,7 @@ import com.woozuda.backend.account.service.JoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +18,7 @@ public class JoinController {
     }
 
     @PostMapping("/account/join")
-    public String joinProcess(@RequestBody JoinDTO joinDTO){
+    public String joinProcess(JoinDTO joinDTO){
 
         joinService.joinProcess(joinDTO);
 
