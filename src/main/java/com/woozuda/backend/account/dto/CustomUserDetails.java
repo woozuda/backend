@@ -1,6 +1,7 @@
 package com.woozuda.backend.account.dto;
 
 import com.woozuda.backend.account.entity.UserEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,13 +9,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
     private final UserEntity userEntity;
-
-    public CustomUserDetails(UserEntity userEntity){
-        this.userEntity = userEntity;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

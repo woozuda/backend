@@ -2,6 +2,7 @@ package com.woozuda.backend.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +10,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+
 
 @Component
 public class JWTUtil {
@@ -18,6 +20,7 @@ public class JWTUtil {
     public JWTUtil(@Value("${spring.jwt.secret}") String secret) {
         key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
     }
+
 
     // 참조할만한 공식문서 구문
     // https://github.com/jwtk/jjwt?tab=readme-ov-file#quickstart
