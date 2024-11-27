@@ -80,8 +80,9 @@ public class SecurityConfig {
         //UserNamePasswordAuthenticationFilter 자리에 커스텀 하게 만든 LoginFilter를 실행한다.
         //jwt 방식으로 구현하다 보니 , form login 을 비활성화했고, UserNamePasswordAuthenticationFilter 도 비활성화 되었음 (그래서 커스텀 구현이 필요)
         http
-                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
-                .addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
+                //.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
+                //.addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
+                .addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
 
@@ -100,7 +101,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedOrigins(Collections.singletonList("null"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
