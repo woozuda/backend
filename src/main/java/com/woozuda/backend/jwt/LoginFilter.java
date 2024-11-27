@@ -1,7 +1,9 @@
 package com.woozuda.backend.jwt;
 
-import com.woozuda.backend.account.dto.CustomUserDetails;
+import com.woozuda.backend.account.dto.CustomOAuth2User;
+//import com.woozuda.backend.account.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +44,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     // 로그인 성공 시 실행하는 메소드
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         String username = customUserDetails.getUsername();
 
@@ -53,12 +55,25 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String token = jwtUtil.createJwt(username, role, 60*60*1000L);
 
-        response.addHeader("Authorization", "Bearer " + token);
+        //쿠키로 수정 필요 ~~
+        response.addCookie(createCookie("Authorization", token));
+        //response.addHeader("Authorization", "Bearer " + token);
     }
 
     // 로그인 실패 시 실행하는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         response.setStatus(401);
+    }
+
+    private Cookie createCookie(String key, String value) {
+
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(60*60*1000);
+        //cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        return cookie;
     }
 }

@@ -1,13 +1,16 @@
 package com.woozuda.backend.config;
 
+import com.woozuda.backend.account.service.CustomOAuth2UserService;
 import com.woozuda.backend.jwt.JWTFilter;
 import com.woozuda.backend.jwt.JWTUtil;
 import com.woozuda.backend.jwt.LoginFilter;
+import com.woozuda.backend.oauth2.CustomSuccessHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.security.Security;
 import java.util.Collections;
 
 @RequiredArgsConstructor
@@ -26,6 +30,8 @@ import java.util.Collections;
 public class SecurityConfig {
 
     private final JWTUtil jwtUtil;
+    private final CustomSuccessHandler customSuccessHandler;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     // AbstractAuthenticationProcessingFilter 원본 코드에서
     // authenticationmanager를 수동 설정해야 한다고 되어 있음 (The filter requires that you set the <tt>authenticationManager</tt> property. )
@@ -54,6 +60,14 @@ public class SecurityConfig {
                 .csrf((auth) -> auth.disable())
                 .formLogin((auth) -> auth.disable())
                 .httpBasic((auth) -> auth.disable());
+
+        //ouath2
+        http
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                                .userService(customOAuth2UserService))
+                        .successHandler(customSuccessHandler)
+                );
 
         //경로별 인가 작업
         http
@@ -90,6 +104,7 @@ public class SecurityConfig {
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);
 
+                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
 
                         return configuration;

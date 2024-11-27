@@ -47,6 +47,9 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
+	//oauth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:3.3.4'
+
 	// QueryDSL 디펜던시 추가 시작
 	/*
 	디펜던시명 중간에 버전 정보가 오는 경우, 버전 변수를 작성해

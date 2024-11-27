@@ -1,6 +1,7 @@
 package com.woozuda.backend.account.service;
 
-import com.woozuda.backend.account.dto.CustomUserDetails;
+//import com.woozuda.backend.account.dto.CustomUserDetails;
+import com.woozuda.backend.account.dto.CustomOAuth2User;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserEntity userData = userRepository.findByUsername(username);
 
         if(userData != null){
-            return new CustomUserDetails(userData);
+            return new CustomOAuth2User(userData);
         }
 
         return null;
