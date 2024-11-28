@@ -3,6 +3,8 @@ package com.woozuda.backend.jwt;
 import com.woozuda.backend.account.dto.CustomOAuth2User;
 //import com.woozuda.backend.account.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,7 +46,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     // 로그인 성공 시 실행하는 메소드
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         String username = customUserDetails.getUsername();
@@ -54,13 +56,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60*60*60L);
+        String token = jwtUtil.createJwt(username, role, 60*60*1000L);
 
         //쿠키로 수정 필요 ~~
         response.addCookie(createCookie("Authorization", token));
         System.out.println("실행이 됐어요");
-        //response.sendRedirect("http://localhost:3000/");
         //response.addHeader("Authorization", "Bearer " + token);
+
+        super.successfulAuthentication(request, response, chain, authentication);
     }
 
     // 로그인 실패 시 실행하는 메소드
