@@ -2,23 +2,5 @@ spring:
   application:
     name: backend
 
-  config:
-    import: "classpath:./config/local-var.yml"
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "${database.url}"
-    username: "${database.username}"
-    password: "${database.password}"
-
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-
-  jwt:
-    secret: "${jwt.hashcode}"
+  profiles:
+    active: local
