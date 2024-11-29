@@ -1,8 +1,8 @@
-package com.woozuda.backend.account.dto;
+package com.woozuda.backend.account.transdata;
 
 import java.util.Map;
 
-public class GoogleResponse implements OAuth2Response{
+public class GoogleResponse implements OAuth2Response {
     private final Map<String, Object> attribute;
 
     public GoogleResponse(Map<String, Object> attribute) {

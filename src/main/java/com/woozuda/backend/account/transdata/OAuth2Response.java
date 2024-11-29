@@ -1,4 +1,4 @@
-package com.woozuda.backend.account.dto;
+package com.woozuda.backend.account.transdata;
 
 public interface OAuth2Response {
 
