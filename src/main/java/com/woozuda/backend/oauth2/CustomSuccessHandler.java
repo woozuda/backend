@@ -1,6 +1,6 @@
 package com.woozuda.backend.oauth2;
 
-import com.woozuda.backend.account.dto.CustomOAuth2User;
+import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.jwt.JWTUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -26,7 +26,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         //OAuth2User
-        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+        CustomUser customUserDetails = (CustomUser) authentication.getPrincipal();
 
         String username = customUserDetails.getUsername();
 
@@ -38,7 +38,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String token = jwtUtil.createJwt(username, role, 60*60*60L);
 
         response.addCookie(createCookie("Authorization", token));
-        response.sendRedirect("http://localhost:3000/");
     }
 
     private Cookie createCookie(String key, String value) {

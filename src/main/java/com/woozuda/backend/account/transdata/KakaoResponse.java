@@ -3,29 +3,36 @@ package com.woozuda.backend.account.transdata;
 import java.util.Map;
 
 public class KakaoResponse implements OAuth2Response {
-    private final Map<String, Object> attribute;
+    private String provider;
+    private String providerId;
+    private String email;
+    private String name;
 
+    // kakao : {id=3812693211, connected_at=2024-11-29T08:37:05Z, properties={nickname=이동현}, kakao_account={profile_nickname_needs_agreement=false, profile={nickname=이동현, is_default_nickname=false}}}
     public KakaoResponse(Map<String, Object> attribute){
-        this.attribute = attribute;
+        this.provider = attribute.get("id").toString();
+        this.providerId = "";
+        this.email = "";
+        this.name = "";
     }
 
     @Override
     public String getProvider() {
-        return "kakao";
+        return provider;
     }
 
     @Override
     public String getProviderId() {
-        return attribute.get("id").toString();
+        return providerId;
     }
 
     @Override
     public String getEmail() {
-        return "";
+        return email;
     }
 
     @Override
     public String getName() {
-        return "";
+        return name;
     }
 }

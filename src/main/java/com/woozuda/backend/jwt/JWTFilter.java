@@ -1,6 +1,6 @@
 package com.woozuda.backend.jwt;
 
-import com.woozuda.backend.account.dto.CustomOAuth2User;
+import com.woozuda.backend.account.dto.CustomUser;
 //import com.woozuda.backend.account.dto.CustomUserDetails;
 import com.woozuda.backend.account.entity.UserEntity;
 import jakarta.servlet.FilterChain;
@@ -98,7 +98,7 @@ public class JWTFilter extends OncePerRequestFilter {
         */
 
         //세션에 사용자 등록 . stateless 로서 이번 1회만 적용 된다 .
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(userEntity);
+        CustomUser customOAuth2User = new CustomUser(userEntity);
         Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
 

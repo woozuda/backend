@@ -1,9 +1,8 @@
 package com.woozuda.backend.jwt;
 
-import com.woozuda.backend.account.dto.CustomOAuth2User;
+import com.woozuda.backend.account.dto.CustomUser;
 //import com.woozuda.backend.account.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.Servlet;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,7 +46,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     // 로그인 성공 시 실행하는 메소드
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
-        CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
+        CustomUser customUserDetails = (CustomUser) authentication.getPrincipal();
 
         String username = customUserDetails.getUsername();
 

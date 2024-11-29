@@ -4,31 +4,41 @@ import java.util.Map;
 
 public class NaverResponse implements OAuth2Response {
 
-    private final Map<String, Object> attribute;
+    //private final Map<String, Object> attribute;
+
+    private String provider;
+    private String providerId;
+    private String email;
+    private String name;
+
 
     public NaverResponse(Map<String, Object> attribute){
-        System.out.println(attribute.get("response"));
-        this.attribute = (Map<String, Object>) attribute.get("response");
-        System.out.println(this.attribute);
+        // naver: {resultcode=00, message=success, response={id=oz7UDpVICFBzNmLB-mwZHzgR7IIY7-Y02Az8vYPMwyY, email=enjoying1018@naver.com, name=이동현}}
+
+        Map<String, Object> attribute_res = (Map<String, Object>) attribute.get("response");
+        this.provider = "naver";
+        this.providerId = attribute_res.get("id").toString();
+        this.email = attribute_res.get("email").toString();
+        this.name = attribute_res.get("name").toString();
     }
 
     @Override
     public String getProvider() {
-        return "naver";
+        return provider;
     }
 
     @Override
     public String getProviderId() {
-        return attribute.get("id").toString();
+        return providerId;
     }
 
     @Override
     public String getEmail() {
-        return attribute.get("email").toString();
+        return email;
     }
 
     @Override
     public String getName() {
-        return attribute.get("name").toString();
+        return name;
     }
 }
