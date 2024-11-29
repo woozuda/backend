@@ -55,11 +55,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60*60*1000L);
+        String token = jwtUtil.createJwt(username, role, 90*24*60*60*1000L);
 
         //쿠키로 수정 필요 ~~
         response.addCookie(createCookie("Authorization", token));
-        System.out.println("실행이 됐어요");
+
         //response.addHeader("Authorization", "Bearer " + token);
 
         super.successfulAuthentication(request, response, chain, authentication);
@@ -74,7 +74,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60*60*1000);
+        cookie.setMaxAge(90*24*60*60);
         //cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
