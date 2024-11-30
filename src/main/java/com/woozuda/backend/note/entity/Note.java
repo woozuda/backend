@@ -3,7 +3,6 @@ package com.woozuda.backend.note.entity;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.global.entity.BaseTimeEntity;
 import com.woozuda.backend.note.entity.type.Visibility;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -17,12 +16,9 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -47,8 +43,5 @@ public class Note extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(length = 100, nullable = false)
     private Visibility visibility;
-
-    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL)
-    private List<NoteContent> contents = new ArrayList<>();
 
 }
