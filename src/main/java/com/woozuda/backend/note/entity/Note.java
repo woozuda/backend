@@ -35,7 +35,7 @@ public class Note extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diary_id", updatable = false, nullable = false)
+    @JoinColumn(name = "diary_id", nullable = false)
     private Diary diary;
 
     @Column(nullable = false)
