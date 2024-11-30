@@ -1,4 +1,4 @@
-package com.woozuda.backend.jwt;
+package com.woozuda.backend.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -38,7 +38,7 @@ public class JWTUtil {
 
     // jwt bearer 토큰이 만료 되었는지 검사
     public Boolean isExpired(String jws) {
-        System.out.println(Jwts.parser().verifyWith(key).build().parseSignedClaims(jws).getPayload().getExpiration());
+        //System.out.println(Jwts.parser().verifyWith(key).build().parseSignedClaims(jws).getPayload().getExpiration());
         return Jwts.parser().verifyWith(key).build().parseSignedClaims(jws).getPayload().getExpiration().before(new Date());
     }
 

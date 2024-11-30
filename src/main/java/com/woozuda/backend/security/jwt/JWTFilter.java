@@ -1,4 +1,4 @@
-package com.woozuda.backend.jwt;
+package com.woozuda.backend.security.jwt;
 
 import com.woozuda.backend.account.dto.CustomUser;
 //import com.woozuda.backend.account.dto.CustomUserDetails;
@@ -40,7 +40,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
         for (Cookie cookie : cookies) {
 
-            System.out.println(cookie.getName());
+            //System.out.println(cookie.getName());
             if (cookie.getName().equals("Authorization")) {
 
                 authorization = cookie.getValue();
@@ -50,26 +50,12 @@ public class JWTFilter extends OncePerRequestFilter {
         //Authorization 헤더 검증
         if (authorization == null) {
 
-            System.out.println("token null");
+            //System.out.println("token null");
             filterChain.doFilter(request, response);
 
             //조건이 해당되면 메소드 종료 (필수)
             return;
         }
-
-        /*
-        //헤더 버전 예외처리 ( Bearer 형태가 아닌 경우 )
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
-
-            //System.out.println("token null");
-
-            //다음 필터로 넘겨준다
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String token = authorization.split(" ")[1];
-        */
 
         String token = authorization;
 
@@ -87,15 +73,6 @@ public class JWTFilter extends OncePerRequestFilter {
         userEntity.setUsername(username);
         userEntity.setPassword("temp");
         userEntity.setRole(role);
-
-        /*
-        토큰 버전
-        //UserDetails에 회원 정보 객체 담기
-        CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
-
-        //스프링 시큐리티 인증 토큰 생성
-        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-        */
 
         //세션에 사용자 등록 . stateless 로서 이번 1회만 적용 된다 .
         CustomUser customOAuth2User = new CustomUser(userEntity);

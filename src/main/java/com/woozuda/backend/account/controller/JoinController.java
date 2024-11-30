@@ -17,7 +17,7 @@ public class JoinController {
         this.joinService = joinService;
     }
 
-    @PostMapping("/account/join")
+    @PostMapping("/join")
     public String joinProcess(JoinDTO joinDTO){
 
         joinService.joinProcess(joinDTO);

@@ -1,7 +1,7 @@
-package com.woozuda.backend.oauth2;
+package com.woozuda.backend.security.oauth2;
 
 import com.woozuda.backend.account.dto.CustomUser;
-import com.woozuda.backend.jwt.JWTUtil;
+import com.woozuda.backend.security.jwt.JWTUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

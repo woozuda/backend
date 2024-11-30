@@ -1,16 +1,15 @@
-package com.woozuda.backend.config;
+package com.woozuda.backend.security.config;
 
 import com.woozuda.backend.account.service.CustomOAuth2UserService;
-import com.woozuda.backend.jwt.JWTFilter;
-import com.woozuda.backend.jwt.JWTUtil;
-import com.woozuda.backend.jwt.LoginFilter;
-import com.woozuda.backend.oauth2.CustomSuccessHandler;
+import com.woozuda.backend.security.jwt.JWTFilter;
+import com.woozuda.backend.security.jwt.JWTUtil;
+import com.woozuda.backend.security.jwt.LoginFilter;
+import com.woozuda.backend.security.oauth2.CustomSuccessHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,10 +18,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-import java.security.Security;
+import java.util.Arrays;
 import java.util.Collections;
 
 @RequiredArgsConstructor
@@ -73,7 +73,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/account/join", "/account/sample/alluser").permitAll()
+                        .requestMatchers("/login", "/", "/join", "/account/sample/alluser").permitAll()
                         .requestMatchers("/account/sample/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
@@ -82,9 +82,11 @@ public class SecurityConfig {
         http
                 //.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class)
                 //.addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
+                //.addFilterAfter(new JWTFilter(jwtUtil), BasicAuthenticationFilter.class)
+                //.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), BasicAuthenticationFilter.class);
                 .addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
-                //.addFilterBefore(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
+                //.addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
                 //.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
 
@@ -104,7 +106,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+                        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "example.com"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
