@@ -24,6 +24,14 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        String path = request.getRequestURI();
+
+        // 필터를 적용하지 않을 경로를 지정
+        if (path.equals("/join") || path.equals("/login") || path.equals("/account/sample/alluser")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         //Authorization 을 키 값으로 가지는 것을 찾음
 
         // 헤더 버전
