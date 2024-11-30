@@ -1,5 +1,6 @@
 package com.woozuda.backend.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woozuda.backend.account.dto.CustomUser;
 //import com.woozuda.backend.account.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
@@ -18,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -28,11 +30,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response){
 
-        String username = obtainUsername(request);
-        String password = obtainPassword(request);
+        //String username = obtainUsername(request);
+        //String password = obtainPassword(request);
 
-        //System.out.println(username);
+        Map<String, String> jsonMap;
 
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            jsonMap = mapper.readValue(request.getInputStream(), Map.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        String username = jsonMap.get("username");
+        String password = jsonMap.get("password");
         UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(username, password);
 
         setDetails(request, authRequest);
@@ -62,7 +73,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //response.addHeader("Authorization", "Bearer " + token);
 
-        super.successfulAuthentication(request, response, chain, authentication);
+        //지워야 함 ㄴ
+        //super.successfulAuthentication(request, response, chain, authentication);
     }
 
     // 로그인 실패 시 실행하는 메소드

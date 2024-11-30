@@ -73,7 +73,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join", "/account/sample/alluser").permitAll()
+                        .requestMatchers("/login", "/", "/join","/error", "/account/sample/alluser").permitAll()
                         .requestMatchers("/account/sample/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
@@ -106,7 +106,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "example.com"));
+                        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));

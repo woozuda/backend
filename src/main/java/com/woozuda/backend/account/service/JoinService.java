@@ -3,6 +3,8 @@ package com.woozuda.backend.account.service;
 import com.woozuda.backend.account.dto.JoinDTO;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
+import com.woozuda.backend.exception.InvalidEmailException;
+import com.woozuda.backend.exception.UsernameAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,12 +29,12 @@ public class JoinService {
     public void joinProcess(JoinDTO joinDTO){
 
         if(!isValidEmail(joinDTO.getUsername())){
-            return;
+            throw new InvalidEmailException("잘못된 이메일 형식을 입력 했습니다");
         }
 
         //이미 있는 계정이면 만들 수 없습니다
         if(userRepository.existsByUsername(joinDTO.getUsername())){
-            return;
+            throw new UsernameAlreadyExistsException("이미 존재하는 회원 입니다");
         }
 
         //비밀번호 암호화(bcrypt)
@@ -48,7 +50,8 @@ public class JoinService {
     public static boolean isValidEmail(String username){
 
         // 이메일 주소 형식이 아닌 경우 false
-        if(!username.contains("@")){
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        if(!username.matches(regex)){
             return false;
         }
 
