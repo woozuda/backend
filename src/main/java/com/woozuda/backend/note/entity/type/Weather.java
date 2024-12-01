@@ -1,6 +1,7 @@
 package com.woozuda.backend.note.entity.type;
 
 public enum Weather {
+
     SUNNY,          // 맑음
     CLOUDY,         // 흐림
     RAINY,          // 비
@@ -19,5 +20,6 @@ public enum Weather {
     HAZY,           // 뿌연 날씨
     MISTY,          // 옅은 안개
     DUSTY,          // 먼지 많음
-    CHILLY;          // 쌀쌀함
+    CHILLY          // 쌀쌀함
+
 }
