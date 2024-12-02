@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.Getter;
 
 @Entity
 @Table(
@@ -15,6 +16,7 @@ import jakarta.persistence.UniqueConstraint;
         uniqueConstraints = {@UniqueConstraint(name = "unique_name", columnNames = "name")},
         indexes = {@Index(columnList = "name")} //ddl-auto:none 이면 동작 X
 )
+@Getter
 public class Tag extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

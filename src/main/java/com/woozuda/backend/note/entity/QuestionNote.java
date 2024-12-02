@@ -12,10 +12,12 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
 @Entity
 @DiscriminatorValue("QUESTION")
 @Table(name = "question_note")
+@Getter
 public class QuestionNote extends Note {
 
     @ManyToOne(fetch = FetchType.LAZY)

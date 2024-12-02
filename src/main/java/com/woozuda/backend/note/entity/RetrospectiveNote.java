@@ -7,10 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
 @Entity
 @DiscriminatorValue("RETROSPECTIVE")
 @Table(name = "retrospective_note")
+@Getter
 public class RetrospectiveNote extends Note {
 
     @Enumerated(EnumType.STRING)

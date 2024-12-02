@@ -9,10 +9,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
 @Entity
 @DiscriminatorValue("COMMON")
 @Table(name = "common_note")
+@Getter
 public class CommonNote extends Note {
 
     @Enumerated(EnumType.STRING)
