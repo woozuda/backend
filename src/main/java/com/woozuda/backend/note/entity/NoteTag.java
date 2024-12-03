@@ -1,7 +1,7 @@
 package com.woozuda.backend.note.entity;
 
 import com.woozuda.backend.global.entity.BaseTimeEntity;
-import com.woozuda.backend.global.entity.Tag;
+import com.woozuda.backend.tag.entity.Tag;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
