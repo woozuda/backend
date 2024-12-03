@@ -1,8 +1,10 @@
-package com.woozuda.backend.config;
+package com.woozuda.backend.security.config;
 
-import com.woozuda.backend.jwt.JWTFilter;
-import com.woozuda.backend.jwt.JWTUtil;
-import com.woozuda.backend.jwt.LoginFilter;
+import com.woozuda.backend.account.service.CustomOAuth2UserService;
+import com.woozuda.backend.security.jwt.JWTFilter;
+import com.woozuda.backend.security.jwt.JWTUtil;
+import com.woozuda.backend.security.jwt.LoginFilter;
+import com.woozuda.backend.security.oauth2.CustomSuccessHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -58,7 +60,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/account/join", "/account/sample/alluser").permitAll()
+                        .requestMatchers("/login", "/", "/join","/error", "/account/sample/alluser").permitAll()
                         .requestMatchers("/account/sample/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 

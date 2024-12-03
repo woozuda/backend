@@ -1,4 +1,5 @@
-package com.woozuda.backend.config;
+package com.woozuda.backend.ai_diary.config;
+
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

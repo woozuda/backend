@@ -1,4 +1,4 @@
-package com.woozuda.backend.jwt;
+package com.woozuda.backend.security.jwt;
 
 import com.woozuda.backend.account.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
