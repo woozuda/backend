@@ -21,4 +21,12 @@ spring:
         format_sql: true
 
   jwt:
-    secret: "${jwt.hashcode}"
+    secret: "${JWT_HASHCODE:defaultSecretKey}" #"${jwt.hashcode}" 이 부분 다시 고쳐두기 !@!
+
+
+  openai:
+    key: "${OPENAI_API_KEY}"  # 환경 변수에서 OPENAI_API_KEY를 가져옵니다.
+    chat:
+      options:
+        model: "gpt-3.5-turbo"  # 사용할 AI 모델 (예: gpt-3.5-turbo)
+        temperature: 0.6  # 생성되는 텍스트의 다양성 정도를 조절하는 파라미터 (0.0 ~ 1.0)

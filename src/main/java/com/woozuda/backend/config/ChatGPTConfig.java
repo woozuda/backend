@@ -1,0 +1,60 @@
+package com.woozuda.backend.config;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
+/**
+ * ChatGPT API 통합을 위한 설정 클래스입니다.
+ * RestTemplate 및 HTTP 헤더 관련 설정
+ */
+@Configuration
+@Slf4j
+public class ChatGPTConfig {
+
+    // OpenAI API 키를 application.properties 또는 application.yml 파일에서 가져옵니다.
+    @Value("${openai.api.key}")
+    private String secretKey;
+
+    /**
+     * RestTemplate 빈 설정.
+     * ChatGPT API와 같은 외부 서비스에 HTTP 요청을 보낼 때 사용됩니다.
+     *
+     * @return RestTemplate 인스턴스
+     */
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    /**
+     * ChatGPT API 요청에 사용되는 HTTP 헤더를 설정
+     *
+     * @return HttpHeaders 인스턴스
+     */
+    @Bean
+    public HttpHeaders httpHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+
+        // Bearer 형식으로 API 키 설정
+        headers.set("Authorization", "Bearer " + secretKey.trim());
+        /**
+         * 동현님께 한번 물어봐야 하는 부분
+         */
+//        // JWT 토큰을 Authorization 헤더에 추가
+//        headers.set("Authorization", "Bearer " + jwtToken);
+//
+//        // API 키를 x-api-key 헤더에 추가
+//        headers.set("x-api-key", apiKey);
+
+        // 요청 본문을 JSON 형식으로 설정
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return headers;
+    }
+}
