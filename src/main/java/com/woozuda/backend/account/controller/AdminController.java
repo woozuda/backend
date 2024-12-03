@@ -11,4 +11,10 @@ public class AdminController {
     public String adminP(){
         return "admin controller";
     }
+
+    @GetMapping("/account/sample/alluser")
+    public String allP(){
+        return "all user can access this page!";
+    }
+
 }

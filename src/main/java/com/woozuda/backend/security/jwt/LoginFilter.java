@@ -1,7 +1,11 @@
-package com.woozuda.backend.jwt;
+package com.woozuda.backend.security.jwt;
 
-import com.woozuda.backend.account.dto.CustomUserDetails;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woozuda.backend.account.dto.CustomUser;
+//import com.woozuda.backend.account.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +16,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -24,11 +30,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response){
 
-        String username = obtainUsername(request);
-        String password = obtainPassword(request);
+        //String username = obtainUsername(request);
+        //String password = obtainPassword(request);
 
-        //System.out.println(username);
+        Map<String, String> jsonMap;
 
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            jsonMap = mapper.readValue(request.getInputStream(), Map.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        String username = jsonMap.get("username");
+        String password = jsonMap.get("password");
         UsernamePasswordAuthenticationToken authRequest = UsernamePasswordAuthenticationToken.unauthenticated(username, password);
 
         setDetails(request, authRequest);
@@ -41,8 +56,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     // 로그인 성공 시 실행하는 메소드
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
+        CustomUser customUserDetails = (CustomUser) authentication.getPrincipal();
 
         String username = customUserDetails.getUsername();
 
@@ -51,14 +66,31 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60*60*1000L);
+        String token = jwtUtil.createJwt(username, role, 90*24*60*60*1000L);
 
-        response.addHeader("Authorization", "Bearer " + token);
+        //쿠키로 수정 필요 ~~
+        response.addCookie(createCookie("Authorization", token));
+
+        //response.addHeader("Authorization", "Bearer " + token);
+
+        //지워야 함 ㄴ
+        //super.successfulAuthentication(request, response, chain, authentication);
     }
 
     // 로그인 실패 시 실행하는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         response.setStatus(401);
+    }
+
+    private Cookie createCookie(String key, String value) {
+
+        Cookie cookie = new Cookie(key, value);
+        cookie.setMaxAge(90*24*60*60);
+        //cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+
+        return cookie;
     }
 }
