@@ -2,6 +2,9 @@ spring:
   profiles:
     active: test
 
+  config:
+    import: "classpath:./config/local-var.yml"
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -9,3 +12,30 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+
+  jwt:
+    secret: "${jwt.hashcode}"
+
+  security:
+    oauth2:
+      client:
+        registration:
+          naver:
+            client-name: naver
+            client-id: "${oauth2.naver.id}"
+            client-secret: "${oauth2.naver.secret}"
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver
+            authorization-grant-type: authorization_code
+            scope: name, email
+          google:
+            client-name: google
+            client-id: "${oauth2.google.id}"
+            client-secret: "${oauth2.google.secret}"
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            authorization-grant-type: authorization_code
+            scope: profile, email
+          kakao:
+            client-name: kakao
+            client-id: "${oauth2.kakao.id}"
+            client-secret: "${oauth2.kakao.secret}"
