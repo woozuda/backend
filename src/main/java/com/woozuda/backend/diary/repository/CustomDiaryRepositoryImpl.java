@@ -1,0 +1,79 @@
+package com.woozuda.backend.diary.repository;
+
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.woozuda.backend.account.entity.QUserEntity;
+import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
+import com.woozuda.backend.diary.entity.QDiary;
+import com.woozuda.backend.diary.entity.QDiaryTag;
+import com.woozuda.backend.tag.entity.QTag;
+import jakarta.persistence.EntityManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.woozuda.backend.account.entity.QUserEntity.userEntity;
+import static com.woozuda.backend.diary.entity.QDiary.diary;
+import static com.woozuda.backend.diary.entity.QDiaryTag.diaryTag;
+import static com.woozuda.backend.tag.entity.QTag.tag;
+
+public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
+
+    private final JPAQueryFactory query;
+
+    public CustomDiaryRepositoryImpl(EntityManager em) {
+        this.query = new JPAQueryFactory(em);
+    }
+
+    @Override
+    public List<SingleDiaryResponseDto> searchDiarySummaryList(String username) {
+        // Q 클래스
+
+        // 쿼리 작성
+        List<Tuple> results = query
+                .select(
+                        diary.id,
+                        diary.title,
+                        diary.image,
+                        diary.startDate,
+                        diary.endDate,
+                        diary.noteCount,
+                        tag.name
+                )
+                .from(diary)
+                .join(diary.user, userEntity)
+                .leftJoin(diary.tagList, diaryTag)
+                .leftJoin(diaryTag.tag, tag)
+                .where(userEntity.username.eq(username))
+                .orderBy(diary.createdAt.desc())
+                .fetch();
+
+        // 결과를 DTO로 매핑
+        Map<Long, SingleDiaryResponseDto> diaryMap = new HashMap<>();
+
+        results.forEach(tuple -> {
+            Long diaryId = tuple.get(diary.id);
+            SingleDiaryResponseDto dto = diaryMap.getOrDefault(diaryId, new SingleDiaryResponseDto(
+                    diaryId,
+                    tuple.get(diary.title),
+                    new ArrayList<>(),
+                    tuple.get(diary.image),
+                    tuple.get(diary.startDate),
+                    tuple.get(diary.endDate),
+                    tuple.get(diary.noteCount)
+            ));
+
+            String tagName = tuple.get(tag.name);
+            if (tagName != null) {
+                dto.getTags().add(tagName);
+            }
+
+            diaryMap.put(diaryId, dto);
+        });
+
+        return new ArrayList<>(diaryMap.values());
+    }
+}
