@@ -1,5 +1,5 @@
 database:
-  url: jdbc:mysql://db-302cok-kr.vpc-pub-cdb.ntruss.com:3306/woozuda?useSSL=false&allowPublicKeyRetrieval=true
+  url: jdbc:mysql://db-302cok-kr.vpc-pub-cdb.ntruss.com:3306/woozuda
   username: woozuda_admin
   password: duibn1$hy
 
