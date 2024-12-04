@@ -3,6 +3,7 @@
 
 ### application.yml 변수 디렉토리 ###
 src/main/resources/config
+src/test/resources/config
 
 ### QueryDSL ###
 src/main/generated
