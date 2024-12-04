@@ -7,6 +7,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -37,17 +39,30 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String token = jwtUtil.createJwt(username, role, 90*24*60*60*1000L);
 
-        response.addCookie(createCookie("Authorization", token));
+        ResponseCookie responseCookie = createCookie("Authorization", token);
+        response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
+        //response.addCookie(createCookie("Authorization", token));
     }
 
-    private Cookie createCookie(String key, String value) {
+    private ResponseCookie createCookie(String key, String value) {
 
+        /*
         Cookie cookie = new Cookie(key, value);
         cookie.setMaxAge(90*24*60*60);
         //cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setHttpOnly(true);
 
-        return cookie;
+         */
+        ResponseCookie responseCookie = ResponseCookie.from(key, value)
+                .httpOnly(false)
+                .secure(true)
+                .path("/")
+                .maxAge(90 * 24 * 60 * 60)
+                .sameSite("None")
+                .build();
+
+
+        return responseCookie;
     }
 }
