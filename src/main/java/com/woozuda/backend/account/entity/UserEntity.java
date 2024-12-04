@@ -1,6 +1,8 @@
 package com.woozuda.backend.account.entity;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.woozuda.backend.account.dto.JoinDTO;
+import com.woozuda.backend.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -12,19 +14,19 @@ import lombok.*;
 @NoArgsConstructor
 @Table(name="woozuda_user")
 @Entity
-public class UserEntity {
+public class UserEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id", nullable = false)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String username;
 
-    @Column
     private String password;
 
-    @Column
+    @Column(nullable = false)
     private String role;
 
     public static UserEntity transEntity(JoinDTO joinDTO){

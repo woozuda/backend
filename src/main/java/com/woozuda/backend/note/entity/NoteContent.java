@@ -26,7 +26,7 @@ public class NoteContent extends BaseTimeEntity {
     private Note note;
 
     @Column(nullable = false)
-    private Integer order;
+    private Integer note_order;
 
     @Column(length = 2000, nullable = false)
     private String content;
