@@ -29,7 +29,11 @@ public class UserEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 255, name = "ai_type", nullable = false)
+    private AiType aiType;
+
     public static UserEntity transEntity(JoinDTO joinDTO){
-        return new UserEntity(null, joinDTO.getUsername(), joinDTO.getPassword(), "ROLE_ADMIN");
+        return new UserEntity(null, joinDTO.getUsername(), joinDTO.getPassword(), "ROLE_ADMIN", AiType.PICTURE_NOVEL);
     }
 }
