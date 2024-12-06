@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +59,15 @@ public class ImageService {
 
         imageRepository.save(Image.of(imgUrl, false));
 
+        return new ImageDto(imgUrl);
+    }
+
+    @Transactional
+    public ImageDto getRandomImage() {
+        Random random = new Random();
+        int imageNumber = random.nextInt(10) + 1;
+
+        String imgUrl = "https://kr.object.ncloudstorage.com/woozuda-image/random-image/random-image-" + imageNumber + ".jpg";
         return new ImageDto(imgUrl);
     }
 }

@@ -31,7 +31,7 @@ public class ImageController {
     // 랜덤 이미지 추출
     @GetMapping("/random")
     public ResponseEntity<ImageDto> getRandomImage(){
-        ImageDto responseDto = null;
+        ImageDto responseDto = imageService.getRandomImage();
         return ResponseEntity.ok(responseDto);
     }
 }
