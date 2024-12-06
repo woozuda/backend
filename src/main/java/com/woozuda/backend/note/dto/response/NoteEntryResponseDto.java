@@ -18,6 +18,11 @@ public class NoteEntryResponseDto implements Comparable<NoteEntryResponseDto> {
     private String type; //노트 종류 (COMMON, QUESTION, RETROSPECTIVE)
     private NoteResponseDto note;
 
+    /*
+    졍렬 기준
+    1. 날짜 - 최근 순
+    2. 일기 종류 - 자유일기, 오늘의 질문 일기, 회고 순
+     */
     @Override
     public int compareTo(NoteEntryResponseDto o) {
         int first = o.getNote().getDate().compareTo(this.getNote().getDate());
