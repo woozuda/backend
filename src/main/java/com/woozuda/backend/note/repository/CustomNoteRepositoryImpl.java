@@ -1,21 +1,18 @@
 package com.woozuda.backend.note.repository;
 
-import com.querydsl.core.Tuple;
-import com.querydsl.core.group.GroupBy;
-import com.querydsl.core.types.Expression;
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringPath;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.woozuda.backend.note.dto.response.NoteDetailResponseDto;
-import com.woozuda.backend.note.dto.response.NoteSummaryResponseDto;
+import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
+import com.woozuda.backend.note.dto.response.NoteResponseDto;
+import com.woozuda.backend.note.dto.response.QNoteResponseDto;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 import static com.woozuda.backend.account.entity.QUserEntity.userEntity;
 import static com.woozuda.backend.diary.entity.QDiary.diary;
 import static com.woozuda.backend.note.entity.QCommonNote.commonNote;
@@ -24,106 +21,156 @@ import static com.woozuda.backend.note.entity.QNoteContent.noteContent;
 import static com.woozuda.backend.note.entity.QQuestionNote.questionNote;
 import static com.woozuda.backend.note.entity.QRetrospectiveNote.retrospectiveNote;
 
+/**
+ * TODO 성능 생각하지 않음. 기능 완성한 뒤에는 성능 향상시킬 것
+ */
 public class CustomNoteRepositoryImpl implements CustomNoteRepository {
 
     private final JPAQueryFactory query;
 
     public CustomNoteRepositoryImpl(EntityManager em) {
-        this.query = new JPAQueryFactory(em);
+        this.query = new JPAQueryFactory(JPQLTemplates.DEFAULT, em);
     }
 
     @Override
-    public List<NoteSummaryResponseDto> searchNoteSummary(String username, LocalDate date) {
-
+    public List<NoteResponseDto> searchCommonNoteList(String username, NoteCondRequestDto condition) {
         return query
-                .select(Projections.constructor(NoteSummaryResponseDto.class,
-                        note.dtype,
+                .from(commonNote)
+                .leftJoin(commonNote.diary, diary)
+                .leftJoin(diary.user, userEntity).on(diary.user.username.eq(username))
+                .leftJoin(noteContent).on(noteContent.note.id.eq(commonNote.id))
+                .where(dateEq(condition.getDate()))
+                .transform(
+                        groupBy(commonNote.id).list(
+                                new QNoteResponseDto(
+                                        commonNote.id,
+                                        diary.title,
+                                        note.title,
+                                        note.date.stringValue(),
+                                        commonNote.weather.stringValue(),
+                                        commonNote.season.stringValue(),
+                                        commonNote.feeling.stringValue(),
+                                        list(
+                                                noteContent.content
+                                        )
+                                )
+                        )
+                );
+        /*return query
+                .select(new QNoteResponseDto(
                         note.id,
                         diary.title,
                         note.title,
-                        note.date
+                        note.date.stringValue(),
+                        commonNote.weather.stringValue(),
+                        commonNote.season.stringValue(),
+                        commonNote.feeling.stringValue(),
+                        noteContent.content
                 ))
-                .from(note)
-                .join(note.diary, diary)
-                .join(diary.user, userEntity)
-                .where(userEntity.username.eq(username),
-                        note.date.eq(date)
-                )
-                .fetch();
-    }
-
-    @Override
-    public NoteDetailResponseDto searchCommonNoteDetail(Long noteId) {
-        Tuple tuple = query
-                .select(commonNote.weather, commonNote.feeling, commonNote.season, noteContent.content)
                 .from(commonNote)
+                .leftJoin(commonNote.diary, diary)
+                .leftJoin(diary.user, userEntity).on(diary.user.username.eq(username))
                 .leftJoin(noteContent).on(noteContent.note.id.eq(commonNote.id))
-                .where(commonNote.id.eq(noteId))
-                .fetchFirst();
-
-        if (tuple != null) {
-            return new NoteDetailResponseDto(
-                    tuple.get(commonNote.weather).name(),
-                    tuple.get(commonNote.feeling).name(),
-                    tuple.get(commonNote.season).name(),
-                    null,
-                    null,
-                    List.of(tuple.get(noteContent.content))
-            );
-        } else {
-            return null;
-        }
+                .where(dateEq(condition.getDate()))
+                .fetch();*/
     }
 
     @Override
-    public NoteDetailResponseDto searchQuestionNoteDetail(Long noteId) {
-        Tuple tuple = query
-                .select(questionNote.weather, questionNote.feeling, questionNote.season, questionNote.question.content, noteContent.content)
+    public List<NoteResponseDto> searchQuestionNoteList(String username, NoteCondRequestDto condition) {
+//        return null;
+        return query
                 .from(questionNote)
+                .leftJoin(questionNote.diary, diary)
+                .leftJoin(diary.user, userEntity).on(diary.user.username.eq(username))
                 .leftJoin(noteContent).on(noteContent.note.id.eq(questionNote.id))
-                .where(questionNote.id.eq(noteId))
-                .fetchFirst();
-
-        if (tuple != null) {
-            return new NoteDetailResponseDto(
-                    tuple.get(questionNote.weather).name(),
-                    tuple.get(questionNote.feeling).name(),
-                    tuple.get(questionNote.season).name(),
-                    tuple.get(questionNote.question.content),
-                    null,
-                    List.of(tuple.get(noteContent.content))
-            );
-        } else {
-            return null;
-        }
+                .where(dateEq(condition.getDate()))
+                .transform(
+                        groupBy(questionNote.id).list(
+                                new QNoteResponseDto(
+                                        questionNote.id,
+                                        diary.title,
+                                        note.title,
+                                        note.date.stringValue(),
+                                        questionNote.weather.stringValue(),
+                                        questionNote.season.stringValue(),
+                                        questionNote.feeling.stringValue(),
+                                        questionNote.question.content,
+                                        list(
+                                                noteContent.content
+                                        )
+                                )
+                        )
+                );
+        /*return query
+                .select(new QNoteResponseDto(
+                        note.id,
+                        diary.title,
+                        note.title,
+                        note.date.stringValue(),
+                        questionNote.weather.stringValue(),
+                        questionNote.season.stringValue(),
+                        questionNote.feeling.stringValue(),
+                        question.content,
+                        noteContent.content
+                ))
+                .from(questionNote)
+                .leftJoin(questionNote.diary, diary)
+                .leftJoin(diary.user, userEntity).on(diary.user.username.eq(username))
+                .leftJoin(noteContent).on(noteContent.note.id.eq(questionNote.id))
+                .where(dateEq(condition.getDate()))
+                .fetch();*/
     }
 
     @Override
-    public NoteDetailResponseDto searchRetrospectiveNoteDetail(Long noteId) {
-        List<Tuple> tuples = query
-                .select(retrospectiveNote.type, noteContent.content)
+    public List<NoteResponseDto> searchRetrospectiveNoteList(String username, NoteCondRequestDto condition) {
+        return query
                 .from(retrospectiveNote)
-                .leftJoin(noteContent).on(noteContent.note.id.eq(retrospectiveNote.id))
-                .where(retrospectiveNote.id.eq(noteId))
-                .orderBy(noteContent.noteOrder.asc())
-                .fetch();
+                .leftJoin(retrospectiveNote.diary, diary)
+                .leftJoin(diary.user, userEntity)
+                .on(diary.user.username.eq(username))
+                .leftJoin(noteContent)
+                .on(noteContent.note.id.eq(retrospectiveNote.id))
+                .where(dateEq(condition.getDate()))
+                .orderBy(retrospectiveNote.id.asc(), noteContent.noteOrder.asc())
+                .transform(
+                        groupBy(retrospectiveNote.id).list(
+                                new QNoteResponseDto(
+                                        retrospectiveNote.id,
+                                        diary.title,
+                                        note.title,
+                                        note.date.stringValue(),
+                                        retrospectiveNote.type.stringValue(),
+                                        list(
+                                                noteContent.content
+                                        )
+                                )
+                        )
+                );
 
-        List<String> content = new ArrayList<>();
-        for (Tuple tuple : tuples) {
-            content.add(tuple.get(noteContent.content));
-        }
 
-        if (!tuples.isEmpty()) {
-            return new NoteDetailResponseDto(
-                    null,
-                    null,
-                    null,
-                    null,
-                    tuples.getFirst().get(retrospectiveNote.type).name(),
-                    content
-            );
-        } else {
-            return null;
-        }
+        /*return query
+                .select(Projections.constructor(NoteResponseDto.class,
+                        note.id,
+                        diary.title,
+                        note.title,
+                        note.date.stringValue(),
+                        retrospectiveNote.type.stringValue(),
+                        (
+                                select(noteContent.content)
+                                .from(noteContent)
+                                .where(noteContent.note.id.eq(retrospectiveNote.id))
+                                .orderBy(noteContent.noteOrder.asc())
+                                .fetchAll()
+                        )
+                ))
+                .from(retrospectiveNote)
+                .leftJoin(retrospectiveNote.diary, diary)
+                .leftJoin(diary.user, userEntity).on(diary.user.username.eq(username))
+                .where(dateEq(condition.getDate()))
+                .fetch();*/
+    }
+
+    private static BooleanExpression dateEq(LocalDate date) {
+        return date == null ? null : note.date.eq(date);
     }
 }

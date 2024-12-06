@@ -1,23 +1,19 @@
 package com.woozuda.backend.note.service;
 
-import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
-import com.woozuda.backend.note.dto.response.NoteDetailResponseDto;
+import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
 import com.woozuda.backend.note.dto.response.NoteEntryResponseDto;
-import com.woozuda.backend.note.dto.response.NoteListResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
-import com.woozuda.backend.note.dto.response.NoteSummaryResponseDto;
 import com.woozuda.backend.note.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -27,40 +23,39 @@ public class NoteService {
 
     private final NoteRepository noteRepository;
 
-    //최신순 일기 조회
-    public NoteListResponseDto getNoteList(String username) {
-        return null;
-    }
-
-    /*
-     * 날짜별 일기 조회
-     *
-     * 1. UserEntity, Diary, Note를 조인하여 username 사용자가 date 에 작성한 노트 요약 정보 조회
-     *       => 노트 요약 정보: type, note id, diary title, note title, date
-     * 2. 각 노트 정보마다, CommonNote, QuestionNote + Question, RetrospectiveNote 중 알맞은 엔티티와 NoteContent 엔티티를 조인하여 노트 세부 정보 조회
-     *      => 노트 세부 정보: weather, feeling, season, question, content 등
-     * 3. 일차 정보와 이차 정보를 결합하여 NoteEntryResponseDto 생성
+    /**
+     * 최신순 일기 조회
+     * <p>
+     * 사용자 이름이 username 인 일기 중
+     * 1. 자유 일기 관련 NoteEntryResponseDto List 조회
+     * 2. 오늘의 질문 일기 관련 NoteEntryResponseDto List 조회
+     * 3. 회고 관련 NoteEntryResponseDto List 조회
+     * <p>
+     * 3개의 List 를 묶어서 하나의 Page 로 처리
      */
-    public NoteListResponseDto getNoteList(String username, LocalDate date) {
-        List<NoteEntryResponseDto> result = new ArrayList<>();
+    public Page<NoteEntryResponseDto> getNoteList(String username, Pageable pageable, NoteCondRequestDto condition) {
+        List<NoteResponseDto> commonNoteDtoList = noteRepository.searchCommonNoteList(username, condition);
+        List<NoteResponseDto> questionNoteDtoList = noteRepository.searchQuestionNoteList(username, condition);
+        List<NoteResponseDto> retrospectiveNoteDtoList = noteRepository.searchRetrospectiveNoteList(username, condition);
 
-        List<NoteSummaryResponseDto> summaryDtoList = noteRepository.searchNoteSummary(username, date);
-        for (NoteSummaryResponseDto summaryDto : summaryDtoList) {
-            NoteDetailResponseDto detailDto;
-            if (summaryDto.getType().equals("COMMON")) {
-                detailDto = noteRepository.searchCommonNoteDetail(summaryDto.getNoteId());
-            } else if (summaryDto.getType().equals("QUESTION")) {
-                detailDto = noteRepository.searchQuestionNoteDetail(summaryDto.getNoteId());
-            } else {
-                detailDto = noteRepository.searchRetrospectiveNoteDetail(summaryDto.getNoteId());
-            }
+        List<NoteEntryResponseDto> allContent = Stream.of(
+                        commonNoteDtoList.stream()
+                                .map(noteResponseDto -> new NoteEntryResponseDto("COMMON", noteResponseDto)),
+                        questionNoteDtoList.stream()
+                                .map(noteResponseDto -> new NoteEntryResponseDto("QUESTION", noteResponseDto)),
+                        retrospectiveNoteDtoList.stream()
+                                .map(noteResponseDto -> new NoteEntryResponseDto("RETROSPECTIVE", noteResponseDto))
+                ).flatMap(stream -> stream)
+                .sorted(Comparator.naturalOrder())
+                .toList();
 
-            if (detailDto != null) {
-                result.add(NoteEntryResponseDto.of(summaryDto, detailDto));
-            }
+        int start = (int) pageable.getOffset();
+        int end = Math.min(start + pageable.getPageSize(), allContent.size());
+
+        if (start > end) {
+            return new PageImpl<>(Collections.emptyList(), pageable, allContent.size());
+        } else {
+            return new PageImpl<>(allContent.subList(start, end), pageable, allContent.size());
         }
-
-        Collections.sort(result);
-        return new NoteListResponseDto(result);
     }
 }

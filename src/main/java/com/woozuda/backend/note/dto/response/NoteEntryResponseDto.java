@@ -3,31 +3,28 @@ package com.woozuda.backend.note.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class NoteEntryResponseDto implements Comparable<NoteEntryResponseDto>{
+@ToString
+public class NoteEntryResponseDto implements Comparable<NoteEntryResponseDto> {
+
+    private static final Map<String, Integer> priority = Map.of("COMMON", 1, "QUESTION", 2, "RETROSPECTIVE", 3);
 
     private String type; //노트 종류 (COMMON, QUESTION, RETROSPECTIVE)
     private NoteResponseDto note;
 
-    public static NoteEntryResponseDto of(NoteSummaryResponseDto summaryDto, NoteDetailResponseDto detailDto) {
-        return new NoteEntryResponseDto(summaryDto.getType(), NoteResponseDto.of(summaryDto, detailDto));
-    }
-
     @Override
     public int compareTo(NoteEntryResponseDto o) {
-        if (this.type == null && o.type == null) {
-            return 0;
+        int first = o.getNote().getDate().compareTo(this.getNote().getDate());
+        if (first != 0) {
+            return first;
         }
-        if (this.type == null) {
-            return 1;
-        }
-        if (o.type == null) {
-            return -1;
-        }
-        // 사전순의 반대 (내림차순 정렬)
-        return o.getNote().getDate().compareTo(this.getNote().getDate());
+
+        return priority.get(this.getType()) - priority.get(o.getType());
     }
 }

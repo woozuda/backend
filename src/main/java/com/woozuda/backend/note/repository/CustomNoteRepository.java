@@ -1,19 +1,16 @@
 package com.woozuda.backend.note.repository;
 
-import com.woozuda.backend.note.dto.response.NoteDetailResponseDto;
-import com.woozuda.backend.note.dto.response.NoteSummaryResponseDto;
+import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
+import com.woozuda.backend.note.dto.response.NoteResponseDto;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface CustomNoteRepository {
 
-    List<NoteSummaryResponseDto> searchNoteSummary(String username, LocalDate date);
+    List<NoteResponseDto> searchCommonNoteList(String username, NoteCondRequestDto condition);
 
-    NoteDetailResponseDto searchCommonNoteDetail(Long noteId);
+    List<NoteResponseDto> searchQuestionNoteList(String username, NoteCondRequestDto condition);
 
-    NoteDetailResponseDto searchQuestionNoteDetail(Long noteId);
-
-    NoteDetailResponseDto searchRetrospectiveNoteDetail(Long noteId);
+    List<NoteResponseDto> searchRetrospectiveNoteList(String username, NoteCondRequestDto condition);
 }
 
