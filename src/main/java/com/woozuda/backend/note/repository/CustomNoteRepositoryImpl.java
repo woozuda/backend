@@ -56,23 +56,6 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                                 )
                         )
                 );
-        /*return query
-                .select(new QNoteResponseDto(
-                        note.id,
-                        diary.title,
-                        note.title,
-                        note.date.stringValue(),
-                        commonNote.weather.stringValue(),
-                        commonNote.season.stringValue(),
-                        commonNote.feeling.stringValue(),
-                        noteContent.content
-                ))
-                .from(commonNote)
-                .leftJoin(commonNote.diary, diary)
-                .leftJoin(diary.user, userEntity).on(diary.user.username.eq(username))
-                .leftJoin(noteContent).on(noteContent.note.id.eq(commonNote.id))
-                .where(dateEq(condition.getDate()))
-                .fetch();*/
     }
 
     @Override
@@ -101,24 +84,6 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                                 )
                         )
                 );
-        /*return query
-                .select(new QNoteResponseDto(
-                        note.id,
-                        diary.title,
-                        note.title,
-                        note.date.stringValue(),
-                        questionNote.weather.stringValue(),
-                        questionNote.season.stringValue(),
-                        questionNote.feeling.stringValue(),
-                        question.content,
-                        noteContent.content
-                ))
-                .from(questionNote)
-                .leftJoin(questionNote.diary, diary)
-                .leftJoin(diary.user, userEntity).on(diary.user.username.eq(username))
-                .leftJoin(noteContent).on(noteContent.note.id.eq(questionNote.id))
-                .where(dateEq(condition.getDate()))
-                .fetch();*/
     }
 
     @Override
@@ -146,28 +111,6 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                                 )
                         )
                 );
-
-
-        /*return query
-                .select(Projections.constructor(NoteResponseDto.class,
-                        note.id,
-                        diary.title,
-                        note.title,
-                        note.date.stringValue(),
-                        retrospectiveNote.type.stringValue(),
-                        (
-                                select(noteContent.content)
-                                .from(noteContent)
-                                .where(noteContent.note.id.eq(retrospectiveNote.id))
-                                .orderBy(noteContent.noteOrder.asc())
-                                .fetchAll()
-                        )
-                ))
-                .from(retrospectiveNote)
-                .leftJoin(retrospectiveNote.diary, diary)
-                .leftJoin(diary.user, userEntity).on(diary.user.username.eq(username))
-                .where(dateEq(condition.getDate()))
-                .fetch();*/
     }
 
     private static BooleanExpression dateEq(LocalDate date) {
