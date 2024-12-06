@@ -28,7 +28,7 @@ public class DiaryController {
 
     @GetMapping
     public ResponseEntity<DiaryListResponseDto> getDiaryList(
-            @AuthenticationPrincipal CustomUser user //TODO 8번 pr 머지 후 CustomUserDetails 클래스명 바뀜
+            @AuthenticationPrincipal CustomUser user
     ) {
         String username = user.getUsername();
         DiaryListResponseDto responseDto = diaryService.getDairyList(username);
@@ -38,7 +38,7 @@ public class DiaryController {
 
     @PostMapping
     public ResponseEntity<DiaryIdResponseDto> createDiary (
-            @AuthenticationPrincipal CustomUser user, //TODO 8번 pr 머지 후 CustomUserDetails 클래스명 바뀜
+            @AuthenticationPrincipal CustomUser user,
             @RequestBody @Valid DiarySaveRequestDto requestDto
     ) {
         String username = user.getUsername();
@@ -48,7 +48,7 @@ public class DiaryController {
 
     @PatchMapping("/{diaryId}")
     public ResponseEntity<DiaryIdResponseDto> modifyDiary(
-            @AuthenticationPrincipal CustomUser user, //TODO 8번 pr 머지 후 CustomUserDetails 클래스명 바뀜
+            @AuthenticationPrincipal CustomUser user,
             @PathVariable("diaryId") Long diaryId,
             @RequestBody @Valid DiarySaveRequestDto requestDto
     ) {
@@ -59,7 +59,7 @@ public class DiaryController {
 
     @DeleteMapping("/{diaryId}")
     public ResponseEntity<Void> deleteDiary(
-            @AuthenticationPrincipal CustomUser user, //TODO 8번 pr 머지 후 CustomUserDetails 클래스명 바뀜
+            @AuthenticationPrincipal CustomUser user,
             @PathVariable("diaryId") Long diaryId
     ) {
         String username = user.getUsername();
