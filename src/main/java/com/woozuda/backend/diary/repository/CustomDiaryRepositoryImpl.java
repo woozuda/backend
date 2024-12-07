@@ -1,7 +1,9 @@
 package com.woozuda.backend.diary.repository;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woozuda.backend.account.entity.QUserEntity;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
@@ -15,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 import static com.woozuda.backend.account.entity.QUserEntity.userEntity;
 import static com.woozuda.backend.diary.entity.QDiary.diary;
 import static com.woozuda.backend.diary.entity.QDiaryTag.diaryTag;
@@ -25,7 +29,7 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
     private final JPAQueryFactory query;
 
     public CustomDiaryRepositoryImpl(EntityManager em) {
-        this.query = new JPAQueryFactory(em);
+        this.query = new JPAQueryFactory(JPQLTemplates.DEFAULT, em);
     }
 
     @Override
@@ -75,5 +79,41 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
         });
 
         return new ArrayList<>(diaryMap.values());
+    }
+
+    @Override
+    public SingleDiaryResponseDto searchSingleDiarySummary(String username, Long diaryId) {
+        return query
+                .from(diary)
+                .join(diary.user, userEntity).on(userEntity.username.eq(username))
+                .leftJoin(diary.tagList, diaryTag)
+                .leftJoin(diaryTag.tag, tag)
+                .where(diary.id.eq(diaryId))
+                .transform(
+                        groupBy(diary.id).list(
+                                Projections.constructor(SingleDiaryResponseDto.class,
+                                        diary.id,
+                                        diary.title,
+                                        list(
+                                                tag.name
+                                        ),
+                                        diary.image,
+                                        diary.startDate,
+                                        diary.endDate,
+                                        diary.noteCount
+                                        )
+                        )
+                )
+                .getFirst();
+    }
+
+    @Override
+    public List<Long> searchDiaryIdList(String username) {
+        return query
+                .select(diary.id)
+                .from(diary)
+                .join(diary.user, userEntity)
+                .where(userEntity.username.eq(username))
+                .fetch();
     }
 }

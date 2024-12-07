@@ -8,4 +8,7 @@ public interface CustomDiaryRepository {
 
     List<SingleDiaryResponseDto> searchDiarySummaryList(String username);
 
+    SingleDiaryResponseDto searchSingleDiarySummary(String username, Long diaryId);
+
+    List<Long> searchDiaryIdList(String username);
 }
