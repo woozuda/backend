@@ -17,10 +17,18 @@ public class Image extends BaseTimeEntity {
     @Column(name = "image_id")
     private Long id;
 
-    @Column(name = "image_url", nullable = false)
+    @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "is_linked_to_post", nullable = false)
+    @Column(name = "is_linked_to_post")
     private Boolean isLinkedToPost;
 
+    public Image(String imageUrl, Boolean isLinkedToPost) {
+        this.imageUrl = imageUrl;
+        this.isLinkedToPost = isLinkedToPost;
+    }
+
+    public static Image of(String imageUrl, Boolean isLinkedToPost) {
+        return new Image(imageUrl, isLinkedToPost);
+    }
 }

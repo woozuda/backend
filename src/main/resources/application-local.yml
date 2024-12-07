@@ -60,3 +60,11 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+
+ncp:
+  storage:
+    region: kr-standard
+    endpoint: https://kr.object.ncloudstorage.com
+    accessKey: "${object-storage.accessKey}"
+    secretKey: "${object-storage.secretKey}"
+    bucketName : "${object-storage.bucketName}"
