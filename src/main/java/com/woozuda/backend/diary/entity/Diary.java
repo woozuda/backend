@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO 같은 사용자 내 다이어리 이름 중복 X
 @Entity
 @Table(name = "diary")
 @Getter

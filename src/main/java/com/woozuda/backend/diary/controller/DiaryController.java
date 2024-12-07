@@ -48,6 +48,10 @@ public class DiaryController {
         return ResponseEntity.ok(responseDto);
     }
 
+    /**
+     * TODO 해당 api를 호출하면 스프링부트가 스프링 데이터의 PageModel 을 사용하라고 경고를 줌
+     * https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables
+     */
     @GetMapping("/{diaryId}")
     public ResponseEntity<DiaryDetailResponseDto> getDiaryDetail(
             @AuthenticationPrincipal CustomUser user,
