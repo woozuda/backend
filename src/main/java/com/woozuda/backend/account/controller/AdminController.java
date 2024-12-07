@@ -17,4 +17,7 @@ public class AdminController {
         return "all user can access this page!";
     }
 
+    @GetMapping("/account/sample/user")
+    public String userP(){ return "user can access this page! ";}
+
 }
