@@ -101,4 +101,52 @@ class DiaryRepositoryTest {
         assertThat(secondDiary.getImgUrl()).isEqualTo("new_image2_url");
     }
 
+    @DisplayName("단일 다이어리 조회")
+    @Test
+    void searchSingleDiarySummaryTest() {
+        //Given
+        UserEntity user = new UserEntity(null, "test_user", "password", "ROLE_USER");
+        em.persist(user);
+
+        Tag tag1 = Tag.of("Tag1");
+        Tag tag2 = Tag.of("Tag2");
+        Tag tag3 = Tag.of("Tag3");
+        Tag tag4 = Tag.of("Tag4");
+
+        em.persist(tag1);
+        em.persist(tag2);
+        em.persist(tag3);
+        em.persist(tag4);
+
+        Diary diary1 = Diary.of(user, "image1_url", "Diary1 Title");
+        diary1.change("Updated Diary1 Title", List.of(tag1, tag2), "new_image1_url");
+        em.persist(diary1);
+
+        Diary diary2 = Diary.of(user, "image2_url", "Diary2 Title");
+        diary2.change("Updated Diary2 Title", List.of(tag3, tag4), "new_image2_url");
+        em.persist(diary2);
+
+        em.flush();
+        em.clear();
+
+        //When
+        SingleDiaryResponseDto responseDto = diaryRepository.searchSingleDiarySummary(user.getUsername(), diary1.getId());
+
+        //Then
+        assertThat(responseDto).isNotNull();
+        assertThat(responseDto)
+                .usingRecursiveComparison()
+                .isEqualTo(new SingleDiaryResponseDto(
+                                diary1.getId(),
+                                diary1.getTitle(),
+                                List.of(tag1.getName(), tag2.getName()),
+                                diary1.getImage(),
+                                diary1.getStartDate(),
+                                diary1.getEndDate(),
+                                diary1.getNoteCount()
+                        )
+                );
+
+    }
+
 }
