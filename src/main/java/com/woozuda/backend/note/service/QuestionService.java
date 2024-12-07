@@ -20,6 +20,7 @@ public class QuestionService {
     public QuestionResponseDto getTodayQuestion() {
         LocalDate today = LocalDate.now();
 
+        //TODO 오늘의 질문이 없는 경우 에러 커스텀
         Question question = questionRepository.findByTodayDate(today);
         if (question == null) {
             throw new RuntimeException("오늘의 질문이 없습니다.");
