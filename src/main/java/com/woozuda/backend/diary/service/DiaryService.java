@@ -42,9 +42,7 @@ public class DiaryService {
     @Transactional(readOnly = true)
     public DiaryListResponseDto getDairyList(String username) {
         List<SingleDiaryResponseDto> diaryList = diaryRepository.searchDiarySummaryList(username);
-        DiaryListResponseDto responseDto = new DiaryListResponseDto(diaryList);
-
-        return null;
+        return new DiaryListResponseDto(diaryList);
     }
 
     @Transactional(readOnly = true)
@@ -119,7 +117,14 @@ public class DiaryService {
     }
 
     //TODO 일기 기능까지 추가한 뒤에, 다이어리 삭제하면 내부 일기까지 전부 삭제하도록 변경
+    //TODO 배포 환경에서는 Diary 를 지우면 관련 DiaryTag 도 모두 지워질 수 있도록 데이터베이스 차원에서 cascade delete 설정
     public void removeDiary(String username, Long diaryId) {
-        diaryRepository.deleteUserDiary(diaryId, username);
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new IllegalArgumentException("Diary Not Found"));
+        if (!diary.getUser().getUsername().equals(username)) {
+            throw new IllegalArgumentException("This diary does not belong to the user.");
+        }
+
+        diaryRepository.deleteById(diaryId);
     }
 }
