@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "note_content")
@@ -24,6 +25,7 @@ public class NoteContent extends BaseTimeEntity {
     @Column(name = "note_content_id")
     private Long id;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "note_id", updatable = false, nullable = false)
     private Note note;
@@ -34,13 +36,12 @@ public class NoteContent extends BaseTimeEntity {
     @Column(length = 2000, nullable = false)
     private String content; // 회고 부분 내용
 
-    private NoteContent(Note note, Integer noteOrder, String content) {
-        this.note = note;
+    private NoteContent(Integer noteOrder, String content) {
         this.noteOrder = noteOrder;
         this.content = content;
     }
 
-    public static NoteContent of(Note note, Integer order, String content) {
-        return new NoteContent(note, order, content);
+    public static NoteContent of(Integer order, String content) {
+        return new NoteContent(order, content);
     }
 }

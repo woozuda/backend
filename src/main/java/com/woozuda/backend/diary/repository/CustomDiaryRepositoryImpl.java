@@ -7,6 +7,7 @@ import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woozuda.backend.account.entity.QUserEntity;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
+import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.entity.QDiary;
 import com.woozuda.backend.diary.entity.QDiaryTag;
 import com.woozuda.backend.tag.entity.QTag;
@@ -115,5 +116,13 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
                 .join(diary.user, userEntity)
                 .where(userEntity.username.eq(username))
                 .fetch();
+    }
+
+    @Override
+    public Diary searchDiary(String title, String username) {
+        return query
+                .selectFrom(diary)
+                .where(diary.user.username.eq(username), diary.title.eq(title))
+                .fetchFirst();
     }
 }

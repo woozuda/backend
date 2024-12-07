@@ -13,7 +13,6 @@ import java.util.List;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
-import static com.woozuda.backend.account.entity.QUserEntity.userEntity;
 import static com.woozuda.backend.diary.entity.QDiary.diary;
 import static com.woozuda.backend.note.entity.QCommonNote.commonNote;
 import static com.woozuda.backend.note.entity.QNote.note;
@@ -59,7 +58,6 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
 
     @Override
     public List<NoteResponseDto> searchQuestionNoteList(List<Long> idList, NoteCondRequestDto condition) {
-//        return null;
         return query
                 .from(questionNote)
                 .leftJoin(questionNote.diary, diary).on(diary.id.in(idList))
