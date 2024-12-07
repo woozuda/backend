@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Collections;
 import java.util.List;
 
+import static com.woozuda.backend.account.entity.AiType.PICTURE_NOVEL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -34,7 +35,7 @@ class NoteServiceTest {
     @InjectMocks
     private NoteService noteService;
 
-    UserEntity user = new UserEntity(1L, "hwang", "asdfasdf", "ROLE_USER");
+    UserEntity user = new UserEntity(1L, "hwang", "asdfasdf", "ROLE_USER", PICTURE_NOVEL);
     NoteCondRequestDto cond = new NoteCondRequestDto();
 
     NoteResponseDto commonNote1 = new NoteResponseDto(1L, "diary1", "common note1", "2024-12-04", "common weather1", "common season1", "common feeling1", List.of("common content1"));

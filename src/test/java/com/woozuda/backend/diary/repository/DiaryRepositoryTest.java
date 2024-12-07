@@ -14,23 +14,23 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.woozuda.backend.account.entity.AiType.PICTURE_NOVEL;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Transactional
 class DiaryRepositoryTest {
 
-    @Autowired private DiaryRepository diaryRepository;
-    @Autowired private TestEntityManager em;
+    @Autowired
+    private DiaryRepository diaryRepository;
+    @Autowired
+    private TestEntityManager em;
 
     @DisplayName("다이어리 저장")
     @Test
     void givenUserId_whenSaveDiary_thenReturnsCorrect() {
         // Given
-        UserEntity user = new UserEntity();
-        user.setUsername("hwang");
-        user.setPassword("qwe123!");
-        user.setRole("ROLE_USER");
+        UserEntity user = new UserEntity(null, "hwang", "qwe123!", "ROLE_USER", PICTURE_NOVEL);
 
         em.persist(user);
 
@@ -60,7 +60,7 @@ class DiaryRepositoryTest {
     @Test
     void searchDiarySummaryList_ShouldReturnExpectedResults() {
         //Given
-        UserEntity user = new UserEntity(null, "test_user", "password", "ROLE_USER");
+        UserEntity user = new UserEntity(null, "test_user", "password", "ROLE_USER", PICTURE_NOVEL);
         em.persist(user);
 
         Tag tag1 = Tag.of("Tag1");
@@ -105,7 +105,7 @@ class DiaryRepositoryTest {
     @Test
     void searchSingleDiarySummaryTest() {
         //Given
-        UserEntity user = new UserEntity(null, "test_user", "password", "ROLE_USER");
+        UserEntity user = new UserEntity(null, "test_user", "password", "ROLE_USER", PICTURE_NOVEL);
         em.persist(user);
 
         Tag tag1 = Tag.of("Tag1");

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.woozuda.backend.account.entity.AiType.PICTURE_NOVEL;
 import static com.woozuda.backend.note.entity.type.Feeling.ANGER;
 import static com.woozuda.backend.note.entity.type.Feeling.CONTENT;
 import static com.woozuda.backend.note.entity.type.Feeling.DISSATISFACTION;
@@ -62,10 +63,7 @@ class NoteRepositoryTest {
 
     @BeforeEach
     void userDiaryAndDateInit() {
-        user = new UserEntity();
-        user.setUsername("hwang");
-        user.setPassword("asdf");
-        user.setRole("ROLE_USER");
+        user = new UserEntity(null, "hwang", "asdf", "ROLE_USER", PICTURE_NOVEL);
         em.persist(user);
 
         diary1 = Diary.of(user, "asdf", "Diary title1");
