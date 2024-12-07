@@ -6,6 +6,9 @@ import com.woozuda.backend.ai_diary.repository.AiDiaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AiDiaryService {
@@ -19,5 +22,8 @@ public class AiDiaryService {
     public AiDiary saveAiDiary(AiDiaryDTO aiDiaryDTO) {
         AiDiary aiDiarydate = AiDiary.toEntity(aiDiaryDTO);
         return aiDiaryRepository.save(aiDiarydate); // 저장 후 반환
+    }
+    public List<AiDiary> getAiDiariesByDateRangeAndId(LocalDate startDate, LocalDate endDate, Long id) {
+        return aiDiaryRepository.findByDateRangeAndId(startDate, endDate, id);
     }
 }

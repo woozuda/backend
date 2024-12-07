@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 public class AiDiaryDTO {
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String place; // 장소
     private String activity; // 활동
     private String emotion; // 감정

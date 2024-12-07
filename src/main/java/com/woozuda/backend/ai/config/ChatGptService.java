@@ -1,4 +1,4 @@
-package com.woozuda.backend.ai_diary.service;
+package com.woozuda.backend.ai.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +17,9 @@ public class ChatGptService {
      * chat GPT 연동하는 서비스 로직 입니다.
      */
     private final RestTemplate restTemplate;
+
+    @Value("${jwt.hashcode}")
+    private String jwtToken;
 
     @Value("${openai.api.key}") // apiKey
     private String apiKey;
@@ -49,6 +52,7 @@ public class ChatGptService {
         // HttpHeader에 추가
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + apiKey);
+        //headers.set("Authorization", "Bearer " + jwtToken);
         //headers.set("x-api-key", apiKey); // x-api-key 헤더에 API 키 설정
         headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 

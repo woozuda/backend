@@ -2,21 +2,26 @@ package com.woozuda.backend.ai_diary.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woozuda.backend.ai.config.ChatGptService;
 import com.woozuda.backend.ai_diary.dto.AiDiaryDTO;
-import com.woozuda.backend.ai_diary.dto.DiaryDTO;
+import com.woozuda.backend.ai_diary.dto.UserDiaryDTO;
 import com.woozuda.backend.ai_diary.entity.AiDiary;
+import com.woozuda.backend.ai_diary.entity.DiaryEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import java.time.format.DateTimeParseException;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DiaryAnalysisService {
-    private final ChatGptService  chatGptService;
+    private final ChatGptService chatGptService;
     private final ObjectMapper objectMapper; // JSON 파싱을 위한 ObjectMapper 주입
     private final AiDiaryService aiDiaryService;  // AiDiaryService 주입
     /**
@@ -26,10 +31,25 @@ public class DiaryAnalysisService {
      * 원하는 결과값 DTO 형식으로 반환
      *
      * @param diaryDto
-     * @return
      */
 
-    public AiDiaryDTO analyzeDiary(DiaryDTO diaryDto) {
+    public void analyzeDiary(UserDiaryDTO diaryDto) {
+        // StringBuilder로 메시지 작성
+        StringBuilder userMessage = new StringBuilder();
+
+        // 기간
+        userMessage.append("start_date: ").append(diaryDto.getStartDate()).append("\n");
+        userMessage.append("end_date: ").append(diaryDto.getEndDate()).append("\n");
+
+        // 일기 내용 반복문
+        for (DiaryEntity diary : diaryDto.getDiaries()) {
+            userMessage.append("제목: ").append(diary.getTitle()).append("\n");
+            userMessage.append("날짜: ").append(diary.getDate()).append("\n");
+            userMessage.append("감정: ").append(diary.getEmotion()).append("\n");
+            userMessage.append("날씨: ").append(diary.getWeather()).append("\n");
+            userMessage.append("본문: ").append(diary.getContent()).append("\n\n");
+        }
+
         // 프롬프트 정의
         String systemMessage = """
                 당신은 분석 도우미입니다. 사용자의 일기를 분석하고 다음과 같은 정보를 제공하세요:
@@ -38,6 +58,8 @@ public class DiaryAnalysisService {
                 3. 평일/주말 비율
                 4. 개선 사항이나 추천 행동
                 5. 위의 내용을 포함하여 객체 타입으로 변환해주세요. 예:
+                   start_date: 2024-12-01
+                   end_date: 2024-12-31
                    place: "장소1, 장소2"
                    activity: "활동1, 활동2"
                    emotion: "주요감정1" , "주요감정2"
@@ -50,24 +72,10 @@ public class DiaryAnalysisService {
                 
                    각 항목을 객체 타입으로 반환해주세요.
                 """;
-        //이쪽 부분 로직을 변경해야하는 부분 -> 실제 사용자 일기를 가져오는지 -> 일단 LIST 형식으로 넣어보기
-        String userMessage = String.format("""
-                        일기 분석 요청:
-                        제목: %s
-                        날짜: %s
-                        감정: %s
-                        날씨: %s
-                        본문: %s
-                        """,
-                diaryDto.getTitle(),
-                diaryDto.getDate(),
-                diaryDto.getEmotion(),
-                diaryDto.getWeather(),
-                diaryDto.getContent()
-        );
+
 
         // ChatGPT API 호출
-        String response = chatGptService.analyzeDiaryUsingGPT(systemMessage, userMessage);
+        String response = chatGptService.analyzeDiaryUsingGPT(systemMessage, userMessage.toString());
 
         // 이 부분은 실제로 ai가 값을 추출 합니다.
         //log.info("ai가 추출한 값" + response);
@@ -80,20 +88,6 @@ public class DiaryAnalysisService {
          */
         AiDiary savedAiDiary = aiDiaryService.saveAiDiary(aiDiaryDTO);  // DB에 저장하고 엔티티 반환
 
-        /**
-         * 분석된 결과를 화면에 바로 출력 이 부분 id null 임으로 db에 저장된 값이 아님
-         */
-        return new AiDiaryDTO(
-                savedAiDiary.getPlace(),
-                savedAiDiary.getActivity(),
-                savedAiDiary.getEmotion(),
-                savedAiDiary.getWeather(),
-                savedAiDiary.getWeekdayAt(),
-                savedAiDiary.getWeekendAt(),
-                savedAiDiary.getPositive(),
-                savedAiDiary.getDenial(),
-                savedAiDiary.getSuggestion()
-        );
     }
 
     /**
@@ -111,6 +105,14 @@ public class DiaryAnalysisService {
                     .path("content");
 
             String content = contentNode.asText();
+
+            // 항목 추출
+            String startDateStr = extractValue(content, "start_date");
+            String endDateStr = extractValue(content, "end_date");
+
+            // 날짜 형식 변환: String -> LocalDate
+            LocalDate startDate = convertStringToDate(startDateStr);
+            LocalDate endDate = convertStringToDate(endDateStr);
 
             // 항목 추출
             String place = extractValue(content, "place");
@@ -144,6 +146,8 @@ public class DiaryAnalysisService {
             String suggestion = extractValue(content, "suggestion");
 
             return new AiDiaryDTO(
+                    startDate,      // 예시: LocalDate.parse("2024-11-18")
+                    endDate,
                     place,
                     activity,
                     emotion,
@@ -161,6 +165,14 @@ public class DiaryAnalysisService {
         }
     }
 
+
+    private LocalDate convertStringToDate(String dateStr) {
+        try {
+            return LocalDate.parse(dateStr); // 날짜 형식에 맞게 변환
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format: " + dateStr);
+        }
+    }
     /**
      * 문자열(value)에서 숫자 데이터를 추출하고 이를 float 타입으로 변환
      * ai 가 추출해주는 값은 100.0은 String -> float 형식으로 변환
