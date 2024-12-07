@@ -3,6 +3,9 @@ package com.woozuda.backend.note.entity.type;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RequiredArgsConstructor
 @Getter
 public enum Feeling {
@@ -17,6 +20,22 @@ public enum Feeling {
     SADNESS("슬픔");
 
     private final String name;
+
+    private static final Map<String, Feeling> store = new HashMap<>();
+
+    static {
+        for (Feeling feeling : Feeling.values()) {
+            store.put(feeling.name, feeling);
+        }
+    }
+
+    public static Feeling fromName(String name) {
+        return store.get(name);
+    }
+
+    public static String fromValue(String value) {
+        return valueOf(value).name;
+    }
 
     @Override
     public String toString() {

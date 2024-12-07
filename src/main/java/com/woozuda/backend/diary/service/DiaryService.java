@@ -55,11 +55,11 @@ public class DiaryService {
 
         List<NoteEntryResponseDto> allContent = Stream.of(
                         commonNoteDtoList.stream()
-                                .map(noteResponseDto -> new NoteEntryResponseDto("COMMON", noteResponseDto)),
+                                .map(noteResponseDto -> new NoteEntryResponseDto("COMMON", noteResponseDto.convertEnum())),
                         questionNoteDtoList.stream()
-                                .map(noteResponseDto -> new NoteEntryResponseDto("QUESTION", noteResponseDto)),
+                                .map(noteResponseDto -> new NoteEntryResponseDto("QUESTION", noteResponseDto.convertEnum())),
                         retrospectiveNoteDtoList.stream()
-                                .map(noteResponseDto -> new NoteEntryResponseDto("RETROSPECTIVE", noteResponseDto))
+                                .map(noteResponseDto -> new NoteEntryResponseDto("RETROSPECTIVE", noteResponseDto.convertEnum()))
                 ).flatMap(stream -> stream)
                 .sorted(Comparator.naturalOrder())
                 .toList();

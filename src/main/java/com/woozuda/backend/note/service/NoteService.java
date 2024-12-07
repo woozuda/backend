@@ -1,10 +1,25 @@
 package com.woozuda.backend.note.service;
 
+import com.woozuda.backend.note.dto.request.CommonNoteSaveRequestDto;
+import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
+import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
+import com.woozuda.backend.note.dto.request.QuestionNoteSaveRequestDto;
+import com.woozuda.backend.note.dto.request.RetrospectiveNoteSaveRequestDto;
 import com.woozuda.backend.note.dto.response.NoteEntryResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
+import com.woozuda.backend.note.entity.CommonNote;
+import com.woozuda.backend.note.entity.NoteContent;
+import com.woozuda.backend.note.entity.Question;
+import com.woozuda.backend.note.entity.QuestionNote;
+import com.woozuda.backend.note.entity.RetrospectiveNote;
+import com.woozuda.backend.note.entity.type.Feeling;
+import com.woozuda.backend.note.entity.type.Framework;
+import com.woozuda.backend.note.entity.type.Season;
+import com.woozuda.backend.note.entity.type.Weather;
 import com.woozuda.backend.note.repository.NoteRepository;
+import com.woozuda.backend.note.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -12,10 +27,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static com.woozuda.backend.note.entity.type.Visibility.PRIVATE;
 
 @Service
 @Transactional
@@ -24,6 +42,7 @@ public class NoteService {
 
     private final NoteRepository noteRepository;
     private final DiaryRepository diaryRepository;
+    private final QuestionRepository questionRepository;
 
     /**
      * 최신순 일기 조회
@@ -52,11 +71,11 @@ public class NoteService {
 
         List<NoteEntryResponseDto> allContent = Stream.of(
                         commonNoteDtoList.stream()
-                                .map(noteResponseDto -> new NoteEntryResponseDto("COMMON", noteResponseDto)),
+                                .map(noteResponseDto -> new NoteEntryResponseDto("COMMON", noteResponseDto.convertEnum())),
                         questionNoteDtoList.stream()
-                                .map(noteResponseDto -> new NoteEntryResponseDto("QUESTION", noteResponseDto)),
+                                .map(noteResponseDto -> new NoteEntryResponseDto("QUESTION", noteResponseDto.convertEnum())),
                         retrospectiveNoteDtoList.stream()
-                                .map(noteResponseDto -> new NoteEntryResponseDto("RETROSPECTIVE", noteResponseDto))
+                                .map(noteResponseDto -> new NoteEntryResponseDto("RETROSPECTIVE", noteResponseDto.convertEnum()))
                 ).flatMap(stream -> stream)
                 .sorted(Comparator.naturalOrder())
                 .toList();
@@ -69,5 +88,75 @@ public class NoteService {
         } else {
             return new PageImpl<>(allContent.subList(start, end), pageable, allContent.size());
         }
+    }
+
+    public NoteIdResponseDto saveCommonNote(String username, CommonNoteSaveRequestDto requestDto) {
+        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiary(), username);
+        if (foundDiary == null) {
+            throw new IllegalArgumentException("Diary not found.");
+        }
+        CommonNote commonNote = CommonNote.of(foundDiary,
+                requestDto.getTitle(),
+                LocalDate.parse(requestDto.getDate()),
+                PRIVATE,
+                Feeling.fromName(requestDto.getFeeling()),
+                Weather.fromName(requestDto.getWeather()),
+                Season.fromName(requestDto.getSeason())
+        );
+        CommonNote savedCommonNote = noteRepository.save(commonNote);
+
+        NoteContent noteContent = NoteContent.of(1, requestDto.getContent());
+        savedCommonNote.addContent(noteContent);
+
+        return NoteIdResponseDto.of(savedCommonNote.getId());
+    }
+
+    public NoteIdResponseDto saveQuestionNote(String username, QuestionNoteSaveRequestDto requestDto) {
+        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiary(), username);
+        if (foundDiary == null) {
+            throw new IllegalArgumentException("Diary not found.");
+        }
+
+        Question foundQuestion = questionRepository.findByTodayDate(LocalDate.parse(requestDto.getDate()));
+
+        QuestionNote questionNote = QuestionNote.of(foundDiary,
+                requestDto.getTitle(),
+                LocalDate.parse(requestDto.getDate()),
+                PRIVATE,
+                foundQuestion,
+                Feeling.fromName(requestDto.getFeeling()),
+                Weather.fromName(requestDto.getWeather()),
+                Season.fromName(requestDto.getSeason())
+        );
+        QuestionNote savedQuestionNote= noteRepository.save(questionNote);
+
+        NoteContent noteContent = NoteContent.of(1, requestDto.getContent());
+        savedQuestionNote.addContent(noteContent);
+
+        return NoteIdResponseDto.of(savedQuestionNote.getId());
+    }
+
+    public NoteIdResponseDto saveRetrospectiveNote(String username, RetrospectiveNoteSaveRequestDto requestDto) {
+        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiary(), username);
+        if (foundDiary == null) {
+            throw new IllegalArgumentException("Diary not found.");
+        }
+
+        RetrospectiveNote retrospectiveNote = RetrospectiveNote.of(foundDiary,
+                requestDto.getTitle(),
+                LocalDate.parse(requestDto.getDate()),
+                PRIVATE,
+                Framework.valueOf(requestDto.getType())
+        );
+
+        RetrospectiveNote savedRetrospectiveNote= noteRepository.save(retrospectiveNote);
+
+        List<String> content = requestDto.getContent();
+        for (int i = 0; i < content.size(); i++) {
+            NoteContent noteContent = NoteContent.of(i + 1, content.get(i));
+            savedRetrospectiveNote.addContent(noteContent);
+        }
+
+        return NoteIdResponseDto.of(savedRetrospectiveNote.getId());
     }
 }
