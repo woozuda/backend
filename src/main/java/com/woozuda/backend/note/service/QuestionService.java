@@ -16,6 +16,7 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
+    @Transactional(readOnly = true)
     public QuestionResponseDto getTodayQuestion() {
         LocalDate today = LocalDate.now();
 

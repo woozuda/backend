@@ -1,5 +1,6 @@
 package com.woozuda.backend.note.service;
 
+import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
 import com.woozuda.backend.note.dto.response.NoteEntryResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
@@ -22,6 +23,7 @@ import java.util.stream.Stream;
 public class NoteService {
 
     private final NoteRepository noteRepository;
+    private final DiaryRepository diaryRepository;
 
     /**
      * 최신순 일기 조회
@@ -32,11 +34,21 @@ public class NoteService {
      * 3. 회고 관련 NoteEntryResponseDto List 조회
      * <p>
      * 3개의 List 를 묶어서 하나의 Page 로 처리
+     *
+     * TODO 성능 향상
+     * 1. 다이어리와 사용자 테이블을 조인해서 해당 사용자가 작성한 다이어리 id 리스트를 조회하는 쿼리를 먼저 날린 다음,
+     * 해당 id 리스트를 기반으로 각 일기 종류를 조회 -> user 테이블 조인 x => 적용
+     * 2. createdBy 같은 기본 필드를 다이어리, 일기 등에 추가하고, 로그인한 사용자의 username 을 자동으로 저장하도록 변경
+     * -> user 테이블 조인 x, 1번 방법처럼 쿼리를 하나 미리 보내지 않아도 됨
+     * 3. 레디스 사용
      */
+    @Transactional(readOnly = true)
     public Page<NoteEntryResponseDto> getNoteList(String username, Pageable pageable, NoteCondRequestDto condition) {
-        List<NoteResponseDto> commonNoteDtoList = noteRepository.searchCommonNoteList(username, condition);
-        List<NoteResponseDto> questionNoteDtoList = noteRepository.searchQuestionNoteList(username, condition);
-        List<NoteResponseDto> retrospectiveNoteDtoList = noteRepository.searchRetrospectiveNoteList(username, condition);
+        List<Long> idList = diaryRepository.searchDiaryIdList(username);
+
+        List<NoteResponseDto> commonNoteDtoList = noteRepository.searchCommonNoteList(idList, condition);
+        List<NoteResponseDto> questionNoteDtoList = noteRepository.searchQuestionNoteList(idList, condition);
+        List<NoteResponseDto> retrospectiveNoteDtoList = noteRepository.searchRetrospectiveNoteList(idList, condition);
 
         List<NoteEntryResponseDto> allContent = Stream.of(
                         commonNoteDtoList.stream()

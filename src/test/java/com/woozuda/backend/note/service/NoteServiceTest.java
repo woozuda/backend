@@ -1,6 +1,7 @@
 package com.woozuda.backend.note.service;
 
 import com.woozuda.backend.account.entity.UserEntity;
+import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
 import com.woozuda.backend.note.dto.response.NoteEntryResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
@@ -27,6 +28,8 @@ class NoteServiceTest {
 
     @Mock
     private NoteRepository noteRepository;
+    @Mock
+    private DiaryRepository diaryRepository;
 
     @InjectMocks
     private NoteService noteService;
@@ -43,25 +46,31 @@ class NoteServiceTest {
     NoteResponseDto retrospectiveNote1 = new NoteResponseDto(6L, "diary3", "retrospective note2", "2024-06-05", "SCS", List.of("retrospective2 content1", "retrospective2 content2", "retrospective2 content3"));
     NoteResponseDto retrospectiveNote2 = new NoteResponseDto(5L, "diary1", "retrospective note1", "2024-12-11", "FOUR_F_S", List.of("retrospective1 content1", "retrospective1 content2", "retrospective1 content3", "retrospective1 content4"));
 
+    List<Long> idList = List.of(1L, 2L);
+
     @DisplayName("노트 조회 - 적합한 페이지 범위")
     @Test
     void searchNoteList_resultExist() {
         // given
-        when(noteRepository.searchCommonNoteList(user.getUsername(), cond))
+        when(diaryRepository.searchDiaryIdList(user.getUsername()))
+                .thenReturn(
+                        idList
+                );
+        when(noteRepository.searchCommonNoteList(idList, cond))
                 .thenReturn(
                         List.of(
                                 commonNote1,
                                 commonNote2
                         )
                 );
-        when(noteRepository.searchQuestionNoteList(user.getUsername(), cond))
+        when(noteRepository.searchQuestionNoteList(idList, cond))
                 .thenReturn(
                         List.of(
                                 questionNote1,
                                 questionNote2
                         )
                 );
-        when(noteRepository.searchRetrospectiveNoteList(user.getUsername(), cond))
+        when(noteRepository.searchRetrospectiveNoteList(idList, cond))
                 .thenReturn(
                         List.of(
                                 retrospectiveNote1,
@@ -94,21 +103,25 @@ class NoteServiceTest {
     @Test
     void searchNoteList_resultNotExist() {
         // given
-        when(noteRepository.searchCommonNoteList(user.getUsername(), cond))
+        when(diaryRepository.searchDiaryIdList(user.getUsername()))
+                .thenReturn(
+                        idList
+                );
+        when(noteRepository.searchCommonNoteList(idList, cond))
                 .thenReturn(
                         List.of(
                                 commonNote1,
                                 commonNote2
                         )
                 );
-        when(noteRepository.searchQuestionNoteList(user.getUsername(), cond))
+        when(noteRepository.searchQuestionNoteList(idList, cond))
                 .thenReturn(
                         List.of(
                                 questionNote1,
                                 questionNote2
                         )
                 );
-        when(noteRepository.searchRetrospectiveNoteList(user.getUsername(), cond))
+        when(noteRepository.searchRetrospectiveNoteList(idList, cond))
                 .thenReturn(
                         List.of(
                                 retrospectiveNote1,
@@ -131,18 +144,22 @@ class NoteServiceTest {
     @Test
     void searchNoteList_commonNoteNotExist() {
         // given
-        when(noteRepository.searchCommonNoteList(user.getUsername(), cond))
+        when(diaryRepository.searchDiaryIdList(user.getUsername()))
+                .thenReturn(
+                        idList
+                );
+        when(noteRepository.searchCommonNoteList(idList, cond))
                 .thenReturn(
                         Collections.emptyList()
                 );
-        when(noteRepository.searchQuestionNoteList(user.getUsername(), cond))
+        when(noteRepository.searchQuestionNoteList(idList, cond))
                 .thenReturn(
                         List.of(
                                 questionNote1,
                                 questionNote2
                         )
                 );
-        when(noteRepository.searchRetrospectiveNoteList(user.getUsername(), cond))
+        when(noteRepository.searchRetrospectiveNoteList(idList, cond))
                 .thenReturn(
                         List.of(
                                 retrospectiveNote1,

@@ -33,11 +33,10 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
     }
 
     @Override
-    public List<NoteResponseDto> searchCommonNoteList(String username, NoteCondRequestDto condition) {
+    public List<NoteResponseDto> searchCommonNoteList(List<Long> idList, NoteCondRequestDto condition) {
         return query
                 .from(commonNote)
-                .leftJoin(commonNote.diary, diary)
-                .leftJoin(diary.user, userEntity).on(diary.user.username.eq(username))
+                .leftJoin(commonNote.diary, diary).on(diary.id.in(idList))
                 .leftJoin(noteContent).on(noteContent.note.id.eq(commonNote.id))
                 .where(dateEq(condition.getDate()))
                 .transform(
@@ -59,12 +58,11 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
     }
 
     @Override
-    public List<NoteResponseDto> searchQuestionNoteList(String username, NoteCondRequestDto condition) {
+    public List<NoteResponseDto> searchQuestionNoteList(List<Long> idList, NoteCondRequestDto condition) {
 //        return null;
         return query
                 .from(questionNote)
-                .leftJoin(questionNote.diary, diary)
-                .leftJoin(diary.user, userEntity).on(diary.user.username.eq(username))
+                .leftJoin(questionNote.diary, diary).on(diary.id.in(idList))
                 .leftJoin(noteContent).on(noteContent.note.id.eq(questionNote.id))
                 .where(dateEq(condition.getDate()))
                 .transform(
@@ -87,12 +85,10 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
     }
 
     @Override
-    public List<NoteResponseDto> searchRetrospectiveNoteList(String username, NoteCondRequestDto condition) {
+    public List<NoteResponseDto> searchRetrospectiveNoteList(List<Long> idList, NoteCondRequestDto condition) {
         return query
                 .from(retrospectiveNote)
-                .leftJoin(retrospectiveNote.diary, diary)
-                .leftJoin(diary.user, userEntity)
-                .on(diary.user.username.eq(username))
+                .leftJoin(retrospectiveNote.diary, diary).on(diary.id.in(idList))
                 .leftJoin(noteContent)
                 .on(noteContent.note.id.eq(retrospectiveNote.id))
                 .where(dateEq(condition.getDate()))

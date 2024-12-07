@@ -82,9 +82,10 @@ class NoteRepositoryTest {
     void searchCommonNoteListTest_withoutDateCondition_dtoExist() {
         // given
         CommonNoteData result = initCommonNoteData();
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchCommonNoteList(user.getUsername(), new NoteCondRequestDto());
+        List<NoteResponseDto> responseDtoList = noteRepository.searchCommonNoteList(idList, new NoteCondRequestDto());
 
         // then
         assertThat(responseDtoList)
@@ -113,9 +114,10 @@ class NoteRepositoryTest {
     @Test
     void searchCommonNoteListTest_withoutDateCondition_dtoNotExist() {
         // given
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchCommonNoteList(user.getUsername(), new NoteCondRequestDto());
+        List<NoteResponseDto> responseDtoList = noteRepository.searchCommonNoteList(idList, new NoteCondRequestDto());
 
         // then
         assertThat(responseDtoList).isNotNull();
@@ -127,9 +129,10 @@ class NoteRepositoryTest {
     void searchCommonNoteListTest_withDateCondition_dtoExist() {
         // given
         CommonNoteData result = initCommonNoteData();
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchCommonNoteList(user.getUsername(), new NoteCondRequestDto(date2));
+        List<NoteResponseDto> responseDtoList = noteRepository.searchCommonNoteList(idList, new NoteCondRequestDto(date2));
 
         // then
         assertThat(responseDtoList)
@@ -150,9 +153,10 @@ class NoteRepositoryTest {
     @Test
     void searchCommonNoteListTest_withDateCondition_dtoNotExist() {
         // given
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchCommonNoteList(user.getUsername(), new NoteCondRequestDto(date1));
+        List<NoteResponseDto> responseDtoList = noteRepository.searchCommonNoteList(idList, new NoteCondRequestDto(date1));
 
         // then
         assertThat(responseDtoList).isNotNull();
@@ -164,9 +168,10 @@ class NoteRepositoryTest {
     void searchQuestionNoteListTest_withoutDateCondition_dtoExist() {
         // given
         QuestionNoteData result = initQuestionNoteData();
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchQuestionNoteList(user.getUsername(), new NoteCondRequestDto());
+        List<NoteResponseDto> responseDtoList = noteRepository.searchQuestionNoteList(idList, new NoteCondRequestDto());
 
         // then
         assertThat(responseDtoList)
@@ -196,9 +201,10 @@ class NoteRepositoryTest {
     @Test
     void searchQuestionNoteListTest_withoutDateCondition_dtoNotExist() {
         // given
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchQuestionNoteList(user.getUsername(), new NoteCondRequestDto());
+        List<NoteResponseDto> responseDtoList = noteRepository.searchQuestionNoteList(idList, new NoteCondRequestDto());
 
         // then
         assertThat(responseDtoList).isNotNull();
@@ -210,9 +216,10 @@ class NoteRepositoryTest {
     void searchQuestionNoteListTest_withDateCondition_dtoExist() {
         // given
         QuestionNoteData result = initQuestionNoteData();
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchQuestionNoteList(user.getUsername(), new NoteCondRequestDto(date1));
+        List<NoteResponseDto> responseDtoList = noteRepository.searchQuestionNoteList(idList, new NoteCondRequestDto(date1));
 
         // then
         assertThat(responseDtoList)
@@ -234,9 +241,10 @@ class NoteRepositoryTest {
     @Test
     void searchQuestionNoteListTest_withDateCondition_dtoNotExist() {
         // given
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchQuestionNoteList(user.getUsername(), new NoteCondRequestDto(date1));
+        List<NoteResponseDto> responseDtoList = noteRepository.searchQuestionNoteList(idList, new NoteCondRequestDto(date1));
 
         // then
         assertThat(responseDtoList).isNotNull();
@@ -248,9 +256,10 @@ class NoteRepositoryTest {
     void searchRetrospectiveNoteListTest_withoutDateCondition_dtoExist() {
         // given
         RetrospectiveNoteData result = initRetrospectiveNoteData();
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchRetrospectiveNoteList(user.getUsername(), new NoteCondRequestDto());
+        List<NoteResponseDto> responseDtoList = noteRepository.searchRetrospectiveNoteList(idList, new NoteCondRequestDto());
 
         // then
         assertThat(responseDtoList)
@@ -279,9 +288,10 @@ class NoteRepositoryTest {
     @Test
     void searchRetrospectiveNoteListTest_withoutDateCondition_dtoNotExist() {
         // given
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchRetrospectiveNoteList(user.getUsername(), new NoteCondRequestDto());
+        List<NoteResponseDto> responseDtoList = noteRepository.searchRetrospectiveNoteList(idList, new NoteCondRequestDto());
 
         // then
         assertThat(responseDtoList).isNotNull();
@@ -293,9 +303,10 @@ class NoteRepositoryTest {
     void searchRetrospectiveNoteListTest_withDateCondition_dtoExist() {
         // given
         RetrospectiveNoteData result = initRetrospectiveNoteData();
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchRetrospectiveNoteList(user.getUsername(), new NoteCondRequestDto(date2));
+        List<NoteResponseDto> responseDtoList = noteRepository.searchRetrospectiveNoteList(idList, new NoteCondRequestDto(date2));
 
         // then
         assertThat(responseDtoList)
@@ -316,9 +327,10 @@ class NoteRepositoryTest {
     @Test
     void searchRetrospectiveNoteListTest_withDateCondition_dtoNotExist() {
         // given
+        List<Long> idList = List.of(diary1.getId(), diary2.getId());
 
         // when
-        List<NoteResponseDto> responseDtoList = noteRepository.searchRetrospectiveNoteList(user.getUsername(), new NoteCondRequestDto(date2));
+        List<NoteResponseDto> responseDtoList = noteRepository.searchRetrospectiveNoteList(idList, new NoteCondRequestDto(date2));
 
         // then
         assertThat(responseDtoList).isNotNull();

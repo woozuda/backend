@@ -7,10 +7,10 @@ import java.util.List;
 
 public interface CustomNoteRepository {
 
-    List<NoteResponseDto> searchCommonNoteList(String username, NoteCondRequestDto condition);
+    List<NoteResponseDto> searchCommonNoteList(List<Long> idList, NoteCondRequestDto condition);
 
-    List<NoteResponseDto> searchQuestionNoteList(String username, NoteCondRequestDto condition);
+    List<NoteResponseDto> searchQuestionNoteList(List<Long> idList, NoteCondRequestDto condition);
 
-    List<NoteResponseDto> searchRetrospectiveNoteList(String username, NoteCondRequestDto condition);
+    List<NoteResponseDto> searchRetrospectiveNoteList(List<Long> idList, NoteCondRequestDto condition);
 }
 
