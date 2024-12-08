@@ -16,5 +16,7 @@ public interface CustomNoteRepository {
     NoteResponseDto searchCommonNote(Long noteId);
 
     NoteResponseDto searchQuestionNote(Long noteId);
+
+    NoteResponseDto searchRetrospectiveNote(Long noteId);
 }
 

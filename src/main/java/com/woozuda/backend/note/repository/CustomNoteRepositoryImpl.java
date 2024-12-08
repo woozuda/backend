@@ -160,6 +160,29 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                 .getFirst();
     }
 
+    @Override
+    public NoteResponseDto searchRetrospectiveNote(Long noteId) {
+        return query
+                .from(retrospectiveNote)
+                .leftJoin(retrospectiveNote.diary, diary)
+                .leftJoin(noteContent)
+                .on(noteContent.note.id.eq(retrospectiveNote.id))
+                .where(retrospectiveNote.id.eq(noteId))
+                .transform(
+                        groupBy(retrospectiveNote.id).list(
+                                new QNoteResponseDto(
+                                        retrospectiveNote.id,
+                                        diary.title,
+                                        retrospectiveNote.title,
+                                        retrospectiveNote.date.stringValue(),
+                                        retrospectiveNote.type.stringValue(),
+                                        list(noteContent.content)
+                                )
+                        )
+                )
+                .getFirst();
+    }
+
     private static BooleanExpression dateEq(LocalDate date) {
         return date == null ? null : note.date.eq(date);
     }

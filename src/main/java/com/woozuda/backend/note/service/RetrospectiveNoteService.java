@@ -4,6 +4,7 @@ import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.dto.request.RetrospectiveNoteSaveRequestDto;
+import com.woozuda.backend.note.dto.response.NoteResponseDto;
 import com.woozuda.backend.note.entity.NoteContent;
 import com.woozuda.backend.note.entity.RetrospectiveNote;
 import com.woozuda.backend.note.entity.type.Framework;
@@ -51,4 +52,13 @@ public class RetrospectiveNoteService {
         return NoteIdResponseDto.of(savedRetrospectiveNote.getId());
     }
 
+    public NoteResponseDto getRetrospectiveNote(String username, Long noteId) {
+        Diary foundDiary = diaryRepository.searchDiary(noteId, username);
+        if (foundDiary == null) {
+            throw new IllegalArgumentException("Diary not found.");
+        }
+
+        NoteResponseDto responseDto = noteRepository.searchRetrospectiveNote(noteId);
+        return responseDto.convertEnum();
+    }
 }
