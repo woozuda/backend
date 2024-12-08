@@ -35,9 +35,9 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
     public List<NoteResponseDto> searchCommonNoteList(List<Long> idList, NoteCondRequestDto condition) {
         return query
                 .from(commonNote)
-                .leftJoin(commonNote.diary, diary).on(diary.id.in(idList))
+                .leftJoin(commonNote.diary, diary)
                 .leftJoin(noteContent).on(noteContent.note.id.eq(commonNote.id))
-                .where(dateEq(condition.getDate()))
+                .where(dateEq(condition.getDate()), diary.id.in(idList))
                 .transform(
                         groupBy(commonNote.id).list(
                                 new QNoteResponseDto(
@@ -60,9 +60,9 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
     public List<NoteResponseDto> searchQuestionNoteList(List<Long> idList, NoteCondRequestDto condition) {
         return query
                 .from(questionNote)
-                .leftJoin(questionNote.diary, diary).on(diary.id.in(idList))
+                .leftJoin(questionNote.diary, diary)
                 .leftJoin(noteContent).on(noteContent.note.id.eq(questionNote.id))
-                .where(dateEq(condition.getDate()))
+                .where(dateEq(condition.getDate()), diary.id.in(idList))
                 .transform(
                         groupBy(questionNote.id).list(
                                 new QNoteResponseDto(
@@ -86,10 +86,10 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
     public List<NoteResponseDto> searchRetrospectiveNoteList(List<Long> idList, NoteCondRequestDto condition) {
         return query
                 .from(retrospectiveNote)
-                .leftJoin(retrospectiveNote.diary, diary).on(diary.id.in(idList))
+                .leftJoin(retrospectiveNote.diary, diary)
                 .leftJoin(noteContent)
                 .on(noteContent.note.id.eq(retrospectiveNote.id))
-                .where(dateEq(condition.getDate()))
+                .where(dateEq(condition.getDate()), diary.id.in(idList))
                 .orderBy(retrospectiveNote.id.asc(), noteContent.noteOrder.asc())
                 .transform(
                         groupBy(retrospectiveNote.id).list(
