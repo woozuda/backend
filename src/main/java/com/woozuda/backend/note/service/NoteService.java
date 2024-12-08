@@ -42,7 +42,6 @@ public class NoteService {
 
     private final NoteRepository noteRepository;
     private final DiaryRepository diaryRepository;
-    private final QuestionRepository questionRepository;
 
     /**
      * 최신순 일기 조회
@@ -88,81 +87,5 @@ public class NoteService {
         } else {
             return new PageImpl<>(allContent.subList(start, end), pageable, allContent.size());
         }
-    }
-
-    public NoteIdResponseDto saveCommonNote(String username, CommonNoteSaveRequestDto requestDto) {
-        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiaryId(), username);
-        if (foundDiary == null) {
-            throw new IllegalArgumentException("Diary not found.");
-        }
-        CommonNote commonNote = CommonNote.of(foundDiary,
-                requestDto.getTitle(),
-                LocalDate.parse(requestDto.getDate()),
-                PRIVATE,
-                Feeling.fromName(requestDto.getFeeling()),
-                Weather.fromName(requestDto.getWeather()),
-                Season.fromName(requestDto.getSeason())
-        );
-        CommonNote savedCommonNote = noteRepository.save(commonNote);
-
-        NoteContent noteContent = NoteContent.of(1, requestDto.getContent());
-        savedCommonNote.addContent(noteContent);
-
-        foundDiary.addNote(savedCommonNote.getDate());
-
-        return NoteIdResponseDto.of(savedCommonNote.getId());
-    }
-
-    public NoteIdResponseDto saveQuestionNote(String username, QuestionNoteSaveRequestDto requestDto) {
-        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiaryId(), username);
-        if (foundDiary == null) {
-            throw new IllegalArgumentException("Diary not found.");
-        }
-
-        Question foundQuestion = questionRepository.findByTodayDate(LocalDate.parse(requestDto.getDate()));
-
-        QuestionNote questionNote = QuestionNote.of(foundDiary,
-                requestDto.getTitle(),
-                LocalDate.parse(requestDto.getDate()),
-                PRIVATE,
-                foundQuestion,
-                Feeling.fromName(requestDto.getFeeling()),
-                Weather.fromName(requestDto.getWeather()),
-                Season.fromName(requestDto.getSeason())
-        );
-        QuestionNote savedQuestionNote= noteRepository.save(questionNote);
-
-        NoteContent noteContent = NoteContent.of(1, requestDto.getContent());
-        savedQuestionNote.addContent(noteContent);
-
-        foundDiary.addNote(savedQuestionNote.getDate());
-
-        return NoteIdResponseDto.of(savedQuestionNote.getId());
-    }
-
-    public NoteIdResponseDto saveRetrospectiveNote(String username, RetrospectiveNoteSaveRequestDto requestDto) {
-        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiaryId(), username);
-        if (foundDiary == null) {
-            throw new IllegalArgumentException("Diary not found.");
-        }
-
-        RetrospectiveNote retrospectiveNote = RetrospectiveNote.of(foundDiary,
-                requestDto.getTitle(),
-                LocalDate.parse(requestDto.getDate()),
-                PRIVATE,
-                Framework.valueOf(requestDto.getType())
-        );
-
-        RetrospectiveNote savedRetrospectiveNote= noteRepository.save(retrospectiveNote);
-
-        List<String> content = requestDto.getContent();
-        for (int i = 0; i < content.size(); i++) {
-            NoteContent noteContent = NoteContent.of(i + 1, content.get(i));
-            savedRetrospectiveNote.addContent(noteContent);
-        }
-
-        foundDiary.addNote(savedRetrospectiveNote.getDate());
-
-        return NoteIdResponseDto.of(savedRetrospectiveNote.getId());
     }
 }

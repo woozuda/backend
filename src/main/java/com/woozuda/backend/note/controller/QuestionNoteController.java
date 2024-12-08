@@ -3,7 +3,7 @@ package com.woozuda.backend.note.controller;
 import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
 import com.woozuda.backend.note.dto.request.QuestionNoteSaveRequestDto;
-import com.woozuda.backend.note.service.NoteService;
+import com.woozuda.backend.note.service.QuestionNoteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class QuestionNoteController {
 
-    private final NoteService noteService;
+    private final QuestionNoteService noteService;
 
     @PostMapping("/question")
     public ResponseEntity<NoteIdResponseDto> createCommonNote(
