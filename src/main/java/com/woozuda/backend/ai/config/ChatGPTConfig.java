@@ -48,11 +48,10 @@ public class ChatGPTConfig {
         HttpHeaders headers = new HttpHeaders();
 
         // JWT 토큰을 Authorization 헤더에 추가
-        //headers.set("Authorization", "Bearer " + jwtToken);
-        headers.set("Authorization", "Bearer " + apiKey);
+        headers.set("Authorization", "Bearer " + jwtToken);
 
         // API 키를 x-api-key 헤더에 추가
-        //headers.set("x-api-key", apiKey);
+        headers.set("x-api-key", apiKey);
 
         // 요청 본문을 JSON 형식으로 설정
         headers.setContentType(MediaType.APPLICATION_JSON);
