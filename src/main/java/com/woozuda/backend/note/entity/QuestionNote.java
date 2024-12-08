@@ -14,7 +14,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -22,6 +24,7 @@ import java.time.LocalDate;
 @DiscriminatorValue("QUESTION")
 @Table(name = "question_note")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QuestionNote extends Note {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,5 +53,18 @@ public class QuestionNote extends Note {
 
     public static QuestionNote of(Diary diary, String title, LocalDate date, Visibility visibility, Question question, Feeling feeling, Weather weather, Season season) {
         return new QuestionNote(diary, title, date, visibility, question, feeling, weather, season);
+    }
+
+    public void update(Diary foundDiary,
+                       String title,
+                       Weather weather,
+                       Season season,
+                       Feeling feeling,
+                       LocalDate date,
+                       String content) {
+        super.update(foundDiary, title, date, content);
+        this.weather = weather;
+        this.season = season;
+        this.feeling = feeling;
     }
 }
