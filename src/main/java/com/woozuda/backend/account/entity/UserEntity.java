@@ -1,5 +1,6 @@
 package com.woozuda.backend.account.entity;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.woozuda.backend.account.dto.JoinDTO;
 import com.woozuda.backend.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;

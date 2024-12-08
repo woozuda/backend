@@ -10,11 +10,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "note_content")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class NoteContent extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +28,19 @@ public class NoteContent extends BaseTimeEntity {
     @JoinColumn(name = "note_id", updatable = false, nullable = false)
     private Note note;
 
-    @Column(nullable = false)
-    private Integer note_order;
+    @Column(name = "note_order", nullable = false)
+    private Integer noteOrder;
 
     @Column(length = 2000, nullable = false)
-    private String content;
+    private String content; // 회고 부분 내용
 
+    private NoteContent(Note note, Integer noteOrder, String content) {
+        this.note = note;
+        this.noteOrder = noteOrder;
+        this.content = content;
+    }
+
+    public static NoteContent of(Note note, Integer order, String content) {
+        return new NoteContent(note, order, content);
+    }
 }

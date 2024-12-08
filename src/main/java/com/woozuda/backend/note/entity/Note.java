@@ -17,7 +17,9 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -26,6 +28,7 @@ import java.time.LocalDate;
 @DiscriminatorColumn(name = "dtype")
 @Table(name = "note")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Note extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +40,7 @@ public class Note extends BaseTimeEntity {
     private Diary diary;
 
     @Column(nullable = false)
-    private Long title;
+    private String title;
 
     @Column(nullable = false)
     private LocalDate date;
@@ -46,4 +49,13 @@ public class Note extends BaseTimeEntity {
     @Column(length = 100, nullable = false)
     private Visibility visibility;
 
+    @Column(name = "dtype", insertable = false, updatable = false) // 읽기 전용 필드
+    private String dtype;
+
+    protected Note(Diary diary, String title, LocalDate date, Visibility visibility) {
+        this.diary = diary;
+        this.title = title;
+        this.date = date;
+        this.visibility = visibility;
+    }
 }

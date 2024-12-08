@@ -1,4 +1,3 @@
-
 package com.woozuda.backend.security.config;
 
 import com.woozuda.backend.account.service.CustomOAuth2UserService;
@@ -74,8 +73,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join","/error").permitAll()
-                        .requestMatchers("/api/report/").permitAll()
+                        .requestMatchers("/login", "/", "/join","/error", "/account/sample/alluser", "/favicon.ico").permitAll()
                         .requestMatchers("/account/sample/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
@@ -88,8 +86,8 @@ public class SecurityConfig {
                 //.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), BasicAuthenticationFilter.class);
                 .addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
-        //.addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
-        //.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), OAuth2LoginAuthenticationFilter.class);
+                //.addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
+                //.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
 
 
