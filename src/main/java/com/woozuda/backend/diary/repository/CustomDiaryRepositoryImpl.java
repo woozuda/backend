@@ -1,7 +1,9 @@
 package com.woozuda.backend.diary.repository;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woozuda.backend.account.entity.QUserEntity;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
