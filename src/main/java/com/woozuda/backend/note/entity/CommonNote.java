@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("COMMON")
@@ -54,7 +55,7 @@ public class CommonNote extends Note {
                        Feeling feeling,
                        LocalDate date,
                        String content) {
-        super.update(foundDiary, title, date, content);
+        super.update(foundDiary, title, date, List.of(content));
         this.weather = weather;
         this.season = season;
         this.feeling = feeling;

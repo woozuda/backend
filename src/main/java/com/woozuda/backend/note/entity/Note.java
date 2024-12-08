@@ -73,11 +73,18 @@ public class Note extends BaseTimeEntity {
         content.setNote(this);
     }
 
-    protected void update(Diary foundDiary, String title, LocalDate date, String content) {
+    protected void update(Diary foundDiary, String title, LocalDate date, List<String> content) {
         this.diary = foundDiary;
         this.title = title;
         this.date = date;
-        noteContents.getFirst().update(content);
+
+        if (noteContents.size() != content.size()) {
+            throw new IllegalArgumentException("Note Content mismatch");
+        }
+        for (int i = 0; i < noteContents.size(); i++) {
+            noteContents.get(i).update(content.get(i));
+        }
+
         foundDiary.updateDuration();
     }
 }
