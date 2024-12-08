@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/note/question")
+@RequestMapping("/api/note/retrospective")
 @RequiredArgsConstructor
 public class RetrospectiveNoteController {
 
     private final RetrospectiveNoteService noteService;
 
-    @PostMapping("/retrospective")
+    @PostMapping
     public ResponseEntity<NoteIdResponseDto> createCommonNote(
             @AuthenticationPrincipal CustomUser user,
             @RequestBody @Valid RetrospectiveNoteSaveRequestDto requestDto

@@ -20,7 +20,7 @@ public class QuestionNoteController {
 
     private final QuestionNoteService noteService;
 
-    @PostMapping("/question")
+    @PostMapping
     public ResponseEntity<NoteIdResponseDto> createCommonNote(
             @AuthenticationPrincipal CustomUser user,
             @RequestBody @Valid QuestionNoteSaveRequestDto requestDto
