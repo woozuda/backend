@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class QuestionNoteSaveRequestDto {
 
-    @NotNull private String diary;
+    @NotNull private Long diaryId;
     @NotNull private String question;
     @NotNull private String title;
     @NotNull private String weather;

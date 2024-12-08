@@ -104,7 +104,7 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
                                         diary.startDate,
                                         diary.endDate,
                                         diary.noteCount
-                                        )
+                                )
                         )
                 )
                 .getFirst();
@@ -121,10 +121,10 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
     }
 
     @Override
-    public Diary searchDiary(String title, String username) {
+    public Diary searchDiary(Long diaryId, String username) {
         return query
                 .selectFrom(diary)
-                .where(diary.user.username.eq(username), diary.title.eq(title))
+                .where(diary.user.username.eq(username), diary.id.eq(diaryId))
                 .fetchFirst();
     }
 

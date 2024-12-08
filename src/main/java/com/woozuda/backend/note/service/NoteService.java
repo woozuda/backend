@@ -91,7 +91,7 @@ public class NoteService {
     }
 
     public NoteIdResponseDto saveCommonNote(String username, CommonNoteSaveRequestDto requestDto) {
-        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiary(), username);
+        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiaryId(), username);
         if (foundDiary == null) {
             throw new IllegalArgumentException("Diary not found.");
         }
@@ -112,7 +112,7 @@ public class NoteService {
     }
 
     public NoteIdResponseDto saveQuestionNote(String username, QuestionNoteSaveRequestDto requestDto) {
-        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiary(), username);
+        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiaryId(), username);
         if (foundDiary == null) {
             throw new IllegalArgumentException("Diary not found.");
         }
@@ -137,7 +137,7 @@ public class NoteService {
     }
 
     public NoteIdResponseDto saveRetrospectiveNote(String username, RetrospectiveNoteSaveRequestDto requestDto) {
-        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiary(), username);
+        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiaryId(), username);
         if (foundDiary == null) {
             throw new IllegalArgumentException("Diary not found.");
         }

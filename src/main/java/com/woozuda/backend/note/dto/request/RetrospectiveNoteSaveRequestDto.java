@@ -14,7 +14,7 @@ import java.util.List;
 public class RetrospectiveNoteSaveRequestDto {
 
     @NotNull private String type;
-    @NotNull private String diary;
+    @NotNull private Long diaryId;
     @NotNull private String title;
     @NotNull private String date;
     @NotNull private List<String> content;
