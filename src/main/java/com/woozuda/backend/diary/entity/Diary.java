@@ -79,4 +79,14 @@ public class Diary extends BaseTimeEntity {
         }
         this.image = imgUrl;
     }
+
+    public void addNote(LocalDate noteDate) {
+        if (startDate == null || startDate.isAfter(noteDate)) {
+            startDate = noteDate;
+        }
+        if (endDate == null || endDate.isBefore(noteDate)) {
+            endDate = noteDate;
+        }
+        noteCount++;
+    }
 }

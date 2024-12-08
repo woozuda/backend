@@ -108,6 +108,8 @@ public class NoteService {
         NoteContent noteContent = NoteContent.of(1, requestDto.getContent());
         savedCommonNote.addContent(noteContent);
 
+        foundDiary.addNote(savedCommonNote.getDate());
+
         return NoteIdResponseDto.of(savedCommonNote.getId());
     }
 
@@ -133,6 +135,8 @@ public class NoteService {
         NoteContent noteContent = NoteContent.of(1, requestDto.getContent());
         savedQuestionNote.addContent(noteContent);
 
+        foundDiary.addNote(savedQuestionNote.getDate());
+
         return NoteIdResponseDto.of(savedQuestionNote.getId());
     }
 
@@ -156,6 +160,8 @@ public class NoteService {
             NoteContent noteContent = NoteContent.of(i + 1, content.get(i));
             savedRetrospectiveNote.addContent(noteContent);
         }
+
+        foundDiary.addNote(savedRetrospectiveNote.getDate());
 
         return NoteIdResponseDto.of(savedRetrospectiveNote.getId());
     }
