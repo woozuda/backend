@@ -17,6 +17,7 @@ import static com.woozuda.backend.diary.entity.QDiary.diary;
 import static com.woozuda.backend.note.entity.QCommonNote.commonNote;
 import static com.woozuda.backend.note.entity.QNote.note;
 import static com.woozuda.backend.note.entity.QNoteContent.noteContent;
+import static com.woozuda.backend.note.entity.QQuestion.question;
 import static com.woozuda.backend.note.entity.QQuestionNote.questionNote;
 import static com.woozuda.backend.note.entity.QRetrospectiveNote.retrospectiveNote;
 
@@ -125,6 +126,33 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                                         commonNote.weather.stringValue(),
                                         commonNote.season.stringValue(),
                                         commonNote.feeling.stringValue(),
+                                        list(noteContent.content)
+                                )
+                        )
+                )
+                .getFirst();
+    }
+
+    @Override
+    public NoteResponseDto searchQuestionNote(Long noteId) {
+        return query
+                .from(questionNote)
+                .leftJoin(questionNote.question, question)
+                .leftJoin(questionNote.diary, diary)
+                .leftJoin(noteContent)
+                .on(noteContent.note.id.eq(questionNote.id))
+                .where(questionNote.id.eq(noteId))
+                .transform(
+                        groupBy(questionNote.id).list(
+                                new QNoteResponseDto(
+                                        questionNote.id,
+                                        diary.title,
+                                        questionNote.title,
+                                        questionNote.date.stringValue(),
+                                        questionNote.weather.stringValue(),
+                                        questionNote.season.stringValue(),
+                                        questionNote.feeling.stringValue(),
+                                        question.content,
                                         list(noteContent.content)
                                 )
                         )

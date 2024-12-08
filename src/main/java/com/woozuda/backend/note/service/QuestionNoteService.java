@@ -4,6 +4,7 @@ import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.dto.request.QuestionNoteSaveRequestDto;
+import com.woozuda.backend.note.dto.response.NoteResponseDto;
 import com.woozuda.backend.note.entity.NoteContent;
 import com.woozuda.backend.note.entity.Question;
 import com.woozuda.backend.note.entity.QuestionNote;
@@ -54,5 +55,15 @@ public class QuestionNoteService {
         foundDiary.addNote(savedQuestionNote.getDate());
 
         return NoteIdResponseDto.of(savedQuestionNote.getId());
+    }
+
+    public NoteResponseDto getQuestionNote(String username, Long noteId) {
+        Diary foundDiary = diaryRepository.searchDiary(noteId, username);
+        if (foundDiary == null) {
+            throw new IllegalArgumentException("Diary not found.");
+        }
+
+        NoteResponseDto responseDto = noteRepository.searchQuestionNote(noteId);
+        return responseDto.convertEnum();
     }
 }
