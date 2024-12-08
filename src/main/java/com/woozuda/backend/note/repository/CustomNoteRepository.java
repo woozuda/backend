@@ -12,5 +12,7 @@ public interface CustomNoteRepository {
     List<NoteResponseDto> searchQuestionNoteList(List<Long> idList, NoteCondRequestDto condition);
 
     List<NoteResponseDto> searchRetrospectiveNoteList(List<Long> idList, NoteCondRequestDto condition);
+
+    NoteResponseDto searchCommonNote(Long noteId);
 }
 

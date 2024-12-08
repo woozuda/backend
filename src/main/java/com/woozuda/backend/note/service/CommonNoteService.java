@@ -4,6 +4,7 @@ import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.dto.request.CommonNoteSaveRequestDto;
+import com.woozuda.backend.note.dto.response.NoteResponseDto;
 import com.woozuda.backend.note.entity.CommonNote;
 import com.woozuda.backend.note.entity.NoteContent;
 import com.woozuda.backend.note.entity.type.Feeling;
@@ -49,4 +50,13 @@ public class CommonNoteService {
         return NoteIdResponseDto.of(savedCommonNote.getId());
     }
 
+    public NoteResponseDto getCommonNote(String username, Long noteId) {
+        Diary foundDiary = diaryRepository.searchDiary(noteId, username);
+        if (foundDiary == null) {
+            throw new IllegalArgumentException("Diary not found.");
+        }
+
+        NoteResponseDto responseDto = noteRepository.searchCommonNote(noteId);
+        return responseDto.convertEnum();
+    }
 }

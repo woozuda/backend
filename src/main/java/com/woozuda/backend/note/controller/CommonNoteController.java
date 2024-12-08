@@ -3,12 +3,14 @@ package com.woozuda.backend.note.controller;
 import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
 import com.woozuda.backend.note.dto.request.CommonNoteSaveRequestDto;
+import com.woozuda.backend.note.dto.response.NoteResponseDto;
 import com.woozuda.backend.note.service.CommonNoteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +32,16 @@ public class CommonNoteController {
         NoteIdResponseDto responseDto = noteService.saveCommonNote(username, requestDto);
         return ResponseEntity.ok(responseDto);
     }
+
+    @GetMapping("/{noteId}")
+    public ResponseEntity<NoteResponseDto> getCommonNote(
+            @AuthenticationPrincipal CustomUser user,
+            @PathVariable("noteId") Long noteId
+    ) {
+        String username = user.getUsername();
+        NoteResponseDto responseDto = noteService.getCommonNote(username, noteId);
+        return ResponseEntity.ok(responseDto);
+    }
+
 
 }

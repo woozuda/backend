@@ -107,6 +107,31 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                 );
     }
 
+    @Override
+    public NoteResponseDto searchCommonNote(Long noteId) {
+        return query
+                .from(commonNote)
+                .leftJoin(commonNote.diary, diary)
+                .leftJoin(noteContent)
+                .on(noteContent.note.id.eq(commonNote.id))
+                .where(commonNote.id.eq(noteId))
+                .transform(
+                        groupBy(commonNote.id).list(
+                                new QNoteResponseDto(
+                                        commonNote.id,
+                                        diary.title,
+                                        commonNote.title,
+                                        commonNote.date.stringValue(),
+                                        commonNote.weather.stringValue(),
+                                        commonNote.season.stringValue(),
+                                        commonNote.feeling.stringValue(),
+                                        list(noteContent.content)
+                                )
+                        )
+                )
+                .getFirst();
+    }
+
     private static BooleanExpression dateEq(LocalDate date) {
         return date == null ? null : note.date.eq(date);
     }
