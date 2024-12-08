@@ -46,4 +46,17 @@ public class CommonNote extends Note {
     public static CommonNote of(Diary diary, String title, LocalDate date, Visibility visibility, Feeling feeling, Weather weather, Season season) {
         return new CommonNote(diary, title, date, visibility, feeling, weather, season);
     }
+
+    public void update(Diary foundDiary,
+                       String title,
+                       Weather weather,
+                       Season season,
+                       Feeling feeling,
+                       LocalDate date,
+                       String content) {
+        super.update(foundDiary, title, date, content);
+        this.weather = weather;
+        this.season = season;
+        this.feeling = feeling;
+    }
 }

@@ -44,4 +44,8 @@ public class NoteContent extends BaseTimeEntity {
     public static NoteContent of(Integer order, String content) {
         return new NoteContent(order, content);
     }
+
+    public void update(String content) {
+        this.content = content;
+    }
 }

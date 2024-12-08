@@ -2,6 +2,7 @@ package com.woozuda.backend.diary.entity;
 
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.global.entity.BaseTimeEntity;
+import com.woozuda.backend.note.entity.Note;
 import com.woozuda.backend.tag.entity.Tag;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,7 +21,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //TODO 같은 사용자 내 다이어리 이름 중복 X
 @Entity
@@ -50,6 +54,9 @@ public class Diary extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Integer noteCount;
+
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Note> noteList = new ArrayList<>();
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<DiaryTag> tagList = new ArrayList<>();
@@ -88,5 +95,17 @@ public class Diary extends BaseTimeEntity {
             endDate = noteDate;
         }
         noteCount++;
+    }
+
+    public void updateDuration() {
+        List<LocalDate> noteDates = new ArrayList<>(
+                this.noteList.stream()
+                .map(Note::getDate)
+                .toList()
+        );
+
+        Collections.sort(noteDates);
+        this.startDate = noteDates.getFirst();
+        this.endDate = noteDates.getLast();
     }
 }

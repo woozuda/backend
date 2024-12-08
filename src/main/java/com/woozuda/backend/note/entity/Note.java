@@ -57,6 +57,7 @@ public class Note extends BaseTimeEntity {
     @Column(name = "dtype", insertable = false, updatable = false) // 읽기 전용 필드
     private String dtype;
 
+    //TODO OneToOne 으로 해도 될 듯
     @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<NoteContent> noteContents = new ArrayList<>();
 
@@ -70,5 +71,13 @@ public class Note extends BaseTimeEntity {
     public void addContent(NoteContent content) {
         this.noteContents.add(content);
         content.setNote(this);
+    }
+
+    protected void update(Diary foundDiary, String title, LocalDate date, String content) {
+        this.diary = foundDiary;
+        this.title = title;
+        this.date = date;
+        noteContents.getFirst().update(content);
+        foundDiary.updateDuration();
     }
 }
