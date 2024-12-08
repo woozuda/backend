@@ -1,5 +1,7 @@
 package com.woozuda.backend.diary.repository;
 
+import com.woozuda.backend.diary.dto.response.DiaryNameListResponseDto;
+import com.woozuda.backend.diary.dto.response.DiaryNameResponseDto;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 
@@ -14,4 +16,6 @@ public interface CustomDiaryRepository {
     List<Long> searchDiaryIdList(String username);
 
     Diary searchDiary(String title, String username);
+
+    DiaryNameListResponseDto searchNames(String username);
 }

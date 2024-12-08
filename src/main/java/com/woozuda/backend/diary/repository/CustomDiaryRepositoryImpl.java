@@ -6,6 +6,8 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woozuda.backend.account.entity.QUserEntity;
+import com.woozuda.backend.diary.dto.response.DiaryNameListResponseDto;
+import com.woozuda.backend.diary.dto.response.DiaryNameResponseDto;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.entity.QDiary;
@@ -124,5 +126,19 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
                 .selectFrom(diary)
                 .where(diary.user.username.eq(username), diary.title.eq(title))
                 .fetchFirst();
+    }
+
+    @Override
+    public DiaryNameListResponseDto searchNames(String username) {
+        List<DiaryNameResponseDto> nameList = query
+                .select(Projections.constructor(DiaryNameResponseDto.class,
+                        diary.id,
+                        diary.title
+                ))
+                .from(diary)
+                .leftJoin(diary.user, userEntity).on(userEntity.username.eq(username))
+                .fetch();
+
+        return new DiaryNameListResponseDto(nameList);
     }
 }

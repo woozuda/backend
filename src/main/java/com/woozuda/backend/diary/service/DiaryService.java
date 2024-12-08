@@ -6,6 +6,8 @@ import com.woozuda.backend.diary.dto.request.DiarySaveRequestDto;
 import com.woozuda.backend.diary.dto.response.DiaryDetailResponseDto;
 import com.woozuda.backend.diary.dto.response.DiaryIdResponseDto;
 import com.woozuda.backend.diary.dto.response.DiaryListResponseDto;
+import com.woozuda.backend.diary.dto.response.DiaryNameListResponseDto;
+import com.woozuda.backend.diary.dto.response.DiaryNameResponseDto;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.repository.DiaryRepository;
@@ -126,5 +128,9 @@ public class DiaryService {
         }
 
         diaryRepository.deleteById(diaryId);
+    }
+
+    public DiaryNameListResponseDto getDiaryNames(String username) {
+        return diaryRepository.searchNames(username);
     }
 }

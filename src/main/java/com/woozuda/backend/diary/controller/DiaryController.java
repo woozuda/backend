@@ -5,6 +5,8 @@ import com.woozuda.backend.diary.dto.request.DiarySaveRequestDto;
 import com.woozuda.backend.diary.dto.response.DiaryDetailResponseDto;
 import com.woozuda.backend.diary.dto.response.DiaryIdResponseDto;
 import com.woozuda.backend.diary.dto.response.DiaryListResponseDto;
+import com.woozuda.backend.diary.dto.response.DiaryNameListResponseDto;
+import com.woozuda.backend.diary.dto.response.DiaryNameResponseDto;
 import com.woozuda.backend.diary.service.DiaryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -83,6 +85,15 @@ public class DiaryController {
         String username = user.getUsername();
         diaryService.removeDiary(username, diaryId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<DiaryNameListResponseDto> getDiaryNames(
+            @AuthenticationPrincipal CustomUser user
+    ) {
+        String username = user.getUsername();
+        DiaryNameListResponseDto responseDto = diaryService.getDiaryNames(username);
+        return ResponseEntity.ok(responseDto);
     }
 
 }
