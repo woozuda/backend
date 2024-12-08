@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CommonNoteModifyRequestDto {
 
+    @NotNull private Long diaryId;
     @NotNull private String title;
     @NotNull private String weather;
     @NotNull private String season;

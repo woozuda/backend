@@ -62,18 +62,14 @@ public class QuestionNoteService {
         return NoteIdResponseDto.of(savedQuestionNote.getId());
     }
 
+    //TODO 조회하는 노트가 로그인한 사용자의 노트인지 확인
     public NoteResponseDto getQuestionNote(String username, Long noteId) {
-        Diary foundDiary = diaryRepository.searchDiary(noteId, username);
-        if (foundDiary == null) {
-            throw new IllegalArgumentException("Diary not found.");
-        }
-
         NoteResponseDto responseDto = noteRepository.searchQuestionNote(noteId);
         return responseDto.convertEnum();
     }
 
     public NoteIdResponseDto updateQuestionNote(String username, Long noteId, QuestionNoteModifyRequestDto requestDto) {
-        Diary foundDiary = diaryRepository.searchDiary(noteId, username);
+        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiaryId(), username);
         if (foundDiary == null) {
             throw new IllegalArgumentException("Diary not found.");
         }

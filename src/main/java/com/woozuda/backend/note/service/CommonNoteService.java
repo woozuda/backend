@@ -55,19 +55,15 @@ public class CommonNoteService {
         return NoteIdResponseDto.of(savedCommonNote.getId());
     }
 
+    //TODO 조회하는 노트가 로그인한 사용자의 노트인지 확인
     @Transactional(readOnly = true)
     public NoteResponseDto getCommonNote(String username, Long noteId) {
-        Diary foundDiary = diaryRepository.searchDiary(noteId, username);
-        if (foundDiary == null) {
-            throw new IllegalArgumentException("Diary not found.");
-        }
-
         NoteResponseDto responseDto = noteRepository.searchCommonNote(noteId);
         return responseDto.convertEnum();
     }
 
     public NoteIdResponseDto updateCommonNote(String username, Long noteId, CommonNoteModifyRequestDto requestDto) {
-        Diary foundDiary = diaryRepository.searchDiary(noteId, username);
+        Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiaryId(), username);
         if (foundDiary == null) {
             throw new IllegalArgumentException("Diary not found.");
         }
