@@ -30,6 +30,11 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
+    /*
+    TODO 모든 컨트롤러에 @AuthenticationPrincipal CustomUser user, String username = user.getUsername()이 중복됨
+         파라미터 레벨에서 바로 username 을 받을 수 있도록 커스텀 애너테이션을 추가하는 등 중복 줄이기
+         ex) @AuthenticationUsername String username
+     */
     @GetMapping
     public ResponseEntity<DiaryListResponseDto> getDiaryList(
             @AuthenticationPrincipal CustomUser user
