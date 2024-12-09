@@ -41,8 +41,7 @@ public class Diary extends BaseTimeEntity {
     @JoinColumn(name = "user_id", updatable = false, nullable = false)
     private UserEntity user;
 
-    //TODO 이미지 엔티티 생성 후 해당 칼럼 수정
-    @Column(name = "image_id", nullable = false)
+    @Column(name = "image_url", nullable = false)
     private String image;
 
     @Column(nullable = false)
