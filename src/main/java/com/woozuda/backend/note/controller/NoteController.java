@@ -6,6 +6,7 @@ import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
 import com.woozuda.backend.note.dto.request.QuestionNoteSaveRequestDto;
 import com.woozuda.backend.note.dto.request.RetrospectiveNoteSaveRequestDto;
+import com.woozuda.backend.note.dto.response.DateListResponseDto;
 import com.woozuda.backend.note.dto.response.NoteEntryResponseDto;
 import com.woozuda.backend.note.service.NoteService;
 import jakarta.validation.Valid;
@@ -40,6 +41,15 @@ public class NoteController {
         Page<NoteEntryResponseDto> page = noteService.getNoteList(username, pageable, condition);
 
         return ResponseEntity.ok(page);
+    }
+
+    @GetMapping("/date")
+    public ResponseEntity<DateListResponseDto> getNoteDates(
+            @AuthenticationPrincipal CustomUser user
+    ) {
+        String username = user.getUsername();
+        DateListResponseDto responseDto = noteService.getNoteDates(username);
+        return ResponseEntity.ok(responseDto);
     }
 
 }

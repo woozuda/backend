@@ -1,11 +1,15 @@
 package com.woozuda.backend.note.repository;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
+import com.woozuda.backend.note.dto.response.DateInfoResponseDto;
+import com.woozuda.backend.note.dto.response.DateListResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
 import com.woozuda.backend.note.dto.response.QNoteResponseDto;
+import com.woozuda.backend.note.entity.Note;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
@@ -181,6 +185,19 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                         )
                 )
                 .getFirst();
+    }
+
+    @Override
+    public List<DateInfoResponseDto> searchDateCounts(List<Long> idList) {
+        return query
+                .select(Projections.constructor(DateInfoResponseDto.class,
+                        note.date.stringValue(),
+                        note.count().intValue()
+                ))
+                .from(note)
+                .where(note.diary.id.in(idList))
+                .groupBy(note.date)
+                .fetch();
     }
 
     private static BooleanExpression dateEq(LocalDate date) {

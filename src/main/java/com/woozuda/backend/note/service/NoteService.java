@@ -88,4 +88,13 @@ public class NoteService {
             return new PageImpl<>(allContent.subList(start, end), pageable, allContent.size());
         }
     }
+
+    @Transactional(readOnly = true)
+    public DateListResponseDto getNoteDates(String username) {
+        List<Long> idList = diaryRepository.searchDiaryIdList(username);
+
+        List<DateInfoResponseDto> dateList = noteRepository.searchDateCounts(idList);
+        return DateListResponseDto.of(dateList);
+    }
+
 }

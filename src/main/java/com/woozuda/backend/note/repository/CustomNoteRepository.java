@@ -1,7 +1,10 @@
 package com.woozuda.backend.note.repository;
 
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
+import com.woozuda.backend.note.dto.response.DateInfoResponseDto;
+import com.woozuda.backend.note.dto.response.DateListResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
+import com.woozuda.backend.note.entity.Note;
 
 import java.util.List;
 
@@ -19,5 +22,8 @@ public interface CustomNoteRepository {
     NoteResponseDto searchQuestionNote(Long noteId);
 
     NoteResponseDto searchRetrospectiveNote(Long noteId);
+
+    List<DateInfoResponseDto> searchDateCounts(List<Long> idList);
+
 }
 
