@@ -14,7 +14,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.metamodel.mapping.Restrictable;
 
+import java.awt.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("RETROSPECTIVE")
@@ -34,5 +36,14 @@ public class RetrospectiveNote extends Note {
 
     public static RetrospectiveNote of(Diary diary, String title, LocalDate date, Visibility visibility, Framework type) {
         return new RetrospectiveNote(diary, title, date, visibility, type);
+    }
+
+    public void update(Diary foundDiary,
+                       String title,
+                       LocalDate date,
+                       Framework framework,
+                       List<String> content) {
+        super.update(foundDiary, title, date, content);
+        this.type = framework;
     }
 }

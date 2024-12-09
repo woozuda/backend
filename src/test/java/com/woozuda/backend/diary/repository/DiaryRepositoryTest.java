@@ -92,12 +92,12 @@ class DiaryRepositoryTest {
 
         SingleDiaryResponseDto firstDiary = responseDto.get(0);
         assertThat(firstDiary.getTitle()).isEqualTo("Updated Diary1 Title");
-        assertThat(firstDiary.getTags()).containsExactlyInAnyOrder("Tag1", "Tag2");
+        assertThat(firstDiary.getSubject()).containsExactlyInAnyOrder("Tag1", "Tag2");
         assertThat(firstDiary.getImgUrl()).isEqualTo("new_image1_url");
 
         SingleDiaryResponseDto secondDiary = responseDto.get(1);
         assertThat(secondDiary.getTitle()).isEqualTo("Updated Diary2 Title");
-        assertThat(secondDiary.getTags()).containsExactlyInAnyOrder("Tag3", "Tag4");
+        assertThat(secondDiary.getSubject()).containsExactlyInAnyOrder("Tag3", "Tag4");
         assertThat(secondDiary.getImgUrl()).isEqualTo("new_image2_url");
     }
 

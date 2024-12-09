@@ -16,7 +16,7 @@ public class DiaryDetailResponseDto {
 
     private Long id;
     private String title;
-    private List<String> subjects;
+    private List<String> subject;
     private String imgUrl;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -28,7 +28,7 @@ public class DiaryDetailResponseDto {
         return new DiaryDetailResponseDto(
                 diarySummary.getId(),
                 diarySummary.getTitle(),
-                diarySummary.getTags(),
+                diarySummary.getSubject(),
                 diarySummary.getImgUrl(),
                 diarySummary.getStartDate(),
                 diarySummary.getEndDate(),
