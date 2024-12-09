@@ -1,18 +1,13 @@
 package com.woozuda.backend.diary.repository;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.woozuda.backend.account.entity.QUserEntity;
 import com.woozuda.backend.diary.dto.response.DiaryNameListResponseDto;
 import com.woozuda.backend.diary.dto.response.DiaryNameResponseDto;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
-import com.woozuda.backend.diary.entity.QDiary;
-import com.woozuda.backend.diary.entity.QDiaryTag;
-import com.woozuda.backend.tag.entity.QTag;
 import jakarta.persistence.EntityManager;
 
 import java.util.ArrayList;
@@ -75,7 +70,7 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
 
             String tagName = tuple.get(tag.name);
             if (tagName != null) {
-                dto.getTags().add(tagName);
+                dto.getSubject().add(tagName);
             }
 
             diaryMap.put(diaryId, dto);
