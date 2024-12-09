@@ -5,11 +5,15 @@ import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
+import com.woozuda.backend.note.dto.request.NoteIdRequestDto;
 import com.woozuda.backend.note.dto.request.QuestionNoteSaveRequestDto;
 import com.woozuda.backend.note.dto.request.RetrospectiveNoteSaveRequestDto;
+import com.woozuda.backend.note.dto.response.DateInfoResponseDto;
+import com.woozuda.backend.note.dto.response.DateListResponseDto;
 import com.woozuda.backend.note.dto.response.NoteEntryResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
 import com.woozuda.backend.note.entity.CommonNote;
+import com.woozuda.backend.note.entity.Note;
 import com.woozuda.backend.note.entity.NoteContent;
 import com.woozuda.backend.note.entity.Question;
 import com.woozuda.backend.note.entity.QuestionNote;
@@ -30,7 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.woozuda.backend.note.entity.type.Visibility.PRIVATE;
@@ -97,4 +103,14 @@ public class NoteService {
         return DateListResponseDto.of(dateList);
     }
 
+    /*
+    TODO notesToDelete 의 id 리스트가 requestDto.getId() 와 정확히 일치해야 함
+    TODO 이것도 삭제하고자 하는 엔티티가 로그인한 사용자의 것인지 확인하는 로직이 없음
+        차라리 노트 엔티티에 createdBy나 ownedBy 같은 칼럼을 추가해서 username 을 직접 들고 있게 하는 게 좋을 듯
+    TODO 회고의 경우 연관된 NoteContent 를 일괄적으로 삭제하는 게 아니라 하나씩 삭제함 -> 성능 최적화
+     */
+    public void deleteNotes(String username, NoteIdRequestDto requestDto) {
+        List<Note> notesToDelete = noteRepository.findAllById(requestDto.getId());
+        noteRepository.deleteAll(notesToDelete);
+    }
 }

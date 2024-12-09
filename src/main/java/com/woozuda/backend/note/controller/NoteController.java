@@ -4,6 +4,7 @@ import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.note.dto.request.CommonNoteSaveRequestDto;
 import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
+import com.woozuda.backend.note.dto.request.NoteIdRequestDto;
 import com.woozuda.backend.note.dto.request.QuestionNoteSaveRequestDto;
 import com.woozuda.backend.note.dto.request.RetrospectiveNoteSaveRequestDto;
 import com.woozuda.backend.note.dto.response.DateListResponseDto;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,6 +52,16 @@ public class NoteController {
         String username = user.getUsername();
         DateListResponseDto responseDto = noteService.getNoteDates(username);
         return ResponseEntity.ok(responseDto);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteNotes(
+            @AuthenticationPrincipal CustomUser user,
+            @RequestBody @Valid NoteIdRequestDto requestDto
+    ) {
+        String username = user.getUsername();
+        noteService.deleteNotes(username, requestDto);
+        return ResponseEntity.ok().build();
     }
 
 }
