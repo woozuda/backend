@@ -118,8 +118,8 @@ public class DiaryService {
         return new DiaryIdResponseDto(foundDiary.get().getId());
     }
 
-    //TODO 일기 기능까지 추가한 뒤에, 다이어리 삭제하면 내부 일기까지 전부 삭제하도록 변경
     //TODO 배포 환경에서는 Diary 를 지우면 관련 DiaryTag 도 모두 지워질 수 있도록 데이터베이스 차원에서 cascade delete 설정
+    //TODO 조회 및 삭제 쿼리가 너무 많이 나감 -> 최적화하기
     public void removeDiary(String username, Long diaryId) {
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new IllegalArgumentException("Diary Not Found"));
