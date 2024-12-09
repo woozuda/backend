@@ -1,6 +1,7 @@
 package com.woozuda.backend.account.service;
 
 import com.woozuda.backend.account.dto.*;
+import com.woozuda.backend.account.entity.AiType;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
 import com.woozuda.backend.account.transdata.*;
@@ -37,6 +38,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             //userEntity.setEmail(oAuth2Response.getEmail());
             //userEntity.setName(oAuth2Response.getName());
             userEntity.setRole("ROLE_ADMIN");
+            userEntity.setAiType(AiType.PICTURE_NOVEL);
 
             userRepository.save(userEntity);
 
