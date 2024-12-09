@@ -24,8 +24,10 @@ public class ShareService {
     @Transactional
     public void makeSharedNote(@RequestBody NoteIdDto noteIdDto) {
 
-        List<Long> noteId = noteIdDto.getNoteId();
+        List<Long> noteId = noteIdDto.getId();
         List<Note> notes = noteRepository.findAllById(noteId);
+
+        //System.out.println(noteId);
 
         for (Note note : notes) {
             note.setVisibility(Visibility.PUBLIC);

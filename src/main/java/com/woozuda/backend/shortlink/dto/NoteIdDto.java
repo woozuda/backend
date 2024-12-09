@@ -8,5 +8,5 @@ import java.util.List;
 @Setter
 @Getter
 public class NoteIdDto {
-    private List<Long> noteId;
+    private List<Long> id;
 }
