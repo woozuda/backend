@@ -1,12 +1,17 @@
 package com.woozuda.backend.note.repository;
 
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.CaseBuilder;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
 import com.woozuda.backend.note.dto.response.DateInfoResponseDto;
 import com.woozuda.backend.note.dto.response.DateListResponseDto;
+import com.woozuda.backend.note.dto.response.NoteCountResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
 import com.woozuda.backend.note.dto.response.QNoteResponseDto;
 import com.woozuda.backend.note.entity.Note;
@@ -24,6 +29,7 @@ import static com.woozuda.backend.note.entity.QNoteContent.noteContent;
 import static com.woozuda.backend.note.entity.QQuestion.question;
 import static com.woozuda.backend.note.entity.QQuestionNote.questionNote;
 import static com.woozuda.backend.note.entity.QRetrospectiveNote.retrospectiveNote;
+import static java.lang.Long.sum;
 
 /**
  * TODO 성능 생각하지 않음. 기능 완성한 뒤에는 성능 향상시킬 것
@@ -198,6 +204,36 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                 .where(note.diary.id.in(idList))
                 .groupBy(note.date)
                 .fetch();
+    }
+
+    //TODO 쿼리로 COMMON + QUESTION, RETROSPECTIVE 카운트 한번에 가져오기
+    @Override
+    public NoteCountResponseDto searchNoteCount(List<Long> diaryIdList, LocalDate startDate, LocalDate endDate) {
+        List<Tuple> result = query
+                .select(
+                        note.dtype,
+                        note.count()
+                )
+                .from(note)
+                .where(
+                        note.diary.id.in(diaryIdList),
+                        note.date.between(startDate, endDate)
+                )
+                .groupBy(note.dtype)
+                .fetch();
+
+        int nonRetroCount = 0;
+        int retroCount = 0;
+
+        for (Tuple tuple : result) {
+            if (tuple.get(note.dtype).equals("COMMON") || tuple.get(note.dtype).equals("QUESTION")) {
+                nonRetroCount += tuple.get(note.count());
+            } else {
+                retroCount += tuple.get(note.count());
+            }
+        }
+
+        return new NoteCountResponseDto(nonRetroCount, retroCount);
     }
 
     private static BooleanExpression dateEq(LocalDate date) {
