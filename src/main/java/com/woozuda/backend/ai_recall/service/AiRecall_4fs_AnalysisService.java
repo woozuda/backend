@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woozuda.backend.ai.config.ChatGptService;
 import com.woozuda.backend.ai_recall.entity.AirecallType;
-import com.woozuda.backend.ai_recall.example.Recall4fsDTO;
 import com.woozuda.backend.ai_recall.dto.Airecall_4fs_DTO;
 import com.woozuda.backend.forai.dto.RetroNoteEntryResponseDto;
 import com.woozuda.backend.forai.service.CustomeNoteRepoForAiService;
@@ -22,7 +21,7 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AiRecll4fsAnalysisService {
+public class AiRecall_4fs_AnalysisService {
     private final ChatGptService chatGptService;
     private final ObjectMapper objectMapper;
     private final AiRecallService aiRecallService;
@@ -47,7 +46,7 @@ public class AiRecll4fsAnalysisService {
                 1. start_date 와 end_date 는 사용자가 입력한 값 그대로 String 타입으로 출력하세요.
                    - 예를 들어 "2024-10-12"로 입력되었다면, 정확히 이 값을 출력하세요. 절때 Null 반환 금지
                 2. type 은 분석하지 말고 사용자가 입력한 값 그대로 String 타입으로 출력하세요.
-                    - 예: "4FS"로 입력되었다면 정확히 "4FS"를 출력하세요. 절때 Null 반환 금지
+                    그리고 만약 "FOUR_F_S" 타입으로 입력되었다면 4FS로 정확히 출력해주세요. 절때 Null 반환 금지
                 3. 패턴 분석은 사용자가 제공한 내용에서 일관된 행동이나 반복되는 패턴을 한 줄로 목록 형식으로 요약해 주세요. 절때 Null 반환 금지
                 4. 행동적인 긍정적 측면은 사용자가 한 행동 중 긍정적이고 유익한 측면을 강조하여 제시해 주세요. 절때 Null 반환 금지
                 5. 개선 제안은 사용자의 행동이나 패턴을 기반으로 개선할 점을 두 줄 정도로 제시해 주세요. 절때 Null 반환 금지

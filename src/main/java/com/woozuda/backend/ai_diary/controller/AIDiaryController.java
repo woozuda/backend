@@ -49,9 +49,9 @@ public class AIDiaryController {
      */
     @GetMapping
     public ResponseEntity<AiDiaryResponseDTO> getAiDiary(
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate,
-            @RequestParam Long id,
+            @RequestParam("startDate") LocalDate startDate,
+            @RequestParam("endDate") LocalDate endDate,
+            @RequestParam("id") Long id,
             @AuthenticationPrincipal UserEntity user) {
         AiDiaryResponseDTO responseDTO = aiDiaryService.getAiDiaryByDateRangeAndId(startDate, endDate, id, user.getUsername());
             return ResponseEntity.ok(responseDTO);

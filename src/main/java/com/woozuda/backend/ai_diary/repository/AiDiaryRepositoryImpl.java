@@ -3,6 +3,7 @@ package com.woozuda.backend.ai_diary.repository;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woozuda.backend.account.entity.QUserEntity;
+import com.woozuda.backend.ai_diary.dto.AiDiaryResponseDTO;
 import com.woozuda.backend.ai_diary.entity.AiDiary;
 import com.woozuda.backend.ai_diary.entity.QAiDiary;
 import jakarta.persistence.EntityManager;
@@ -28,14 +29,13 @@ public class AiDiaryRepositoryImpl implements AiDiaryRepositoryCustom {
         AiDiary result = query
                 .selectFrom(aiDiary)
                 .join(aiDiary.user, user)
-                .where(
-                        aiDiary.start_date.eq(start_date),
-                        aiDiary.end_date.eq(end_date),
-                        aiDiary.id.eq(id),
-                        user.username.eq(username)
-                )
-                .fetchOne(); // 결과를 하나만 가져옵니다.
+                .where(aiDiary.id.eq(id)
+                        .and(aiDiary.start_date.eq(start_date))
+                        .and(aiDiary.end_date.eq(end_date))
+                        .and(user.username.eq(username)))
+                .fetchOne();
 
         return Optional.ofNullable(result);
     }
+
 }

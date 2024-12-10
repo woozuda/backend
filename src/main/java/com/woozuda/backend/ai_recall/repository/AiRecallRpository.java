@@ -18,13 +18,15 @@ import java.util.Optional;
 public interface AiRecallRpository  extends JpaRepository<Airecall_4fs, Long> {
     @Query("SELECT a FROM Airecall_4fs a " +
             "JOIN Airecall ac ON a.air_id = ac.air_id " +
+            "JOIN ac.user u " +  // 유저와 조인
             "WHERE a.airecallType = 'FFS' " +
             "AND ac.start_date BETWEEN :start_date AND :end_date " +
             "AND ac.end_date BETWEEN :start_date AND :end_date " +
-            "AND ac.air_id = :air_id")
-    Optional<Airecall_4fs> findByAirecallTypeAndDateRange(
+            "AND ac.air_id = :air_id " +
+            "AND u.username = :username")
+    Optional<Airecall_4fs> findByAirecallTypeAndDateRangeAndUserId(
             @Param("start_date") LocalDate startDate,
             @Param("end_date") LocalDate endDate,
-            @Param("air_id") Long air_id);
-
+            @Param("air_id") Long air_id,
+            @Param("username") String username);
 }

@@ -5,6 +5,7 @@ import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woozuda.backend.forai.dto.NonRetroNoteEntryResponseDto;
 import com.woozuda.backend.forai.dto.RetroNoteEntryResponseDto;
+import com.woozuda.backend.note.entity.type.Framework;
 import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -80,13 +81,17 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
     }
 
     @Override
-    public List<RetroNoteEntryResponseDto> searchRetroNote(String username, LocalDate startDate, LocalDate endDate) {
+    public List<RetroNoteEntryResponseDto> searchRetroNote(String username, LocalDate startDate, LocalDate endDate , Framework type) {
         List<Long> diaryIdList = getDiaryIdList(username);
 
         return query
                 .from(retrospectiveNote)
                 .leftJoin(noteContent).on(noteContent.note.id.eq(retrospectiveNote.id))
-                .where(retrospectiveNote.diary.id.in(diaryIdList), retrospectiveNote.date.goe(startDate), retrospectiveNote.date.loe(endDate))
+                .where(retrospectiveNote.diary.id.in(diaryIdList),
+                        retrospectiveNote.date.goe(startDate),
+                        retrospectiveNote.date.loe(endDate),
+                        retrospectiveNote.type.eq(type)
+                )
                 .transform(
                         groupBy(retrospectiveNote.id).list(
                                 Projections.constructor(RetroNoteEntryResponseDto.class,

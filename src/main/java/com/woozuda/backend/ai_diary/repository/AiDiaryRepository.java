@@ -13,11 +13,15 @@ import java.util.Optional;
 @Repository
 
 public interface AiDiaryRepository extends JpaRepository<AiDiary, Long> ,AiDiaryRepositoryCustom{
-//    @Query("SELECT a FROM AiDiary a JOIN a.user u WHERE a.start_date = :start_date AND a.end_date = :end_date AND a.id = :id AND u.username = :username")
+//    @Query("SELECT a FROM AiDiary a " +
+//            "JOIN a.user u " +
+//            "WHERE a.id = :id " +
+//            "AND a.start_date = :start_date " +
+//            "AND a.end_date = :end_date " +
+//            "AND u.username = :username")
 //    Optional<AiDiary> findByDateRangeAndIdAndUsername(
-//            @Param("start_date") LocalDate start_date,
-//            @Param("end_date") LocalDate end_date,
 //            @Param("id") Long id,
-//            @Param("username") String username
-//    );
+//            @Param("start_date") LocalDate startDate,
+//            @Param("end_date") LocalDate endDate,
+//            @Param("username") String username);
 }

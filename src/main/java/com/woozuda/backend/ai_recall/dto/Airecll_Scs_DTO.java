@@ -13,7 +13,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Airecll_Scs_DTO {
     private AirecallType airecallType;
+
     private LocalDate start_date;
+
     private LocalDate end_date;
     private String start_summary;
 
