@@ -3,9 +3,11 @@ package com.woozuda.backend.forai.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.woozuda.backend.forai.repository.dto.NonRetroNoteEntryResponseDto;
-import com.woozuda.backend.forai.repository.dto.RetroNoteEntryResponseDto;
+import com.woozuda.backend.forai.dto.NonRetroNoteEntryResponseDto;
+import com.woozuda.backend.forai.dto.RetroNoteEntryResponseDto;
 import jakarta.persistence.EntityManager;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,6 +22,8 @@ import static com.woozuda.backend.note.entity.QNoteContent.noteContent;
 import static com.woozuda.backend.note.entity.QQuestionNote.questionNote;
 import static com.woozuda.backend.note.entity.QRetrospectiveNote.retrospectiveNote;
 
+@Primary
+@Repository
 public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
 
     private final JPAQueryFactory query;

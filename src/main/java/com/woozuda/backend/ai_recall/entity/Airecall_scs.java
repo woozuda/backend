@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Recall_scs {
-    @Id
-    private Long air_id;
-
+public class Airecall_scs extends Airecall{
     @Column(nullable = false, columnDefinition = "TEXT")
     private String start_summary;
 

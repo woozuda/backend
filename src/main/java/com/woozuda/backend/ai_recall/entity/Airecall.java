@@ -1,17 +1,20 @@
 package com.woozuda.backend.ai_recall.entity;
 
+import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "ai_recall_rep")
-@Getter
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "type")
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Airecall extends BaseTimeEntity {
@@ -19,32 +22,28 @@ public class Airecall extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long air_id;
 
+    //유저 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", updatable = false, nullable = false)
+    private UserEntity user;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false)
+    @Column(nullable = false)
     private AirecallType airecallType;
 
     @Column(nullable = false)
-    private LocalDate startDate;  // 시작일
+    private LocalDate start_date;  // 시작일
 
     @Column(nullable = false)
-    private LocalDate endDate;  // 끝일
+    private LocalDate end_date;  // 끝일
 
+    public Airecall(UserEntity username, AirecallType airecallType, LocalDate start_date, LocalDate end_date) {
+        this.user = username;
+        this.airecallType = airecallType;
+        this.start_date = start_date;
+        this.end_date = end_date;
 
+    }
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "air_id")
-    private Recall_4fs recall_4fs;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "air_id")
-    private Recall_ktp recall_ktps;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "air_id")
-    private Recall_pmi recall_pmi;
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "air_id")
-    private Recall_scs recall_scs;
 
 }

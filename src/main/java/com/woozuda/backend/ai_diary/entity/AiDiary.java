@@ -1,6 +1,7 @@
 package com.woozuda.backend.ai_diary.entity;
 
 
+import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.ai_diary.dto.AiDiaryDTO;
 import com.woozuda.backend.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -19,11 +20,16 @@ public class AiDiary extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private LocalDate startDate;
+    //유저 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", updatable = false, nullable = false)
+    private UserEntity user;
 
     @Column(nullable = false)
-    private LocalDate endDate;
+    private LocalDate start_date;
+
+    @Column(nullable = false)
+    private LocalDate end_date;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String place;
@@ -54,11 +60,12 @@ public class AiDiary extends BaseTimeEntity{
 
 
     // 생성자 주입 방식
-    public static AiDiary toEntity(AiDiaryDTO aiDiaryDTO){
+    public static AiDiary toEntity(AiDiaryDTO aiDiaryDTO, UserEntity username) {
         return new AiDiary(
-                null,
-                aiDiaryDTO.getStartDate(),
-                aiDiaryDTO.getEndDate(),
+                null,  // id는 null로 설정 (자동 생성되도록)
+                username,  // UserID
+                aiDiaryDTO.getStart_date(),
+                aiDiaryDTO.getEnd_date(),
                 aiDiaryDTO.getPlace(),
                 aiDiaryDTO.getActivity(),
                 aiDiaryDTO.getEmotion(),
@@ -67,6 +74,7 @@ public class AiDiary extends BaseTimeEntity{
                 aiDiaryDTO.getWeekendAt(),
                 aiDiaryDTO.getPositive(),
                 aiDiaryDTO.getDenial(),
-                aiDiaryDTO.getSuggestion());
+                aiDiaryDTO.getSuggestion()
+        );
     }
 }

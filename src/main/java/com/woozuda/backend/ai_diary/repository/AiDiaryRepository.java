@@ -4,13 +4,20 @@ import com.woozuda.backend.ai_diary.entity.AiDiary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-public interface AiDiaryRepository extends JpaRepository<AiDiary, Long> {
-    // startDate와 endDate 사이의 데이터를 조회, id 포함
-    @Query("SELECT a FROM AiDiary a WHERE a.startDate BETWEEN :startDate AND :endDate AND a.endDate BETWEEN :startDate AND :endDate AND a.id = :id")
-    List<AiDiary> findByDateRangeAndId(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("id") Long id);
+@Repository
 
+public interface AiDiaryRepository extends JpaRepository<AiDiary, Long> ,AiDiaryRepositoryCustom{
+//    @Query("SELECT a FROM AiDiary a JOIN a.user u WHERE a.start_date = :start_date AND a.end_date = :end_date AND a.id = :id AND u.username = :username")
+//    Optional<AiDiary> findByDateRangeAndIdAndUsername(
+//            @Param("start_date") LocalDate start_date,
+//            @Param("end_date") LocalDate end_date,
+//            @Param("id") Long id,
+//            @Param("username") String username
+//    );
 }

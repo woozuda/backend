@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Recall_ktp {
-    @Id
-    private Long air_id;
-
+public class Airecall_ktp extends Airecall{
     @Column(nullable = false, columnDefinition = "TEXT")
     private String strength_analysis;
 

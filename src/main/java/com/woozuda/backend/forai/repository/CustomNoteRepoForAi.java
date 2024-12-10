@@ -1,7 +1,7 @@
 package com.woozuda.backend.forai.repository;
 
-import com.woozuda.backend.forai.repository.dto.NonRetroNoteEntryResponseDto;
-import com.woozuda.backend.forai.repository.dto.RetroNoteEntryResponseDto;
+import com.woozuda.backend.forai.dto.NonRetroNoteEntryResponseDto;
+import com.woozuda.backend.forai.dto.RetroNoteEntryResponseDto;
 
 import java.time.LocalDate;
 import java.util.List;

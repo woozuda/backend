@@ -1,7 +1,7 @@
 package com.woozuda.backend.shortlink.Service;
 
 
-import com.woozuda.backend.image.dto.ImageDto;
+//import com.woozuda.backend.image.dto.ImageDto;
 import com.woozuda.backend.note.entity.Note;
 import com.woozuda.backend.note.entity.type.Visibility;
 import com.woozuda.backend.note.repository.NoteRepository;

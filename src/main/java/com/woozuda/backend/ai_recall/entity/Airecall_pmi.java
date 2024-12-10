@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Recall_pmi {
-    @Id
-    private Long air_id;
+public class Airecall_pmi extends Airecall{
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String postive;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String strength_analysis;
+    private String minus;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String improvement;
+    private String interesting;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String scalability;
+    private String conclusion_action;
 }
