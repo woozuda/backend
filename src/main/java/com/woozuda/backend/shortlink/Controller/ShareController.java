@@ -1,6 +1,6 @@
 package com.woozuda.backend.shortlink.Controller;
 
-//import com.woozuda.backend.image.dto.ImageDto;
+import com.woozuda.backend.image.dto.ImageDto;
 import com.woozuda.backend.shortlink.Service.ShareService;
 import com.woozuda.backend.shortlink.dto.NoteIdDto;
 import lombok.RequiredArgsConstructor;
