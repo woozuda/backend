@@ -1,25 +1,10 @@
 package com.woozuda.backend.ai_recall.service;
 
-import com.woozuda.backend.ai_recall.entity.Airecall_4fs;
-import com.woozuda.backend.ai_recall.entity.QAirecall_4fs;
-import com.woozuda.backend.ai_recall.repository.AiRecallRepositoryImpl;
-import com.woozuda.backend.ai_recall.repository.AiRecallRpository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

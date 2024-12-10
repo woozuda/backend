@@ -3,8 +3,9 @@ package com.woozuda.backend.ai_recall.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woozuda.backend.ai.config.ChatGptService;
-import com.woozuda.backend.ai_recall.entity.AirecallType;
 import com.woozuda.backend.ai_recall.dto.Airecall_4fs_DTO;
+import com.woozuda.backend.ai_recall.dto.Airecall_Ktp_DTO;
+import com.woozuda.backend.ai_recall.entity.AirecallType;
 import com.woozuda.backend.forai.dto.RetroNoteEntryResponseDto;
 import com.woozuda.backend.forai.service.CustomeNoteRepoForAiService;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +22,11 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AiRecall_4fs_AnalysisService {
+public class AiRecall_ktp_AnalysisService {
     private final ChatGptService chatGptService;
     private final ObjectMapper objectMapper;
     private final AiRecallService aiRecallService;
+    private final CustomeNoteRepoForAiService customeNoteRepoForAiService;
 
     public void analyzeAirecall(List<RetroNoteEntryResponseDto> recallList , String username) {
         // 회고 분석 요청 메시지 작성
@@ -45,21 +47,15 @@ public class AiRecall_4fs_AnalysisService {
                 1. start_date 와 end_date 는 사용자가 입력한 값 그대로 String 타입으로 출력하세요.
                    - 예를 들어 "2024-10-12"로 입력되었다면, 정확히 이 값을 출력하세요. 절때 Null 반환 금지
                 2. type 은 분석하지 말고 사용자가 입력한 값 그대로 String 타입으로 출력하세요.
-                    그리고 만약 "FOUR_F_S" 타입으로 입력되었다면 4FS로 정확히 출력해주세요. 절때 Null 반환 금지
-                3. 패턴 분석은 사용자가 제공한 내용에서 일관된 행동이나 반복되는 패턴을 한 줄로 목록 형식으로 요약해 주세요. 절때 Null 반환 금지
-                4. 행동적인 긍정적 측면은 사용자가 한 행동 중 긍정적이고 유익한 측면을 강조하여 제시해 주세요. 절때 Null 반환 금지
-                5. 개선 제안은 사용자의 행동이나 패턴을 기반으로 개선할 점을 두 줄 정도로 제시해 주세요. 절때 Null 반환 금지
-                6. 활용 팁은 사용자가 자신의 행동을 더 효율적으로 개선하거나 활용할 수 있는 방법을 두 줄 정도로 제시해 주세요. 절때 Null 반환 금지
-                7. 위의 내용을 포함하여 각 항목을 객체 타입으로 한번만 반환해주세요. 예:
+                3. 글을 보고 강점을 분석해주세요.
+                4. 개선 제안을 넣어주세요.
+                5. 확장 가능성을 넣어주세요 
                     start_date: 2024-12-01
                     end_date: 2024-12-31
-                    type : 4FS
-                    patternAnalysis : 패턴 분석 내용
-                    positiveBehavior : 행동적인 긍정적 측면
-                    improvementSuggest : 개선 제안
-                    utilizationTips : 활용 팁
-               
-               
+                    type : KTP
+                    strength_analysis : 강점 분석
+                    improvement : 개선 제안
+                    scalability : 확장 가능성
                """;
         log.info("사용자 메시지 내용: {}", userMessage.toString());
         // ChatGPT API 호출
@@ -68,13 +64,13 @@ public class AiRecall_4fs_AnalysisService {
         log.info("AI 응답 내용: {}", response);
 
         // 응답 매핑
-        Airecall_4fs_DTO airecall_4fs_dto = mapResponseToAirecall(response , username);
+        Airecall_Ktp_DTO airecall_ktp_dto = mapResponseToAirecall(response , username);
 
         // DB에 저장
-        aiRecallService.saveAirecall_4fs(airecall_4fs_dto);
+        aiRecallService.saveAirecall_ktp(airecall_ktp_dto);
     }
 
-    private Airecall_4fs_DTO mapResponseToAirecall(String response , String username) {
+    private Airecall_Ktp_DTO mapResponseToAirecall(String response , String username) {
         try {
             JsonNode root = objectMapper.readTree(response);
             JsonNode contentNode = root
@@ -98,20 +94,18 @@ public class AiRecall_4fs_AnalysisService {
             String airecallTypeString = extractValue(content, "type");
             AirecallType airecallType = AirecallType.fromString(airecallTypeString);
 
-            String patternAnalysis = extractValue(content, "patternAnalysis");
-            String positiveBehavior = extractValue(content, "positiveBehavior");
-            String improvementSuggest = extractValue(content, "improvementSuggest");
-            String utilizationTips = extractValue(content, "utilizationTips");
+            String strength_analysis = extractValue(content, "strength_analysis");
+            String improvement = extractValue(content, "improvement");
+            String scalability = extractValue(content, "scalability");
 
 
-            return new Airecall_4fs_DTO(
+            return new Airecall_Ktp_DTO(
                     airecallType,
                     startDate,
                     endDate,
-                    patternAnalysis,
-                    positiveBehavior,
-                    improvementSuggest,
-                    utilizationTips,
+                    strength_analysis,
+                    improvement,
+                    scalability,
                     username
             );
 

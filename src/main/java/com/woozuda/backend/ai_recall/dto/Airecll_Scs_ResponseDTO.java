@@ -1,7 +1,6 @@
 package com.woozuda.backend.ai_recall.dto;
 
 import com.woozuda.backend.ai_recall.entity.AirecallType;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +10,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Airecll_Scs_DTO {
-    private AirecallType airecallType;
+public class Airecll_Scs_ResponseDTO {
 
     private LocalDate start_date;
 
@@ -41,6 +39,4 @@ public class Airecll_Scs_DTO {
     private String continue_improvement_plan;
 
     private String stop_improvement_plan;
-
-    private String username;
 }
