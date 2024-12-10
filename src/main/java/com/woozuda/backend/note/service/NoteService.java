@@ -10,6 +10,7 @@ import com.woozuda.backend.note.dto.request.QuestionNoteSaveRequestDto;
 import com.woozuda.backend.note.dto.request.RetrospectiveNoteSaveRequestDto;
 import com.woozuda.backend.note.dto.response.DateInfoResponseDto;
 import com.woozuda.backend.note.dto.response.DateListResponseDto;
+import com.woozuda.backend.note.dto.response.NoteCountResponseDto;
 import com.woozuda.backend.note.dto.response.NoteEntryResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
 import com.woozuda.backend.note.entity.CommonNote;
@@ -112,5 +113,11 @@ public class NoteService {
     public void deleteNotes(String username, NoteIdRequestDto requestDto) {
         List<Note> notesToDelete = noteRepository.findAllById(requestDto.getId());
         noteRepository.deleteAll(notesToDelete);
+    }
+
+    public NoteCountResponseDto getNoteCount(String username, LocalDate startDate, LocalDate endDate) {
+        List<Long> idList = diaryRepository.searchDiaryIdList(username);
+
+        return noteRepository.searchNoteCount(idList, startDate, endDate);
     }
 }

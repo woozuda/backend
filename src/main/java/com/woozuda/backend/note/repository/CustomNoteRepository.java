@@ -3,9 +3,11 @@ package com.woozuda.backend.note.repository;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
 import com.woozuda.backend.note.dto.response.DateInfoResponseDto;
 import com.woozuda.backend.note.dto.response.DateListResponseDto;
+import com.woozuda.backend.note.dto.response.NoteCountResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
 import com.woozuda.backend.note.entity.Note;
 
+import java.time.LocalDate;
 import java.util.List;
 
 //TODO search...Note() 메서드 공통: noteId 만으로 해당 노트가 로그인한 사용자의 것인지 보장할 수 없음 -> 추가 로직 구현
@@ -25,5 +27,6 @@ public interface CustomNoteRepository {
 
     List<DateInfoResponseDto> searchDateCounts(List<Long> idList);
 
+    NoteCountResponseDto searchNoteCount(List<Long> idList, LocalDate startDate, LocalDate endDate);
 }
 
