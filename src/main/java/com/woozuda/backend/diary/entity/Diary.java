@@ -2,6 +2,7 @@ package com.woozuda.backend.diary.entity;
 
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.global.entity.BaseTimeEntity;
+import com.woozuda.backend.note.entity.Note;
 import com.woozuda.backend.tag.entity.Tag;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -20,8 +21,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+//TODO 같은 사용자 내 다이어리 이름 중복 X
 @Entity
 @Table(name = "diary")
 @Getter
@@ -36,8 +41,7 @@ public class Diary extends BaseTimeEntity {
     @JoinColumn(name = "user_id", updatable = false, nullable = false)
     private UserEntity user;
 
-    //TODO 이미지 엔티티 생성 후 해당 칼럼 수정
-    @Column(name = "image_id", nullable = false)
+    @Column(name = "image_url", nullable = false)
     private String image;
 
     @Column(nullable = false)
@@ -49,6 +53,9 @@ public class Diary extends BaseTimeEntity {
 
     @Column(nullable = false)
     private Integer noteCount;
+
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<Note> noteList = new ArrayList<>();
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<DiaryTag> tagList = new ArrayList<>();
@@ -77,5 +84,27 @@ public class Diary extends BaseTimeEntity {
             addTag(tag);
         }
         this.image = imgUrl;
+    }
+
+    public void addNote(LocalDate noteDate) {
+        if (startDate == null || startDate.isAfter(noteDate)) {
+            startDate = noteDate;
+        }
+        if (endDate == null || endDate.isBefore(noteDate)) {
+            endDate = noteDate;
+        }
+        noteCount++;
+    }
+
+    public void updateDuration() {
+        List<LocalDate> noteDates = new ArrayList<>(
+                this.noteList.stream()
+                .map(Note::getDate)
+                .toList()
+        );
+
+        Collections.sort(noteDates);
+        this.startDate = noteDates.getFirst();
+        this.endDate = noteDates.getLast();
     }
 }

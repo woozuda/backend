@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("COMMON")
@@ -45,5 +46,18 @@ public class CommonNote extends Note {
 
     public static CommonNote of(Diary diary, String title, LocalDate date, Visibility visibility, Feeling feeling, Weather weather, Season season) {
         return new CommonNote(diary, title, date, visibility, feeling, weather, season);
+    }
+
+    public void update(Diary foundDiary,
+                       String title,
+                       Weather weather,
+                       Season season,
+                       Feeling feeling,
+                       LocalDate date,
+                       String content) {
+        super.update(foundDiary, title, date, List.of(content));
+        this.weather = weather;
+        this.season = season;
+        this.feeling = feeling;
     }
 }

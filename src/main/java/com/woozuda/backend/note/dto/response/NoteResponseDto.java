@@ -2,6 +2,9 @@ package com.woozuda.backend.note.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.querydsl.core.annotations.QueryProjection;
+import com.woozuda.backend.note.entity.type.Feeling;
+import com.woozuda.backend.note.entity.type.Season;
+import com.woozuda.backend.note.entity.type.Weather;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,4 +64,17 @@ public class NoteResponseDto {
     }
 
 
+    //TODO DTO가 도메인에 의존 -> 리팩토링
+    public NoteResponseDto convertEnum() {
+        if (this.weather != null) {
+            this.weather = Weather.fromValue(this.weather);
+        }
+        if (this.season != null) {
+            this.season = Season.fromValue(this.season);
+        }
+        if (this.feeling != null) {
+            this.feeling = Feeling.fromValue(this.feeling);
+        }
+        return this;
+    }
 }
