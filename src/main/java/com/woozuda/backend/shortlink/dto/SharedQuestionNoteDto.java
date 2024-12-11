@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 public class SharedQuestionNoteDto extends SharedNoteDto{
-    private Question question;
+    private String question;
 
     private Feeling feeling;
 
@@ -26,7 +26,7 @@ public class SharedQuestionNoteDto extends SharedNoteDto{
 
     private Season season;
 
-    public SharedQuestionNoteDto(Long id, Diary diary, String title, LocalDate date, List<String> noteContent, Question question, Feeling feeling, Weather weather, Season season){
+    public SharedQuestionNoteDto(Long id, String diary, String title, LocalDate date, List<String> noteContent, String question, Feeling feeling, Weather weather, Season season){
         super(id, diary, title, date, noteContent);
         this.question = question;
         this.feeling = feeling;

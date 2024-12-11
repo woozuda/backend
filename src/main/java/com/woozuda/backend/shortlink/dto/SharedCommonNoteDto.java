@@ -22,7 +22,7 @@ public class SharedCommonNoteDto extends SharedNoteDto{
 
     private Season season;
 
-    public SharedCommonNoteDto(Long id, Diary diary, String title, LocalDate date, List<String> noteContent, Feeling feeling, Weather weather, Season season){
+    public SharedCommonNoteDto(Long id, String diary, String title, LocalDate date, List<String> noteContent, Feeling feeling, Weather weather, Season season){
         super(id, diary, title, date, noteContent);
         this.feeling = feeling;
         this.weather = weather;

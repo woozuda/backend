@@ -1,10 +1,7 @@
 package com.woozuda.backend.shortlink.Service;
 
 
-import com.woozuda.backend.note.entity.CommonNote;
-import com.woozuda.backend.note.entity.Note;
-import com.woozuda.backend.note.entity.QuestionNote;
-import com.woozuda.backend.note.entity.RetrospectiveNote;
+import com.woozuda.backend.note.entity.*;
 import com.woozuda.backend.note.entity.type.Visibility;
 import com.woozuda.backend.note.repository.NoteRepository;
 import com.woozuda.backend.shortlink.dto.*;
@@ -41,37 +38,41 @@ public class ShareService {
     @Transactional
     public List<SharedNoteDto> getSharedNote(String username) {
 
-        // 밑그림
-        // 노트 전체 쿼리 -> where 특정 유저 ->
-        List<Note> searchSharedNoteResults = noteRepository.searchSharedNote("woozuda@gmail.com");
-        List<SharedNoteDto> dtos = new ArrayList<>();
+        //
+        List<SharedNoteDto> commonNoteResults = noteRepository.searchSharedCommonNote("woozuda@gmail.com");
+        List<SharedNoteDto> questionNoteResults = noteRepository.searchSharedQuestionNote("woozuda@gmail.com");
+        List<SharedNoteDto> retrospectiveNoteResults = noteRepository.searchSharedRetrospectiveNote("woozuda@gmail.com");
 
-        for (Note result : searchSharedNoteResults) {
+        List<SharedNoteDto> allSharedNotes = new ArrayList<>();
+        allSharedNotes.addAll(commonNoteResults);
+        allSharedNotes.addAll(questionNoteResults);
+        allSharedNotes.addAll(retrospectiveNoteResults);
 
-            if (result instanceof CommonNote) {
-                CommonNote commonNote = (CommonNote) result;
 
-                dtos.add(new SharedCommonNoteDto(commonNote.getId(), commonNote.getDiary(), commonNote.getTitle(), commonNote.getDate(),
-                        noteRepository.searchNoteContent(commonNote), commonNote.getFeeling(), commonNote.getWeather(), commonNote.getSeason()));
 
-            }else if (result instanceof RetrospectiveNote){
-                RetrospectiveNote retrospectiveNote = (RetrospectiveNote) result;
+        for (SharedNoteDto sharedNote : allSharedNotes) {
 
-                dtos.add(new SharedRetrospectiveNoteDto(retrospectiveNote.getId(), retrospectiveNote.getDiary(), retrospectiveNote.getTitle(), retrospectiveNote.getDate(),
-                        noteRepository.searchNoteContent(retrospectiveNote),retrospectiveNote.getType()));
+            if (sharedNote instanceof SharedCommonNoteDto) {
+                SharedCommonNoteDto commonNote = (SharedCommonNoteDto) sharedNote;
+                System.out.println(commonNote.getTitle());
 
-            }else if (result instanceof QuestionNote){
-                QuestionNote questionNote = (QuestionNote) result;
-
-                dtos.add(new SharedQuestionNoteDto(questionNote.getId(), questionNote.getDiary(), questionNote.getTitle(), questionNote.getDate(),
-                        noteRepository.searchNoteContent(questionNote), questionNote.getQuestion(), questionNote.getFeeling(), questionNote.getWeather(),
-                        questionNote.getSeason()));
-
+            }else if (sharedNote instanceof SharedRetrospectiveNoteDto){
+                SharedRetrospectiveNoteDto retrospectiveNote = (SharedRetrospectiveNoteDto) sharedNote;
+                System.out.println(retrospectiveNote.getType());
+                System.out.println(retrospectiveNote.getNoteContents());
+            }else if (sharedNote instanceof SharedQuestionNoteDto){
+                SharedQuestionNoteDto questionNote = (SharedQuestionNoteDto) sharedNote;
             }
         }
 
-        return dtos;
 
+        return allSharedNotes;
+
+    }
+
+    public List<String> extractContent(List<NoteContent> notecontents){
+
+        return null;
     }
 
 }

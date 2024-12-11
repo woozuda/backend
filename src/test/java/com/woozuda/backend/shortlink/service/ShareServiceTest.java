@@ -146,12 +146,14 @@ public class ShareServiceTest {
         //when
         List<SharedNoteDto> dtos= shareService.getSharedNote("woozuda@gmail.com");
 
+
         for (SharedNoteDto dto : dtos) {
             if (dto instanceof SharedCommonNoteDto) {
-                System.out.println(dto.getNoteContents());
+                System.out.println(dto.getTitle());
             } else if (dto instanceof SharedRetrospectiveNoteDto) {
                 SharedRetrospectiveNoteDto nowdto = (SharedRetrospectiveNoteDto) dto;
                 System.out.println(nowdto.getType());
+                System.out.println(nowdto.getNoteContents());
             } else if (dto instanceof SharedQuestionNoteDto) {
 
             }

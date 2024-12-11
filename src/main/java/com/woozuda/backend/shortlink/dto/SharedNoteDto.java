@@ -17,7 +17,7 @@ import java.util.List;
 public class SharedNoteDto {
     private Long id;
 
-    private Diary diary;
+    private String diary;
 
     private String title;
 

@@ -11,8 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 
 @SpringBootTest
@@ -30,7 +34,7 @@ class AiDiaryServiceTest {
     public void testSaveAiDiary() {
         // given: test data 준비
         AiDiaryDTO aiDiaryDTO = new AiDiaryDTO(
-                "Seoul", "Jogging", "Happy", "Sunny",
+                LocalDate.now(), LocalDate.now(),"Seoul", "Jogging", "Happy", "Sunny",
                 0.6f, 0.4f, 0.75f, 0.25f, "Keep up the good work!"
         );
 
@@ -69,4 +73,5 @@ class AiDiaryServiceTest {
 
         logger.info("AiDiary deleted successfully with ID: {}", savedAiDiary.getId());
     }
+
 }

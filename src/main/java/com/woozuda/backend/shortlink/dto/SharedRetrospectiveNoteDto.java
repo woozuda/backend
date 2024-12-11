@@ -20,7 +20,7 @@ import java.util.List;
 public class SharedRetrospectiveNoteDto extends SharedNoteDto{
     private Framework type;
 
-    public SharedRetrospectiveNoteDto(Long id, Diary diary, String title, LocalDate date, List<String> noteContent, Framework type){
+    public SharedRetrospectiveNoteDto(Long id, String diary, String title, LocalDate date, List<String> noteContent, Framework type){
         super(id, diary, title, date, noteContent);
         this.type = type;
     }
