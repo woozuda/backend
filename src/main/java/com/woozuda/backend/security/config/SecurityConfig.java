@@ -4,6 +4,7 @@ import com.woozuda.backend.account.service.CustomOAuth2UserService;
 import com.woozuda.backend.security.jwt.JWTFilter;
 import com.woozuda.backend.security.jwt.JWTUtil;
 import com.woozuda.backend.security.jwt.LoginFilter;
+import com.woozuda.backend.security.oauth2.CustomAuthenticationEntryPoint;
 import com.woozuda.backend.security.oauth2.CustomSuccessHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,8 @@ public class SecurityConfig {
     // https://stackoverflow.com/questions/51986766/spring-security-getauthenticationmanager-returns-null-within-custom-filter
     private final AuthenticationConfiguration authenticationConfiguration;
 
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
     //AuthenticationManager Bean 등록
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -78,6 +81,10 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/", "/join","/error", "/account/sample/alluser", "/favicon.ico").permitAll()
                         .requestMatchers("/account/sample/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
+
+        http
+                .exceptionHandling(handling -> handling
+                        .authenticationEntryPoint(customAuthenticationEntryPoint));
 
         //UserNamePasswordAuthenticationFilter 자리에 커스텀 하게 만든 LoginFilter를 실행한다.
         //jwt 방식으로 구현하다 보니 , form login 을 비활성화했고, UserNamePasswordAuthenticationFilter 도 비활성화 되었음 (그래서 커스텀 구현이 필요)
