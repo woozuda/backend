@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -54,7 +55,7 @@ public class SecurityConfig {
 
     //비밀번호 평문 -> 비문화
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -78,7 +79,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join","/error", "/account/sample/alluser", "/favicon.ico").permitAll()
+                        .requestMatchers("/login", "/", "/join", "/error", "/account/sample/alluser", "/favicon.ico").permitAll()
                         .requestMatchers("/account/sample/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
@@ -95,9 +96,8 @@ public class SecurityConfig {
                 //.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), BasicAuthenticationFilter.class);
                 .addFilterAfter(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
-                //.addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
-                //.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), OAuth2LoginAuthenticationFilter.class);
-
+        //.addFilterAfter(new JWTFilter(jwtUtil), OAuth2LoginAuthenticationFilter.class)
+        //.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), OAuth2LoginAuthenticationFilter.class);
 
 
         //stateless 세션 설정
@@ -105,22 +105,29 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        http
+                .cors(cors -> cors
+                        .configurationSource(corsConfigurationSource()));
+
 
         return http.build();
     }
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("https://woozuda.swygbro.com")
-                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-                        .allowedHeaders("Content-Type", "Authorization")
-                        .allowCredentials(true);
-            }
-        };
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedOrigins(Arrays.asList("https://woozuda.swygbro.com"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "Set-Cookie"));
+        //configuration.setExposedHeaders(Arrays.asList(AUTHORIZATION, SET_COOKIE, "TemporaryAuth"));
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
     }
 
 }
