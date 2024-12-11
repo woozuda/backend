@@ -38,13 +38,13 @@ public class AiRecallController {
      * @return
      */
     @PostMapping("/analyze/{type}")
-    public ResponseEntity<String> analyzeRecall4fs(
+    public void analyzeRecall4fs(
             @PathVariable("type") Framework type,
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
             @AuthenticationPrincipal UserEntity user) {
         String username = user.getUsername();
-        List<RetroNoteEntryResponseDto> recallList = customeNoteRepoForAiService.getRetroNotes(username ,start_date , end_date , type);
+        List<RetroNoteEntryResponseDto> recallList = customeNoteRepoForAiService.getRetroNotes(username, start_date, end_date, type);
         // type 에 따라 다른 분석 서비스 호출
         if (type.equals(Framework.FOUR_F_S)) {
             aiRecall_4fs_AnalysisService.analyzeAirecall(recallList, username);
@@ -55,8 +55,6 @@ public class AiRecallController {
         } else if (type.equals(Framework.SCS)){
             aiRecall_scs_AnalysisService.analyzeAirecall(recallList, username);
         }
-
-        return ResponseEntity.ok("회고 완료!");
     }
 
     @GetMapping("/4FS")

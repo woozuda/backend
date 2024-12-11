@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Airecall_Ktp_DTO {
-    private AirecallType airecallType;
+    private String airecallType;
     private LocalDate start_date;
     private LocalDate end_date;
     private String strength_analysis;

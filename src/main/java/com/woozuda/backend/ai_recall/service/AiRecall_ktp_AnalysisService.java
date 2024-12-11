@@ -91,8 +91,7 @@ public class AiRecall_ktp_AnalysisService {
             /**
              * type 변경
              */
-            String airecallTypeString = extractValue(content, "type");
-            AirecallType airecallType = AirecallType.fromString(airecallTypeString);
+            String airecallType = extractValue(content, "type");
 
             String strength_analysis = extractValue(content, "strength_analysis");
             String improvement = extractValue(content, "improvement");

@@ -15,7 +15,7 @@ public interface AiRecallpmiRpository extends JpaRepository<Airecall_pmi, Long> 
     @Query("SELECT a FROM Airecall_pmi a " +
             "JOIN Airecall ac ON a.air_id = ac.air_id " +
             "JOIN ac.user u " +  // 유저와 조인
-            "WHERE a.airecallType = 'PMI' " +
+            "WHERE a.type = 'PMI' " +
             "AND ac.start_date BETWEEN :start_date AND :end_date " +
             "AND ac.end_date BETWEEN :start_date AND :end_date " +
             "AND ac.air_id = :air_id " +

@@ -95,8 +95,8 @@ public class AiRecall_4fs_AnalysisService {
             /**
              * type 변경
              */
-            String airecallTypeString = extractValue(content, "type");
-            AirecallType airecallType = AirecallType.fromString(airecallTypeString);
+            String airecallType = extractValue(content, "type");
+
 
             String patternAnalysis = extractValue(content, "patternAnalysis");
             String positiveBehavior = extractValue(content, "positiveBehavior");

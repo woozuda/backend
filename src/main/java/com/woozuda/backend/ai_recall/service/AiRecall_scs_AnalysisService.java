@@ -51,18 +51,18 @@ public class AiRecall_scs_AnalysisService {
                     start_date: 2024-12-01
                     end_date: 2024-12-31
                     type : SCS
-                    start_summary : 
-                    start_strength : 
+                    start_summary :
+                    start_strength :
                     start_suggestion :
-                    continue_summary  
-                    continue_strength
-                    continue_suggestion
-                    stop_summary
-                    stop_strength
-                    stop_suggestion
-                    start_improvement_plan
-                    continue_improvement_plan
-                    stop_improvement_plan
+                    continue_summary: 
+                    continue_strength:
+                    continue_suggestion:
+                    stop_summary:
+                    stop_strength:
+                    stop_suggestion:
+                    start_improvement_plan:
+                    continue_improvement_plan:
+                    stop_improvement_plan:
                """;
         log.info("사용자 메시지 내용: {}", userMessage.toString());
         // ChatGPT API 호출
@@ -98,8 +98,7 @@ public class AiRecall_scs_AnalysisService {
             /**
              * type 변경
              */
-            String airecallTypeString = extractValue(content, "type");
-            AirecallType airecallType = AirecallType.fromString(airecallTypeString);
+            String airecallType = extractValue(content, "type");
 
             String start_summary = extractValue(content, "start_summary");
             String start_strength = extractValue(content, "start_strength");

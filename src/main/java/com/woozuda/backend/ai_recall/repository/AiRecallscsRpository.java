@@ -15,7 +15,7 @@ public interface AiRecallscsRpository extends JpaRepository<Airecall_scs, Long> 
     @Query("SELECT a FROM Airecall_scs a " +
             "JOIN Airecall ac ON a.air_id = ac.air_id " +
             "JOIN ac.user u " +  // 유저와 조인
-            "WHERE a.airecallType = 'SCS' " +
+            "WHERE a.type = 'SCS' " +
             "AND ac.start_date BETWEEN :start_date AND :end_date " +
             "AND ac.end_date BETWEEN :start_date AND :end_date " +
             "AND ac.air_id = :air_id " +

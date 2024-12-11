@@ -11,6 +11,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "retrospective_ktp")
+@DiscriminatorValue("KTP")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,14 +28,14 @@ public class Airecall_ktp extends Airecall{
     // 자식 엔터티 생성자: 부모 필드 + 자식 필드 초기화
     public Airecall_ktp(
             UserEntity user,
-            AirecallType airecallType,
+            String type,
             LocalDate start_date,
             LocalDate end_date,
             String strength_analysis,
             String improvement,
             String scalability
     ) {
-        super(user,airecallType, start_date, end_date);
+        super(user,type, start_date, end_date);
         this.strength_analysis = strength_analysis;
         this.improvement = improvement;
         this.scalability = scalability;

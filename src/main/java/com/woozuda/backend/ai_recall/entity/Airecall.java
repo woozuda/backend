@@ -27,9 +27,8 @@ public class Airecall extends BaseTimeEntity {
     @JoinColumn(name = "user_id", updatable = false, nullable = false)
     private UserEntity user;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AirecallType airecallType;
+    @Column(insertable = false, updatable = false) // 읽기 전용 필드 추가
+    private String type;
 
     @Column(nullable = false)
     private LocalDate start_date;  // 시작일
@@ -37,9 +36,9 @@ public class Airecall extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate end_date;  // 끝일
 
-    public Airecall(UserEntity username, AirecallType airecallType, LocalDate start_date, LocalDate end_date) {
+    public Airecall(UserEntity username, String type, LocalDate start_date, LocalDate end_date) {
         this.user = username;
-        this.airecallType = airecallType;
+        this.type = type;
         this.start_date = start_date;
         this.end_date = end_date;
 

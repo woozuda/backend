@@ -12,6 +12,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "retrospective_4fs")
+@DiscriminatorValue("4FS")
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +32,7 @@ public class Airecall_4fs extends Airecall{
     // 자식 엔터티 생성자: 부모 필드 + 자식 필드 초기화
     public Airecall_4fs(
             UserEntity user,
-            AirecallType airecallType,
+            String airecallType,
             LocalDate start_date,
             LocalDate end_date,
             String patternAnalysis,

@@ -93,8 +93,7 @@ public class AiRecall_pmi_AnalysisService {
             /**
              * type 변경
              */
-            String airecallTypeString = extractValue(content, "type");
-            AirecallType airecallType = AirecallType.fromString(airecallTypeString);
+            String airecallType = extractValue(content, "type");
 
             String positive = extractValue(content, "positive");
             String minus = extractValue(content, "minus");

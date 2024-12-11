@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "retrospective_pmi")
 @Getter
+@DiscriminatorValue("PMI")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Airecall_pmi extends Airecall{
@@ -31,7 +32,7 @@ public class Airecall_pmi extends Airecall{
     // 자식 엔터티 생성자: 부모 필드 + 자식 필드 초기화
     public Airecall_pmi(
             UserEntity user,
-            AirecallType airecallType,
+            String type,
             LocalDate start_date,
             LocalDate end_date,
             String positive,
@@ -39,7 +40,7 @@ public class Airecall_pmi extends Airecall{
             String interesting,
             String conclusion_action
     ) {
-        super(user,airecallType, start_date, end_date);
+        super(user,type, start_date, end_date);
         this.positive = positive;
         this.minus = minus;
         this.interesting = interesting;

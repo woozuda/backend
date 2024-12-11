@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "retrospective_scs")
 @Getter
+@DiscriminatorValue("SCS")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Airecall_scs extends Airecall{
@@ -55,7 +56,7 @@ public class Airecall_scs extends Airecall{
     // 자식 엔터티 생성자: 부모 필드 + 자식 필드 초기화
     public Airecall_scs(
             UserEntity user,
-            AirecallType airecallType,
+            String type,
             LocalDate start_date,
             LocalDate end_date,
             String start_summary,
@@ -71,7 +72,7 @@ public class Airecall_scs extends Airecall{
             String continue_improvement_plan,
             String stop_improvement_plan
     ) {
-        super(user,airecallType, start_date, end_date);
+        super(user,type, start_date, end_date);
         this.start_summary = start_summary;
         this.start_strength = start_strength;
         this.start_suggestion = start_suggestion;

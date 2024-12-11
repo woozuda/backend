@@ -28,6 +28,11 @@ public class AiRecallService {
     private final AiRecallscsRpository aiRecallscsRpository;
     private final UserRepository userRepository;
 
+    /**
+     * 4FS
+     * @param airecall_4fs_dto
+     */
+
     public void saveAirecall_4fs(Airecall_4fs_DTO airecall_4fs_dto) {
         UserEntity username = userRepository.findByUsername(airecall_4fs_dto.getUsername());
         Airecall_4fs aiRecall4fs = Airecall_4fs.toairecall4fsEntity(airecall_4fs_dto , username);
@@ -37,7 +42,6 @@ public class AiRecallService {
     }
 
     public Airecall_4fs_ResponseDTO getAirecall4fs(LocalDate start_date, LocalDate end_date, Long id, String username) {
-        // Airecall_4fs 정보를 가져옴
         Airecall_4fs airecall_4fs = aiRecall4fsRpository.findByAirecall4FSTypeAndDateRangeAndUserId(start_date, end_date, id, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~"));
         return  new Airecall_4fs_ResponseDTO(
@@ -49,6 +53,11 @@ public class AiRecallService {
                 airecall_4fs.getUtilizationTips()
         );
     }
+
+    /**
+     * KTP
+     * @param airecall_ktp_dto
+     */
     public void saveAirecall_ktp(Airecall_Ktp_DTO airecall_ktp_dto) {
         UserEntity username = userRepository.findByUsername(airecall_ktp_dto.getUsername());
         Airecall_ktp aiReacllktp = Airecall_ktp.toairecallktpEntity(airecall_ktp_dto , username);
@@ -56,9 +65,6 @@ public class AiRecallService {
         aiRecallktpRpository.save(aiReacllktp);
         log.info("Airecall 저장 완료: {}", aiReacllktp);
     }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
     public Airecall_Ktp_ResponseDTO getAirecallktp(LocalDate start_date, LocalDate end_date, Long id, String username) {
         Airecall_ktp airecall_ktp = aiRecallktpRpository.findByAirecallTypeKTPAndDateRangeAndUserId(start_date, end_date, id, username)
@@ -72,10 +78,11 @@ public class AiRecallService {
         );
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
+    /**
+     * PMI
+     * @param airecall_pmi_dto
+     */
     public void saveAirecall_pmi(Airecall_Pmi_DTO airecall_pmi_dto) {
         UserEntity username = userRepository.findByUsername(airecall_pmi_dto.getUsername());
         Airecall_pmi aiReacllpmi = Airecall_pmi.toairecallpmiEntity(airecall_pmi_dto , username);
@@ -97,7 +104,10 @@ public class AiRecallService {
         );
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * SCS
+     * @param airecall_scs_dto
+     */
 
     public void saveAirecall_scs(Airecll_Scs_DTO airecall_scs_dto) {
         UserEntity username = userRepository.findByUsername(airecall_scs_dto.getUsername());
