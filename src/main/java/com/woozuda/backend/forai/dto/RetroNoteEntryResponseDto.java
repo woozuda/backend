@@ -1,4 +1,4 @@
-package com.woozuda.backend.forai.repository.dto;
+package com.woozuda.backend.forai.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+/*
+회고
+ */
 public class RetroNoteEntryResponseDto {
 
     private Long id; //노트 ID

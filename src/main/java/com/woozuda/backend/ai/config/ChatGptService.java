@@ -18,10 +18,7 @@ public class ChatGptService {
      */
     private final RestTemplate restTemplate;
 
-    @Value("${jwt.hashcode}")
-    private String jwtToken;
-
-    @Value("${openai.api.key}") // apiKey
+    @Value("${openai.api.key}")
     private String apiKey;
 
     private static final int MAX_CONTEXT_TOKENS = 4096; // max 토큰 값 설정
@@ -51,7 +48,6 @@ public class ChatGptService {
 
         // HttpHeader에 추가
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + apiKey);
         headers.set("x-api-key", apiKey); // x-api-key 헤더에 API 키 설정
         headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 

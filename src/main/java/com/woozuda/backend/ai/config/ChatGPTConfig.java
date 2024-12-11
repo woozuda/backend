@@ -17,15 +17,8 @@ import org.springframework.http.HttpHeaders;
 @Slf4j
 public class ChatGPTConfig {
 
-    // OpenAI API 키를 application.properties 또는 application.yml 파일에서 가져옵니다.
-    @Value("${jwt.hashcode}")
-    private String jwtToken;
-
     @Value("${openai.api.key}")
     private String apiKey;
-
-
-
 
     /**
      * RestTemplate 빈 설정.
@@ -46,9 +39,6 @@ public class ChatGPTConfig {
     @Bean
     public HttpHeaders httpHeaders() {
         HttpHeaders headers = new HttpHeaders();
-
-        // JWT 토큰을 Authorization 헤더에 추가
-        headers.set("Authorization", "Bearer " + jwtToken);
 
         // API 키를 x-api-key 헤더에 추가
         headers.set("x-api-key", apiKey);

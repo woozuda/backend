@@ -1,18 +1,20 @@
 package com.woozuda.backend.ai_diary.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 /**
- * 저장 DTO
+ * 응답 결과 DTO GET
  */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AiDiaryDTO {
-    private LocalDate start_date;
-    private LocalDate end_date;
+public class AiDiaryResponseDTO {
+    private LocalDate start_date; // 시작 날짜!!
+    private LocalDate end_date; // 끝 날짜!!
     private String place; // 장소
     private String activity; // 활동
     private String emotion; // 감정
@@ -22,8 +24,4 @@ public class AiDiaryDTO {
     private float positive; // 긍정 감정
     private float denial; // 부정 감정
     private String suggestion; // 제안
-    private String username; // 사용자 ID
 }
-
-
-
