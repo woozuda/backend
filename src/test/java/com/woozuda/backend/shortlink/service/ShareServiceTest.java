@@ -9,7 +9,8 @@ import com.woozuda.backend.note.entity.*;
 import com.woozuda.backend.note.entity.type.*;
 import com.woozuda.backend.note.repository.NoteRepository;
 import com.woozuda.backend.note.repository.QuestionRepository;
-import com.woozuda.backend.shortlink.dto.NoteIdDto;
+import com.woozuda.backend.shortlink.Service.ShareService;
+import com.woozuda.backend.shortlink.dto.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,11 +26,13 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.woozuda.backend.account.entity.AiType.PICTURE_NOVEL;
 import static java.util.Arrays.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,8 +53,12 @@ public class ShareServiceTest {
     @Autowired
     private NoteRepository noteRepository;
 
+
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private ShareService shareService;
 
 
     // 각 테스트 전에 noteRepository
@@ -108,5 +115,51 @@ public class ShareServiceTest {
         assertEquals(Visibility.PRIVATE, changedNote2.getVisibility());
         assertEquals(Visibility.PRIVATE, changedNote4.getVisibility());
         assertEquals(Visibility.PRIVATE, changedNote6.getVisibility());
+    }
+
+
+    @WithMockUser(username = "woozuda@gmail.com", roles = {"ADMIN"})
+    @DisplayName("노트 공유 시 visibility 칼럼이 Public 으로 바뀌는지 검사")
+    @Test
+    void getSharedNoteTest() throws Exception {
+
+        //given - 데이터 넣기 (user 1명, diary 1개, question 1개 ,note 5개)
+        UserEntity user1 = new UserEntity(null, "woozuda@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL);
+        UserEntity user2 = new UserEntity(null, "rodom1018@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL);
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        Diary diary1 = Diary.of(user1, "https://woozuda-image.kr.object.ncloudstorage.com/random-image-1.jpg", "my first diary");
+        Diary diary2 = Diary.of(user2, "https://woozuda-image.kr.object.ncloudstorage.com/random-image-1.jpg", "my first diary22");
+        diaryRepository.save(diary1);
+        diaryRepository.save(diary2);
+
+        Note note1 = CommonNote.of(diary1, "나는 노트 1이다", LocalDate.now(), Visibility.PUBLIC, Feeling.JOY, Weather.SUNNY, Season.WINTER);
+        Note note2 = CommonNote.of(diary1, "나는 노트 2이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
+        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PUBLIC, Framework.KTP);
+        Note note4 = CommonNote.of(diary2, "나는 노트 4이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
+        Note note5 = CommonNote.of(diary2, "나는 노트 5이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
+        Note note6 = RetrospectiveNote.of(diary2, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KTP);
+
+        noteRepository.saveAll(Arrays.asList(note1, note2, note3, note4, note5, note6));
+
+        //when
+        List<SharedNoteDto> dtos= shareService.getSharedNote("woozuda@gmail.com");
+
+
+        for (SharedNoteDto dto : dtos) {
+            if (dto instanceof SharedCommonNoteDto) {
+                System.out.println(dto.getTitle());
+            } else if (dto instanceof SharedRetrospectiveNoteDto) {
+                SharedRetrospectiveNoteDto nowdto = (SharedRetrospectiveNoteDto) dto;
+                System.out.println(nowdto.getType());
+                System.out.println(nowdto.getNoteContents());
+            } else if (dto instanceof SharedQuestionNoteDto) {
+
+            }
+        }
+
+
+        //then - 데이터 값 확인
     }
 }

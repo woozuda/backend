@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
+
 @SpringBootTest
 @Transactional
 class AiDiaryServiceTest {
@@ -23,5 +25,4 @@ class AiDiaryServiceTest {
     private AiDiaryRepository aiDiaryRepository;
 
     //@Test
-
 }
