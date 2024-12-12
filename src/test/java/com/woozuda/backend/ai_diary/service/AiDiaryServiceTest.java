@@ -34,7 +34,7 @@ class AiDiaryServiceTest {
     public void testSaveAiDiary() {
         // given: test data 준비
         AiDiaryDTO aiDiaryDTO = new AiDiaryDTO(
-                LocalDate.now(), LocalDate.now(),"Seoul", "Jogging", "Happy", "Sunny",
+                "Seoul", "Jogging", "Happy", "Sunny",
                 0.6f, 0.4f, 0.75f, 0.25f, "Keep up the good work!"
         );
 
