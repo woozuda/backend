@@ -14,6 +14,7 @@ import com.woozuda.backend.shortlink.Service.ShareService;
 import com.woozuda.backend.shortlink.dto.NoteIdDto;
 import com.woozuda.backend.shortlink.dto.SharedNoteByDateDto;
 import com.woozuda.backend.shortlink.dto.SharedNoteDto;
+import com.woozuda.backend.shortlink.dto.SharedNoteResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,9 +45,9 @@ public class ShareController {
     }
 
     @GetMapping("/note")
-    public ResponseEntity<List<SharedNoteByDateDto>> getSharedNote(@AuthenticationPrincipal CustomUser customUser){
+    public ResponseEntity<SharedNoteResponseDto> getSharedNote(@AuthenticationPrincipal CustomUser customUser){
         String username = customUser.getUsername();
-        List<SharedNoteByDateDto> dtos = shareService.getSharedNote(username);
+        SharedNoteResponseDto dtos = shareService.getSharedNote(username);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 

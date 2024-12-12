@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
@@ -39,18 +40,27 @@ public class ShareService {
 
 
     @Transactional
-    public List<SharedNoteByDateDto> getSharedNote(String username) {
+    public SharedNoteResponseDto getSharedNote(String username) {
 
         //
         List<SharedNoteDto> commonNoteResults = noteRepository.searchSharedCommonNote("woozuda@gmail.com");
         List<SharedNoteDto> questionNoteResults = noteRepository.searchSharedQuestionNote("woozuda@gmail.com");
         List<SharedNoteDto> retrospectiveNoteResults = noteRepository.searchSharedRetrospectiveNote("woozuda@gmail.com");
 
+        /*
         List<SharedNoteDto> allSharedNotes = new ArrayList<>();
         allSharedNotes.addAll(commonNoteResults);
         allSharedNotes.addAll(questionNoteResults);
         allSharedNotes.addAll(retrospectiveNoteResults);
+        */
 
+        List<SharedNoteTypeDto> allSharedNotes = Stream.concat(
+                commonNoteResults.stream().map(note -> new SharedNoteTypeDto("COMMON", note)),
+                Stream.concat(
+                        questionNoteResults.stream().map(note -> new SharedNoteTypeDto("QUESTION", note)),
+                        retrospectiveNoteResults.stream().map(note -> new SharedNoteTypeDto("RETROSPECTIVE", note))
+                )
+        ).collect(Collectors.toList());
         /*
         for (SharedNoteDto sharedNote : allSharedNotes) {
 
@@ -69,14 +79,19 @@ public class ShareService {
         */
 
         // 날짜 별로 group by
+        Map<LocalDate, List<SharedNoteTypeDto>> allSharedNotesByDate = allSharedNotes.stream()
+                .collect(Collectors.groupingBy(dto -> dto.getNote().getDate()));
+        /*
         Map<LocalDate, List<SharedNoteDto>> allSharedNotesByDate = allSharedNotes.stream()
                 .collect(Collectors.groupingBy(SharedNoteDto::getDate));
-
+        */
         List<SharedNoteByDateDto> sharedNotesByDateDtoList = allSharedNotesByDate.entrySet().stream()
                 .map(entry -> new SharedNoteByDateDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
 
-        return sharedNotesByDateDtoList;
+        // totalCount 반영
+
+        return new SharedNoteResponseDto(allSharedNotes.size(), sharedNotesByDateDtoList);
 
     }
 
