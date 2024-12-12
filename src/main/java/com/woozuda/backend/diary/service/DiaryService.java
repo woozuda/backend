@@ -83,7 +83,7 @@ public class DiaryService {
         UserEntity foundUser = userRepository.findByUsername(username);
         Diary diary = Diary.of(foundUser, requestDto.getImgUrl(), requestDto.getTitle());
 
-        List<String> tags = requestDto.getTags();
+        List<String> tags = requestDto.getSubject();
         for (String tagName : tags) {
             Tag foundTag = tagRepository.findByName(tagName);
             if (foundTag == null) {
@@ -99,7 +99,7 @@ public class DiaryService {
     public DiaryIdResponseDto updateDiary(String username, Long diaryId, DiarySaveRequestDto requestDto) {
         UserEntity foundUser = userRepository.findByUsername(username);
 
-        List<String> tagNames = requestDto.getTags();
+        List<String> tagNames = requestDto.getSubject();
         List<Tag> tags = new ArrayList<>();
         for (String tagName : tagNames) {
             Tag foundTag = tagRepository.findByName(tagName);
