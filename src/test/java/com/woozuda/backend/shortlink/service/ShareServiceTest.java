@@ -64,9 +64,9 @@ public class ShareServiceTest {
     // 각 테스트 전에 noteRepository
     @BeforeEach
     void setUp(){
-        userRepository.deleteAll();
-        diaryRepository.deleteAll();
-        noteRepository.deleteAll();
+        //userRepository.deleteAll();
+        //diaryRepository.deleteAll();
+        //noteRepository.deleteAll();
     }
 
     @WithMockUser(username = "woozuda@gmail.com", roles = {"ADMIN"})
