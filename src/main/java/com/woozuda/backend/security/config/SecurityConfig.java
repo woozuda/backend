@@ -76,6 +76,12 @@ public class SecurityConfig {
                         .successHandler(customSuccessHandler)
                 );
 
+        // 비인가자가 접근시  https://woozuda.swygbro.com/auth/login 에 리다이렉션.
+        http
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                );
+
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
