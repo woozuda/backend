@@ -14,9 +14,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class LinkController {
-
-    @PostMapping("/new")
-    public ResponseEntity<Void> makeSharedNote() {
-
-    }
 }
