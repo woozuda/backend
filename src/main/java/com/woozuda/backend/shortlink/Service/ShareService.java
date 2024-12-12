@@ -43,9 +43,9 @@ public class ShareService {
     public SharedNoteResponseDto getSharedNote(String username) {
 
         //
-        List<SharedNoteDto> commonNoteResults = noteRepository.searchSharedCommonNote("woozuda@gmail.com");
-        List<SharedNoteDto> questionNoteResults = noteRepository.searchSharedQuestionNote("woozuda@gmail.com");
-        List<SharedNoteDto> retrospectiveNoteResults = noteRepository.searchSharedRetrospectiveNote("woozuda@gmail.com");
+        List<SharedNoteDto> commonNoteResults = noteRepository.searchSharedCommonNote(username);
+        List<SharedNoteDto> questionNoteResults = noteRepository.searchSharedQuestionNote(username);
+        List<SharedNoteDto> retrospectiveNoteResults = noteRepository.searchSharedRetrospectiveNote(username);
 
         /*
         List<SharedNoteDto> allSharedNotes = new ArrayList<>();
