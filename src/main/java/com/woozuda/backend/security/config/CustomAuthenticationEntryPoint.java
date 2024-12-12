@@ -10,7 +10,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        // Redirect to your desired URL
-        response.sendRedirect("https://woozuda-release.shop"); // Change this to your desired URL
+        // 로그인 실패 시 리다이렉트
+        response.sendRedirect("https://woozuda-release.shop");
     }
 }
