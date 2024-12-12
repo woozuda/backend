@@ -1,4 +1,4 @@
-package com.woozuda.backend.forai.repository.dto;
+package com.woozuda.backend.forai.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
-/*
-자유 일기, 오늘의 질문 일기 관련 정보
- */
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+/**
+ * 일기
+ */
 public class NonRetroNoteEntryResponseDto {
 
     private String type; //일기 종류(COMMON, QUESTION)
