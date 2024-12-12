@@ -65,6 +65,7 @@ jobs:
       # TODO 다운로드 경로가 지속적으로 바뀜. 일단은 github 시크릿키로 다운로드 url을 등록하고, 추후 최신 파일을 자동으로 찾아서 다운로드하는 방법 적용
       # TODO NCP CLI 가 작은 용량이 아니다보니 설치하는데 시간이 많이 걸릴 듯. 캐싱을 사용하거나, 아예 기본 가상 머신(ubuntu-latest) 대신 NCP CLI가 설치돼있는 커스텀 클라우드 시스템을 사용 ('self-hosted-runner')
       #     <- 일단 전체 파이프라인을 완료하는데 걸리는 시간을 확인하고 결정
+      # TODO 시간은 생각보다 별로 안 걸리지만, 관련 로그가 너무 많이 뜸.
       # 8. NCP CLI 설정
       - name: Configure NCP CLI
         run: |
