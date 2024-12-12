@@ -118,7 +118,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("https://woozuda.swygbro.com"));
+        configuration.setAllowedOrigins(Arrays.asList("https://woozuda.swygbro.com","http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "Set-Cookie"));
         //configuration.setExposedHeaders(Arrays.asList(AUTHORIZATION, SET_COOKIE, "TemporaryAuth"));
