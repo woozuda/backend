@@ -11,6 +11,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         // Redirect to your desired URL
-        response.sendRedirect("https://woozuda.swygbro.com/auth/login"); // Change this to your desired URL
+        response.sendRedirect("https://woozuda-release.shop"); // Change this to your desired URL
     }
 }
