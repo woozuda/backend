@@ -144,20 +144,7 @@ public class ShareServiceTest {
         noteRepository.saveAll(Arrays.asList(note1, note2, note3, note4, note5, note6));
 
         //when
-        List<SharedNoteDto> dtos= shareService.getSharedNote("woozuda@gmail.com");
-
-
-        for (SharedNoteDto dto : dtos) {
-            if (dto instanceof SharedCommonNoteDto) {
-                System.out.println(dto.getTitle());
-            } else if (dto instanceof SharedRetrospectiveNoteDto) {
-                SharedRetrospectiveNoteDto nowdto = (SharedRetrospectiveNoteDto) dto;
-                System.out.println(nowdto.getType());
-                System.out.println(nowdto.getNoteContents());
-            } else if (dto instanceof SharedQuestionNoteDto) {
-
-            }
-        }
+        SharedNoteResponseDto sharedNoteResponseDto= shareService.getSharedNote("woozuda@gmail.com");
 
 
         //then - 데이터 값 확인
