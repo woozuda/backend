@@ -62,32 +62,47 @@ jobs:
           TIMESTAMP: ${{ env.TIMESTAMP }}
         run: aws --endpoint-url=https://kr.object.ncloudstorage.com s3 cp ./deploy_${TIMESTAMP}.zip s3://${{ secrets.RELEASE_BUCKET_NAME }}/deploy_${TIMESTAMP}.zip
 
+      # 8. NCP CLI 캐싱
+      - name: Cache NCP CLI
+        uses: actions/cache@v4
+        id: cache
+        with:
+          path: ~/ncp-cli
+          key: ${{ runner.os }}-${{ secrets.NCP_CLI_FILE_NAME }}
+
       # TODO 다운로드 경로가 지속적으로 바뀜. 일단은 github 시크릿키로 다운로드 url을 등록하고, 추후 최신 파일을 자동으로 찾아서 다운로드하는 방법 적용
       # TODO NCP CLI 가 작은 용량이 아니다보니 설치하는데 시간이 많이 걸릴 듯. 캐싱을 사용하거나, 아예 기본 가상 머신(ubuntu-latest) 대신 NCP CLI가 설치돼있는 커스텀 클라우드 시스템을 사용 ('self-hosted-runner')
       #     <- 일단 전체 파이프라인을 완료하는데 걸리는 시간을 확인하고 결정
-      # TODO 시간은 생각보다 별로 안 걸리지만, 관련 로그가 너무 많이 뜸.
-      # 8. NCP CLI 설정
+      #     <- 캐싱 적용 완료
+      # 8. NCP CLI 설치
+      - name: Install NCP CLI
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/ncp-cli
+          cd ~/ncp-cli
+          wget ${{ secrets.NCP_CLI_DOWNLOAD_URL }}${{ secrets.NCP_CLI_FILE_NAME }}.zip
+          unzip ${{ secrets.NCP_CLI_FILE_NAME }}.zip && rm ${{ secrets.NCP_CLI_FILE_NAME }}.zip
+
+      # 9. NCP CLI 설정
+      # TODO 이 단계를 없애고, ncp cli를 쓰는 단계에서 직접 환경변수로 인증 정보를 설정할 수 있는지 확인
       - name: Configure NCP CLI
         run: |
           cd ~
-          wget ${{ secrets.NCP_CLI_DOWNLOAD_URL }}${{ secrets.NCP_CLI_FILE_NAME }}.zip
-          unzip ${{ secrets.NCP_CLI_FILE_NAME }}.zip
           mkdir .ncloud
           echo -e "[DEFAULT]\nncloud_access_key_id = ${{ secrets.NCP_ACCESS_KEY }}\nncloud_secret_access_key = ${{ secrets.NCP_SECRET_ACCESS_KEY }}\nncloud_api_url = ${{ secrets.NCP_API_URL }}" >> .ncloud/configure
 
-      # 9. Github Actions의 IP 주소 받아오기
+      # 10. Github Actions의 IP 주소 받아오기
       - name: Get Github Actions Runner's IP
         id: ip
         uses: haythem/public-ip@v1.3
 
-      # 10. GitHub Actions의 IP 주소를 NCloud Server의 ACG에 추가
+      # 11. GitHub Actions의 IP 주소를 NCloud Server의 ACG에 추가
       - name: Add Runner's IP to NCloud ACG
         run: |
-          cd ~
-          cd ${{ secrets.NCP_CLI_FILE_NAME }}/cli_linux
+          cd ~/ncp-cli/${{ secrets.NCP_CLI_FILE_NAME }}/cli_linux
           ./ncloud vserver addAccessControlGroupInboundRule --regionCode KR --vpcNo ${{ secrets.NCP_VPC_NO }} --accessControlGroupNo ${{ secrets.NCP_RELEASE_ACG_NO }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ steps.ip.outputs.ipv4 }}/32', portRange='22'"
 
-      # 11. NCloud Server 에서 배포 스크립트 실행
+      # 12. NCloud Server 에서 배포 스크립트 실행
       - name: SSH into NCloud Server and Deploy
         uses: appleboy/ssh-action@v1.2.0
         env:
@@ -106,11 +121,11 @@ jobs:
             chmod +x ./deploy.sh
             ./deploy.sh
 
-      # 12. GitHub Actions의 IP 주소를 NCloud Server의 ACG에서 삭제
+      # 13. GitHub Actions의 IP 주소를 NCloud Server의 ACG에서 삭제
       # TODO inbound rule 삭제 작업 쉘 스크립트를 만들어서 처리
       - name: Delete Runner's IP from NCloud ACG
         run: |
-          cd ~/${{ secrets.NCP_CLI_FILE_NAME }}/cli_linux
+          cd ~/ncp-cli/${{ secrets.NCP_CLI_FILE_NAME }}/cli_linux
           MAX_RETRIES=5
           RETRY_COUNT=0
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
