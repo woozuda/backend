@@ -20,7 +20,7 @@ public class LinkController {
     private final ShareService shareService;
 
     //숏링크 해쉬 값 기반으로 공유 일기를 반환한다
-    @GetMapping("/{hashcode}")
+    @GetMapping("/note/{hashcode}")
     public ResponseEntity<SharedNoteResponseDto> getShortlinkNoteContent(@PathVariable String hashcode){
 
         //hashcode -> username 도출
