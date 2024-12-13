@@ -3,9 +3,11 @@ package com.woozuda.backend.shortlink.entity;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@AllArgsConstructor
 @Setter
 @Getter
 @Entity

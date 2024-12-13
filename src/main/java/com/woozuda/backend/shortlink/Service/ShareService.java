@@ -1,19 +1,21 @@
 package com.woozuda.backend.shortlink.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woozuda.backend.account.entity.UserEntity;
+import com.woozuda.backend.account.repository.UserRepository;
 import com.woozuda.backend.note.entity.*;
 import com.woozuda.backend.note.entity.type.Visibility;
 import com.woozuda.backend.note.repository.NoteRepository;
 import com.woozuda.backend.shortlink.dto.*;
+import com.woozuda.backend.shortlink.entity.ShortLink;
+import com.woozuda.backend.shortlink.repository.ShortLinkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,6 +24,10 @@ import java.util.stream.Stream;
 public class ShareService {
 
     private final NoteRepository noteRepository;
+
+    private final UserRepository userRepository;
+
+    private final ShortLinkRepository shortLinkRepository;
 
     @Transactional
     public void makeSharedNote(@RequestBody NoteIdDto noteIdDto) {
@@ -98,6 +104,45 @@ public class ShareService {
     public List<String> extractContent(List<NoteContent> notecontents){
 
         return null;
+    }
+
+    @Transactional
+    public ShortLinkDto makeShortLink(String username){
+
+        UserEntity userEntity = userRepository.findByUsername(username);
+
+        String newShortLink = "";
+
+        while(true){
+
+            createRandomLink();
+
+            if(shortLinkRepository.findBy)
+        }
+
+        ShortLink shortLink = new ShortLink(null, newShortLink, userEntity);
+        shortLinkRepository.save(shortLink);
+
+        return new ShortLinkDto(newShortLink);
+    }
+
+    private String createRandomLink(){
+        Random random = new Random();
+
+        List<String> list = new ArrayList<>();
+        for(int i=0; i<3; i++) {
+            list.add(String.valueOf(random.nextInt(10)));
+        }
+        for(int i=0; i<3; i++) {
+            list.add(String.valueOf((char)(random.nextInt(26)+65)));
+        }
+
+        Collections.shuffle(list);
+        for(String item : list) {
+            System.out.print(item);
+        }
+
+        return ":";
     }
 
 }
