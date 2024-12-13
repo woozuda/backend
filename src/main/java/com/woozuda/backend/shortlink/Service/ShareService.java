@@ -167,6 +167,11 @@ public class ShareService {
         }
     }
 
+    public String getUsername(String hashcode){
+        ShortLink shortLink = shortLinkRepository.findByUrl(hashcode);
+        return shortLink.getUserEntity().getUsername();
+    }
+
 
 
 }

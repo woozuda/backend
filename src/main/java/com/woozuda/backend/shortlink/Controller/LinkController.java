@@ -4,6 +4,7 @@ package com.woozuda.backend.shortlink.Controller;
 import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.shortlink.Service.ShareService;
 import com.woozuda.backend.shortlink.dto.NoteIdDto;
+import com.woozuda.backend.shortlink.dto.SharedNoteResponseDto;
 import com.woozuda.backend.shortlink.dto.ShortLinkDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,20 @@ public class LinkController {
 
     private final ShareService shareService;
 
+    //숏링크 해쉬 값 기반으로 공유 일기를 반환한다
+    @GetMapping("/{hashcode}")
+    public ResponseEntity<SharedNoteResponseDto> getShortlinkNoteContent(@PathVariable String hashcode){
+
+        //hashcode -> username 도출
+        String username = shareService.getUsername(hashcode);
+
+        //username 의 사용자가 공유한 일기 리스트 반환
+        SharedNoteResponseDto dtos = shareService.getSharedNote(username);
+
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+    }
+
+    //특정 유저의 숏링크를 생성한다.
     @PostMapping("/new")
     public ResponseEntity<ShortLinkDto> makeShortLink(@AuthenticationPrincipal CustomUser customUser) {
 
@@ -33,7 +48,7 @@ public class LinkController {
         return ResponseEntity.status(HttpStatus.OK).body(shortlinkDto);
     }
 
-
+    //특정 유저의 숏링크 값을 받는다
     @GetMapping("")
     public ResponseEntity<ShortLinkDto> getShortLink(@AuthenticationPrincipal CustomUser customUser) {
 
@@ -44,5 +59,7 @@ public class LinkController {
         return ResponseEntity.status(HttpStatus.OK).body(shortlinkDto);
 
     }
+
+
 
 }
