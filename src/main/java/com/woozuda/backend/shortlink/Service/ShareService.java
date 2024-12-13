@@ -111,38 +111,62 @@ public class ShareService {
 
         UserEntity userEntity = userRepository.findByUsername(username);
 
+        //이미 해당 계정에는 숏링크가 존재함 . 예외처리
+        if(shortLinkRepository.findByUserEntity(userEntity) != null){
+            return null;
+        }
+
         String newShortLink = "";
 
         while(true){
 
-            createRandomLink();
+            // 숏링크 생성
+            newShortLink = createRandomLink();
 
-            if(shortLinkRepository.findBy)
+            // 중복 검사 (다른 유저랑 동등한 숏링크 인지?)
+            if(shortLinkRepository.findByUrl(newShortLink) == null){
+                break;
+            }
         }
 
         ShortLink shortLink = new ShortLink(null, newShortLink, userEntity);
+
         shortLinkRepository.save(shortLink);
 
         return new ShortLinkDto(newShortLink);
     }
 
-    private String createRandomLink(){
+    public String createRandomLink(){
+
+        String str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        int strLength = str.length();
+
         Random random = new Random();
 
-        List<String> list = new ArrayList<>();
-        for(int i=0; i<3; i++) {
-            list.add(String.valueOf(random.nextInt(10)));
-        }
-        for(int i=0; i<3; i++) {
-            list.add(String.valueOf((char)(random.nextInt(26)+65)));
+        StringBuffer randomStr = new StringBuffer();
+
+        for (int i = 0; i < 8; i++) {
+            randomStr.append(str.charAt(random.nextInt(strLength)));
         }
 
-        Collections.shuffle(list);
-        for(String item : list) {
-            System.out.print(item);
-        }
-
-        return ":";
+        return randomStr.toString();
     }
+
+    @Transactional
+    public ShortLinkDto getShortLink(String username) {
+
+        UserEntity userEntity = userRepository.findByUsername(username);
+
+        //이미 해당 계정에는 숏링크가 존재함 . 예외처리
+        ShortLink shortlink = shortLinkRepository.findByUserEntity(userEntity);
+
+        if(shortlink != null){
+            return new ShortLinkDto(shortlink.getUrl());
+        }else{
+            return new ShortLinkDto(null);
+        }
+    }
+
+
 
 }
