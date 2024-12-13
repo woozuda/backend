@@ -63,6 +63,8 @@ jobs:
         run: aws --endpoint-url=https://kr.object.ncloudstorage.com s3 cp ./deploy_${TIMESTAMP}.zip s3://${{ secrets.RELEASE_BUCKET_NAME }}/deploy_${TIMESTAMP}.zip
 
       # 8. NCP CLI 캐싱
+      # TODO 워크플로우가 실패하면 Post Cache NCP CLI 단계를 건너뛰어서 캐싱이 되지 않는다.
+      # TODO 바로 밑에 Install NCP CLI가 성공했다면, 워크플로우 실패 여부와 상관없이 해당 부분은 캐시에 저장되도록 할 수 있는지 확인
       - name: Cache NCP CLI
         uses: actions/cache@v4
         id: cache
@@ -113,7 +115,7 @@ jobs:
           username: ${{ secrets.NCLOUD_SERVER_USERNAME }}
           password: ${{ secrets.NCLOUD_RELEASE_SERVER_PASSWORD }}
           envs: TIMESTAMP,BUCKET_NAME
-          script: | #TODO Object Storage CLI docs에 endpoint-url='http'://... 라고 되어 있는데 우선 https 로 바꾸고 실행
+          script: | 
             aws --endpoint-url=https://kr.object.ncloudstorage.com s3 cp s3://${BUCKET_NAME}/deploy_${TIMESTAMP}.zip ./workspace/deploy_${TIMESTAMP}.zip
             cd workspace
             unzip deploy_${TIMESTAMP}.zip && rm deploy_${TIMESTAMP}.zip
