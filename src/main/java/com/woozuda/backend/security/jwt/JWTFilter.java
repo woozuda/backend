@@ -27,7 +27,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // 필터를 적용하지 않을 경로를 지정
-        if (path.equals("/join") || path.equals("/login") || path.equals("/account/sample/alluser")) {
+        if (path.equals("/join") || path.equals("/login") || path.equals("/account/sample/alluser") || path.startsWith("/api/shortlink/note") || path.startsWith("/api/shortlink/ai")) {
             filterChain.doFilter(request, response);
             return;
         }

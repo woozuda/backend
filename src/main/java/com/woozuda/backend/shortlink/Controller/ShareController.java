@@ -71,8 +71,8 @@ public class ShareController {
     @GetMapping("/init")
     public void initSharedNote(){
         //given - 데이터 넣기 (user 1명, diary 1개, question 1개 ,note 5개)
-        UserEntity user1 = new UserEntity(null, "woozuda@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL);
-        UserEntity user2 = new UserEntity(null, "rodom1018@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL);
+        UserEntity user1 = new UserEntity(null, "woozuda@gmail.com", "$2a$10$KrAWqQBYGd3PGdoeuazDz.5f1eCq./fdE2wI5Bka/tv0QLtllhvNS", "ROLE_ADMIN", PICTURE_NOVEL);
+        UserEntity user2 = new UserEntity(null, "rodom1018@gmail.com", "$2a$10$KrAWqQBYGd3PGdoeuazDz.5f1eCq./fdE2wI5Bka/tv0QLtllhvNS", "ROLE_ADMIN", PICTURE_NOVEL);
         userRepository.save(user1);
         userRepository.save(user2);
 

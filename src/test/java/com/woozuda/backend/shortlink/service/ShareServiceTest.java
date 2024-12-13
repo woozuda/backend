@@ -11,6 +11,8 @@ import com.woozuda.backend.note.repository.NoteRepository;
 import com.woozuda.backend.note.repository.QuestionRepository;
 import com.woozuda.backend.shortlink.Service.ShareService;
 import com.woozuda.backend.shortlink.dto.*;
+import com.woozuda.backend.shortlink.entity.ShortLink;
+import com.woozuda.backend.shortlink.repository.ShortLinkRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -53,6 +55,8 @@ public class ShareServiceTest {
     @Autowired
     private NoteRepository noteRepository;
 
+    @Autowired
+    private ShortLinkRepository shortLinkRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -148,5 +152,20 @@ public class ShareServiceTest {
 
 
         //then - 데이터 값 확인
+    }
+
+    @Test
+    void getShortLinkTest(){
+
+        UserEntity user1 = new UserEntity(null, "woozuda@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL);
+        userRepository.save(user1);
+
+        shortLinkRepository.save(new ShortLink(null, "asdfasdf", user1));
+
+        if(shortLinkRepository.findByUrl("asdfasdf") != null){
+            System.out.println("정상");
+        }
+        System.out.println("하이");
+
     }
 }
