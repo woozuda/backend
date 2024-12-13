@@ -13,7 +13,7 @@ if [ -n "$PID" ]; then
   # 3. 완전히 종료될 때까지 기다림
   echo "Waiting for application to stop..."
   while lsof -ti:$PORT >/dev/null; do
-    sleep 1
+    sleep 2
   done
   echo "Application stopped."
 else
@@ -32,9 +32,9 @@ for i in {1..15}; do
     echo "Application is running successfully on port $PORT (PID: $PID)."
     exit 0
   fi
-  sleep 1
+  sleep 2
 done
 
-# 6. 15초 동안 동작이 확인되지 않으면 실패 메시지 출력
-echo "Failed to detect the application running on port $PORT within 15 seconds."
+# 6. 30초 동안 동작이 확인되지 않으면 실패 메시지 출력
+echo "Failed to detect the application running on port $PORT within 30 seconds."
 exit 1
