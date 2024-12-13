@@ -107,21 +107,22 @@ jobs:
             ./deploy.sh
 
       # 12. GitHub Actions의 IP 주소를 NCloud Server의 ACG에서 삭제
+      # TODO inbound rule 삭제 작업 쉘 스크립트를 만들어서 처리
       - name: Delete Runner's IP from NCloud ACG
         run: |
-          cd ~
-          cd ${{ secrets.NCP_CLI_FILE_NAME }}/cli_linux
+          cd ~/${{ secrets.NCP_CLI_FILE_NAME }}/cli_linux
           MAX_RETRIES=5
           RETRY_COUNT=0
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
-            STATUS=$(./ncloud vserver getAccessControlGroupList --regionCode KR --vpcNo ${{ secrets.NCP_VPC_NO }} --accessControlGroupNoList ${{ secrets.NCP_RELEASE_ACG_NO }} | jq -r '.accessControlGroupList[0].status')
-            if [ "$STATUS" == "normal" ]; then
-              echo "ACG settings are now normal. Proceeding with deletion."
+            ACG_RESPONSE=$(./ncloud vserver getAccessControlGroupDetail --regionCode KR --accessControlGroupNo ${{ secrets.NCP_RELEASE_ACG_NO }})
+            STATUS=$(echo "$ACG_RESPONSE" | jq -r '.getAccessControlGroupDetailResponse.accessControlGroupList[0].accessControlGroupStatus.code')
+            if [ "$STATUS" == "RUN" ]; then
+              echo "[ACG = $STATUS] ACG settings are now updated. Proceeding with deletion."
               ./ncloud vserver removeAccessControlGroupInboundRule --regionCode KR --vpcNo ${{ secrets.NCP_VPC_NO }} --accessControlGroupNo ${{ secrets.NCP_RELEASE_ACG_NO }} --accessControlGroupRuleList "protocolTypeCode='TCP', ipBlock='${{ steps.ip.outputs.ipv4 }}/32', portRange='22'"
               exit 0
             fi
-            echo "ACG settings are still being updated. Retrying in 10 seconds... (Attempt $((RETRY_COUNT+1))/$MAX_RETRIES)"
-            sleep 10
+            echo "[ACG = $STATUS] ACG settings are still being updated. Retrying in 5 seconds... (Attempt $((RETRY_COUNT+1))/$MAX_RETRIES)"
+            sleep 5
             RETRY_COUNT=$((RETRY_COUNT + 1))
           done
           echo "Failed to delete ACG rule after $MAX_RETRIES attempts."
