@@ -22,7 +22,7 @@ fi
 
 # 4. 새로운 애플리케이션 실행
 echo "Starting new application..."
-nohup java -jar -Dspring.profiles.active=release app.jar > app.log 2>&1 &
+nohup java -jar -Dserver.port=${PORT} -Dspring.profiles.active=release app.jar > app.log 2>&1 &
 
 # 5. 실행 상태 확인
 echo "Checking if the application is running on port $PORT..."
