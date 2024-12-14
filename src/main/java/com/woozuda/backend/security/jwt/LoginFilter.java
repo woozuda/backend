@@ -73,7 +73,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         //쿠키로 수정 필요 ~~
         ResponseCookie responseCookie = createCookie("Authorization", token);
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
-        
+
         //response.addCookie(createCookie("Authorization", token));
 
         //response.addHeader("Authorization", "Bearer " + token);
