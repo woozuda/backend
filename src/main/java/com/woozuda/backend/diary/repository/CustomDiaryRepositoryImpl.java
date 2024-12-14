@@ -83,10 +83,10 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
     public SingleDiaryResponseDto searchSingleDiarySummary(String username, Long diaryId) {
         return query
                 .from(diary)
-                .join(diary.user, userEntity).on(userEntity.username.eq(username))
+                .join(diary.user, userEntity)
                 .leftJoin(diary.tagList, diaryTag)
                 .leftJoin(diaryTag.tag, tag)
-                .where(diary.id.eq(diaryId))
+                .where(diary.id.eq(diaryId), userEntity.username.eq(username))
                 .transform(
                         groupBy(diary.id).list(
                                 Projections.constructor(SingleDiaryResponseDto.class,
@@ -131,7 +131,8 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
                         diary.title
                 ))
                 .from(diary)
-                .leftJoin(diary.user, userEntity).on(userEntity.username.eq(username))
+                .leftJoin(diary.user, userEntity)
+                .where(userEntity.username.eq(username))
                 .fetch();
 
         return new DiaryNameListResponseDto(nameList);
