@@ -1,5 +1,6 @@
 package com.woozuda.backend.ai_diary.controller;
 
+import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.ai_diary.dto.AiDiaryResponseDTO;
 import com.woozuda.backend.ai_diary.entity.AiDiary;
@@ -28,7 +29,7 @@ public class AIDiaryController {
     public void analyzeDiary(
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
-            @AuthenticationPrincipal UserEntity user) {
+            @AuthenticationPrincipal CustomUser user) {
         // 유저 아이디 찾고!
         String username = user.getUsername();
 
@@ -49,10 +50,10 @@ public class AIDiaryController {
      */
     @GetMapping
     public ResponseEntity<AiDiaryResponseDTO> getAiDiary(
-            @RequestParam("startDate") LocalDate startDate,
-            @RequestParam("endDate") LocalDate endDate,
+            @RequestParam("start_date") LocalDate startDate,
+            @RequestParam("end_date") LocalDate endDate,
             @RequestParam("id") Long id,
-            @AuthenticationPrincipal UserEntity user) {
+            @AuthenticationPrincipal CustomUser user) {
         AiDiaryResponseDTO responseDTO = aiDiaryService.getAiDiaryByDateRangeAndId(startDate, endDate, id, user.getUsername());
             return ResponseEntity.ok(responseDTO);
         }

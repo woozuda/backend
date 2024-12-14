@@ -42,7 +42,7 @@ public class ChatGPTConfig {
 
 
         // API 키를 x-api-key 헤더에 추가
-        headers.set("x-api-key", apiKey);
+        headers.set("Authorization", "Bearer " + apiKey);
 
         // 요청 본문을 JSON 형식으로 설정
         headers.setContentType(MediaType.APPLICATION_JSON);
