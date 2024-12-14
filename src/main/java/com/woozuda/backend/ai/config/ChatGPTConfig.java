@@ -40,6 +40,7 @@ public class ChatGPTConfig {
     public HttpHeaders httpHeaders() {
         HttpHeaders headers = new HttpHeaders();
 
+
         // API 키를 x-api-key 헤더에 추가
         headers.set("x-api-key", apiKey);
 
