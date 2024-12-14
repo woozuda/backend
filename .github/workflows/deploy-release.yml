@@ -116,8 +116,8 @@ jobs:
           password: ${{ secrets.NCLOUD_RELEASE_SERVER_PASSWORD }}
           envs: TIMESTAMP,BUCKET_NAME
           script: | 
-            aws --endpoint-url=https://kr.object.ncloudstorage.com s3 cp s3://${BUCKET_NAME}/deploy_${TIMESTAMP}.zip ./workspace/deploy_${TIMESTAMP}.zip
-            cd workspace
+            aws --endpoint-url=https://kr.object.ncloudstorage.com s3 cp s3://${BUCKET_NAME}/deploy_${TIMESTAMP}.zip ./app/deploy_${TIMESTAMP}.zip
+            cd app
             unzip deploy_${TIMESTAMP}.zip && rm deploy_${TIMESTAMP}.zip
             cd deploy_${TIMESTAMP}
             chmod +x ./deploy.sh
