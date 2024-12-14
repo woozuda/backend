@@ -12,17 +12,18 @@ import java.util.Optional;
 
 @Repository
 public interface AiRecallktpRpository extends JpaRepository<Airecall_ktp, Long> {
-    @Query("SELECT a FROM Airecall_ktp a " +
-            "JOIN Airecall ac ON a.air_id = ac.air_id " +
-            "JOIN ac.user u " +  // 유저와 조인
-            "WHERE a.type = 'KTP' " +
-            "AND ac.start_date BETWEEN :start_date AND :end_date " +
-            "AND ac.end_date BETWEEN :start_date AND :end_date " +
-            "AND ac.air_id = :air_id " +
+    @Query("SELECT p, ac.start_date, ac.end_date " +
+            "FROM Airecall_ktp p " +
+            "JOIN Airecall ac ON p.air_id = ac.air_id " +
+            "JOIN UserEntity u ON ac.user.id = u.id " +
+            "WHERE ac.type = 'KTP' " +
+            "AND ac.start_date BETWEEN :startDate AND :endDate " +
+            "AND ac.end_date BETWEEN :startDate AND :endDate " +
+            "AND ac.air_id = :airId " +
             "AND u.username = :username")
     Optional<Airecall_ktp> findByAirecallTypeKTPAndDateRangeAndUserId(
-            @Param("start_date") LocalDate startDate,
-            @Param("end_date") LocalDate endDate,
-            @Param("air_id") Long air_id,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            @Param("airId") Long airId,
             @Param("username") String username);
 }

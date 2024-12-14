@@ -48,7 +48,7 @@ public class ChatGptService {
 
         // HttpHeader에 추가
         HttpHeaders headers = new HttpHeaders();
-        headers.set("x-api-key", apiKey); // x-api-key 헤더에 API 키 설정
+        headers.set("Authorization", "Bearer " + apiKey);
         headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 
         // HttpEntity로 요청과 헤더를 묶어서 전송

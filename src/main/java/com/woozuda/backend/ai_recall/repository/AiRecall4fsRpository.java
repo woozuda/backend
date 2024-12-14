@@ -11,17 +11,18 @@ import java.util.Optional;
 
 @Repository
 public interface AiRecall4fsRpository extends JpaRepository<Airecall_4fs, Long> {
-    @Query("SELECT a FROM Airecall_4fs a " +
-            "JOIN Airecall ac ON a.air_id = ac.air_id " +
-            "JOIN ac.user u " +  // 유저와 조인
-            "WHERE a.type = 'FFS' " +
-            "AND ac.start_date BETWEEN :start_date AND :end_date " +
-            "AND ac.end_date BETWEEN :start_date AND :end_date " +
-            "AND ac.air_id = :air_id " +
+    @Query("SELECT p, ac.start_date, ac.end_date " +
+            "FROM Airecall_4fs p " +
+            "JOIN Airecall ac ON p.air_id = ac.air_id " +
+            "JOIN UserEntity u ON ac.user.id = u.id " +
+            "WHERE ac.type = '4FS' " +
+            "AND ac.start_date BETWEEN :startDate AND :endDate " +
+            "AND ac.end_date BETWEEN :startDate AND :endDate " +
+            "AND ac.air_id = :airId " +
             "AND u.username = :username")
     Optional<Airecall_4fs> findByAirecall4FSTypeAndDateRangeAndUserId(
-            @Param("start_date") LocalDate startDate,
-            @Param("end_date") LocalDate endDate,
-            @Param("air_id") Long air_id,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            @Param("airId") Long airId,
             @Param("username") String username);
 }

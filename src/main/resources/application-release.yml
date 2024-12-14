@@ -2,14 +2,11 @@ spring:
   application:
     name: backend
 
-  config:
-    import: "classpath:./config/local-var.yml"
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "${database.url}"
-    username: "${database.username}"
-    password: "${database.password}"
+    url: "${mysql_url}"
+    username: "${mysql_username}"
+    password: "${mysql_password}"
 
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
@@ -29,22 +26,22 @@ spring:
         registration:
           naver:
             client-name: naver
-            client-id: "${oauth2.naver.id}"
-            client-secret: "${oauth2.naver.secret}"
+            client-id: "${oauth2_naver_id}"
+            client-secret: "${oauth2_naver_secret}"
             redirect-uri: https://woozuda-release.shop/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             scope: name, email
           google:
             client-name: google
-            client-id: "${oauth2.google.id}"
-            client-secret: "${oauth2.google.secret}"
+            client-id: "${oauth2_google_id}"
+            client-secret: "${oauth2_google_secret}"
             redirect-uri: https://woozuda-release.shop/login/oauth2/code/google
             authorization-grant-type: authorization_code
             scope: profile, email
           kakao:
             client-name: kakao
-            client-id: "${oauth2.kakao.id}"
-            client-secret: "${oauth2.kakao.secret}"
+            client-id: "${oauth2_kakao_id}"
+            client-secret: "${oauth2_kakao_secret}"
             redirect-uri: https://woozuda-release.shop/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             scope: profile_nickname
@@ -65,6 +62,14 @@ ncp:
   storage:
     region: kr-standard
     endpoint: https://kr.object.ncloudstorage.com
-    accessKey: "${object-storage.accessKey}"
-    secretKey: "${object-storage.secretKey}"
-    bucketName: "${object-storage.bucketName}"
+    accessKey: "${object_storage_access_key}"
+    secretKey: "${object_storage_secret_key}"
+    bucketName: "${object_storage_bucket_name}"
+
+openai:
+  api:
+    key: "${openai_api_key}"  # 환경 변수에서 OPENAI_API_KEY를 가져옵니다.
+    chat:
+      options:
+        model: gpt-3.5-turbo  # 사용할 AI 모델 (예: gpt-3.5-turbo)
+        temperature: 0.7  # 생성되는 텍스트의 다양성 정도를 조절하는 파라미터 (0.0 ~ 1.0)

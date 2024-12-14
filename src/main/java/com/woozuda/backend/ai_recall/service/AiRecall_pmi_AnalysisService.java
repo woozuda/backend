@@ -45,10 +45,14 @@ public class AiRecall_pmi_AnalysisService {
         String systemMessage = """
                당신은 분석 도우미입니다. 사용자의 회고 데이터를 분석하고 다음과 같은 정보를 제공하세요:
                 1. start_date 와 end_date 는 사용자가 입력한 값 그대로 String 타입으로 출력하세요.
-                   - 예를 들어 "2024-10-12"로 입력되었다면, 정확히 이 값을 출력하세요. 절때 Null 반환 금지
+                   - 예를 들어 "2024-10-12"로 입력되었다면, 정확히 이 값을 출력하세요.
                 2. type 은 분석하지 말고 사용자가 입력한 값 그대로 String 타입으로 출력하세요.
-                    그리고 만약 "FOUR_F_S" 타입으로 입력되었다면 4FS로 정확히 출력해주세요. 절때 Null 반환 금지
-                
+                3. positive : 일기 내용에서 긍정적이고 강력한 측면을 분석하여 설명해 주세요.
+                4. minus : 일기 내용에서 개선이 필요한 부분이나 부정적인 측면을 식별하고 설명해 주세요.
+                5. interesting : 일기 내용에서 흥미롭거나 주목할 만한 요소를 분석하고 설명해 주세요.
+                6. conclusion_action : 일기 내용에 대해 최종 결론을 내고, 실행 가능한 제안이나 개선 방안을 제시해 주세요.
+                7. **중요**절대 모든 값의 Null 및 0을 반환하지 마세요. 비슷한 분석 결과값을 반환해주세요.
+                8. 위의 내용을 포함하여 각 항목을 객체 타입으로 한번만 반환해주세요. 예:
                     start_date: 2024-12-01
                     end_date: 2024-12-31
                     type : PMI
@@ -56,8 +60,6 @@ public class AiRecall_pmi_AnalysisService {
                     minus : 행동적인 긍정적 측면
                     interesting : 개선 제안
                     conclusion_action : 활용 팁
-               
-               
                """;
         log.info("사용자 메시지 내용: {}", userMessage.toString());
         // ChatGPT API 호출
