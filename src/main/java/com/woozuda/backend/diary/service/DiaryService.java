@@ -6,6 +6,8 @@ import com.woozuda.backend.diary.dto.request.DiarySaveRequestDto;
 import com.woozuda.backend.diary.dto.response.DiaryDetailResponseDto;
 import com.woozuda.backend.diary.dto.response.DiaryIdResponseDto;
 import com.woozuda.backend.diary.dto.response.DiaryListResponseDto;
+import com.woozuda.backend.diary.dto.response.DiaryNameListResponseDto;
+import com.woozuda.backend.diary.dto.response.DiaryNameResponseDto;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.repository.DiaryRepository;
@@ -55,11 +57,11 @@ public class DiaryService {
 
         List<NoteEntryResponseDto> allContent = Stream.of(
                         commonNoteDtoList.stream()
-                                .map(noteResponseDto -> new NoteEntryResponseDto("COMMON", noteResponseDto)),
+                                .map(noteResponseDto -> new NoteEntryResponseDto("COMMON", noteResponseDto.convertEnum())),
                         questionNoteDtoList.stream()
-                                .map(noteResponseDto -> new NoteEntryResponseDto("QUESTION", noteResponseDto)),
+                                .map(noteResponseDto -> new NoteEntryResponseDto("QUESTION", noteResponseDto.convertEnum())),
                         retrospectiveNoteDtoList.stream()
-                                .map(noteResponseDto -> new NoteEntryResponseDto("RETROSPECTIVE", noteResponseDto))
+                                .map(noteResponseDto -> new NoteEntryResponseDto("RETROSPECTIVE", noteResponseDto.convertEnum()))
                 ).flatMap(stream -> stream)
                 .sorted(Comparator.naturalOrder())
                 .toList();
@@ -81,7 +83,7 @@ public class DiaryService {
         UserEntity foundUser = userRepository.findByUsername(username);
         Diary diary = Diary.of(foundUser, requestDto.getImgUrl(), requestDto.getTitle());
 
-        List<String> tags = requestDto.getTags();
+        List<String> tags = requestDto.getSubject();
         for (String tagName : tags) {
             Tag foundTag = tagRepository.findByName(tagName);
             if (foundTag == null) {
@@ -97,7 +99,7 @@ public class DiaryService {
     public DiaryIdResponseDto updateDiary(String username, Long diaryId, DiarySaveRequestDto requestDto) {
         UserEntity foundUser = userRepository.findByUsername(username);
 
-        List<String> tagNames = requestDto.getTags();
+        List<String> tagNames = requestDto.getSubject();
         List<Tag> tags = new ArrayList<>();
         for (String tagName : tagNames) {
             Tag foundTag = tagRepository.findByName(tagName);
@@ -116,8 +118,8 @@ public class DiaryService {
         return new DiaryIdResponseDto(foundDiary.get().getId());
     }
 
-    //TODO 일기 기능까지 추가한 뒤에, 다이어리 삭제하면 내부 일기까지 전부 삭제하도록 변경
     //TODO 배포 환경에서는 Diary 를 지우면 관련 DiaryTag 도 모두 지워질 수 있도록 데이터베이스 차원에서 cascade delete 설정
+    //TODO 조회 및 삭제 쿼리가 너무 많이 나감 -> 최적화하기
     public void removeDiary(String username, Long diaryId) {
         Diary diary = diaryRepository.findById(diaryId)
                 .orElseThrow(() -> new IllegalArgumentException("Diary Not Found"));
@@ -126,5 +128,9 @@ public class DiaryService {
         }
 
         diaryRepository.deleteById(diaryId);
+    }
+
+    public DiaryNameListResponseDto getDiaryNames(String username) {
+        return diaryRepository.searchNames(username);
     }
 }

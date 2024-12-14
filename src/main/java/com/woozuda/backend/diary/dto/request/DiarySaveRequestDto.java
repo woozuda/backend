@@ -16,7 +16,7 @@ public class DiarySaveRequestDto {
     private String title;
 
     @NotNull
-    private List<String> tags;
+    private List<String> subject;
 
     private String imgUrl;
 

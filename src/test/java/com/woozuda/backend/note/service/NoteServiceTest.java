@@ -38,11 +38,11 @@ class NoteServiceTest {
     UserEntity user = new UserEntity(1L, "hwang", "asdfasdf", "ROLE_USER", PICTURE_NOVEL);
     NoteCondRequestDto cond = new NoteCondRequestDto();
 
-    NoteResponseDto commonNote1 = new NoteResponseDto(1L, "diary1", "common note1", "2024-12-04", "common weather1", "common season1", "common feeling1", List.of("common content1"));
-    NoteResponseDto commonNote2 = new NoteResponseDto(2L, "diary2", "common note2", "2024-12-10", "common weather2", "common season2", "common feeling2", List.of("common content2"));
+    NoteResponseDto commonNote1 = new NoteResponseDto(1L, "diary1", "common note1", "2024-12-04", "SUNNY", "SPRING", "JOY", List.of("common content1"));
+    NoteResponseDto commonNote2 = new NoteResponseDto(2L, "diary2", "common note2", "2024-12-10", "CLEAR", "SUMMER", "CONTENT", List.of("common content2"));
 
-    NoteResponseDto questionNote1 = new NoteResponseDto(3L, "diary3", "question note1", "2024-12-07", "question weather1", "question season1", "question feeling1", "question1", List.of("question content1"));
-    NoteResponseDto questionNote2 = new NoteResponseDto(4L, "diary2", "question note2", "2024-12-10", "question weather2", "question season2", "question feeling2", "question2", List.of("question content2"));
+    NoteResponseDto questionNote1 = new NoteResponseDto(3L, "diary3", "question note1", "2024-12-07", "PARTLY_CLOUDY", "FALL", "HAPPINESS", "question1", List.of("question content1"));
+    NoteResponseDto questionNote2 = new NoteResponseDto(4L, "diary2", "question note2", "2024-12-10", "CLOUDY", "WINTER", "NEUTRAL", "question2", List.of("question content2"));
 
     NoteResponseDto retrospectiveNote1 = new NoteResponseDto(6L, "diary3", "retrospective note2", "2024-06-05", "SCS", List.of("retrospective2 content1", "retrospective2 content2", "retrospective2 content3"));
     NoteResponseDto retrospectiveNote2 = new NoteResponseDto(5L, "diary1", "retrospective note1", "2024-12-11", "FOUR_F_S", List.of("retrospective1 content1", "retrospective1 content2", "retrospective1 content3", "retrospective1 content4"));

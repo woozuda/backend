@@ -14,7 +14,7 @@ public class SingleDiaryResponseDto {
 
     private Long id;
     private String title;
-    private List<String> tags;
+    private List<String> subject;
     private String imgUrl;
     private LocalDate startDate;
     private LocalDate endDate;

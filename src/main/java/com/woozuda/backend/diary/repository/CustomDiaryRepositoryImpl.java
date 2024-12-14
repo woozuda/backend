@@ -1,15 +1,13 @@
 package com.woozuda.backend.diary.repository;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.woozuda.backend.account.entity.QUserEntity;
+import com.woozuda.backend.diary.dto.response.DiaryNameListResponseDto;
+import com.woozuda.backend.diary.dto.response.DiaryNameResponseDto;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
-import com.woozuda.backend.diary.entity.QDiary;
-import com.woozuda.backend.diary.entity.QDiaryTag;
-import com.woozuda.backend.tag.entity.QTag;
+import com.woozuda.backend.diary.entity.Diary;
 import jakarta.persistence.EntityManager;
 
 import java.util.ArrayList;
@@ -72,7 +70,7 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
 
             String tagName = tuple.get(tag.name);
             if (tagName != null) {
-                dto.getTags().add(tagName);
+                dto.getSubject().add(tagName);
             }
 
             diaryMap.put(diaryId, dto);
@@ -85,10 +83,10 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
     public SingleDiaryResponseDto searchSingleDiarySummary(String username, Long diaryId) {
         return query
                 .from(diary)
-                .join(diary.user, userEntity).on(userEntity.username.eq(username))
+                .join(diary.user, userEntity)
                 .leftJoin(diary.tagList, diaryTag)
                 .leftJoin(diaryTag.tag, tag)
-                .where(diary.id.eq(diaryId))
+                .where(diary.id.eq(diaryId), userEntity.username.eq(username))
                 .transform(
                         groupBy(diary.id).list(
                                 Projections.constructor(SingleDiaryResponseDto.class,
@@ -101,7 +99,7 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
                                         diary.startDate,
                                         diary.endDate,
                                         diary.noteCount
-                                        )
+                                )
                         )
                 )
                 .getFirst();
@@ -115,5 +113,28 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
                 .join(diary.user, userEntity)
                 .where(userEntity.username.eq(username))
                 .fetch();
+    }
+
+    @Override
+    public Diary searchDiary(Long diaryId, String username) {
+        return query
+                .selectFrom(diary)
+                .where(diary.user.username.eq(username), diary.id.eq(diaryId))
+                .fetchFirst();
+    }
+
+    @Override
+    public DiaryNameListResponseDto searchNames(String username) {
+        List<DiaryNameResponseDto> nameList = query
+                .select(Projections.constructor(DiaryNameResponseDto.class,
+                        diary.id,
+                        diary.title
+                ))
+                .from(diary)
+                .leftJoin(diary.user, userEntity)
+                .where(userEntity.username.eq(username))
+                .fetch();
+
+        return new DiaryNameListResponseDto(nameList);
     }
 }

@@ -3,6 +3,9 @@ package com.woozuda.backend.note.entity.type;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RequiredArgsConstructor
 @Getter
 public enum Weather {
@@ -17,6 +20,22 @@ public enum Weather {
     THUNDERSTORM("천둥번개");
 
     private final String name;
+
+    private static final Map<String, Weather> store = new HashMap<>();
+
+    static {
+        for (Weather weather : Weather.values()) {
+            store.put(weather.name, weather);
+        }
+    }
+
+    public static Weather fromName(String name) {
+        return store.get(name);
+    }
+
+    public static String fromValue(String value) {
+        return valueOf(value).name;
+    }
 
     @Override
     public String toString() {
