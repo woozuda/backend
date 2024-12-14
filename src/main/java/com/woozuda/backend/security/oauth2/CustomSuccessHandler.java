@@ -41,6 +41,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         ResponseCookie responseCookie = createCookie("Authorization", token);
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
+        response.sendRedirect("https://woozuda-test.vercel.app/home");
         //response.addCookie(createCookie("Authorization", token));
     }
 
