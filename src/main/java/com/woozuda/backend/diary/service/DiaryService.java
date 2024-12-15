@@ -47,6 +47,13 @@ public class DiaryService {
         return new DiaryListResponseDto(diaryList);
     }
 
+    /*
+    TODO 프론트엔드에서 일기 조회 시 다이어리 ID도 추가해달라는 요청
+        그래서 NoteResponseDto 스펙을 변경했지만, 이것이 다이어리 단건 조회 시의 응답 스펙에도 영향을 미침
+        일기 전체/단건 조회, 다이어리 단건 조회 모두 똑같은 NoteResponseDto 를 사용하니까.
+        다이어리 단건 조회 시, 어차피 diarySummary에 ID 값이 있으니 ...NoteDtoList 에 diaryId가 포함될 필요가 없음.
+        -> 각 api마다 별도의 dto를 두는 것이 가장 좋은 방법
+     */
     @Transactional(readOnly = true)
     public DiaryDetailResponseDto getOneDiary(String username, Long diaryId, Pageable pageable) {
         SingleDiaryResponseDto diarySummary = diaryRepository.searchSingleDiarySummary(username, diaryId);
