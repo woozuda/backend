@@ -5,6 +5,7 @@ import com.woozuda.backend.account.entity.AiType;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
 import com.woozuda.backend.account.transdata.*;
+import com.woozuda.backend.shortlink.util.ShortLinkUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
+    private final ShortLinkUtil shortLinkUtil;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -41,7 +43,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userEntity.setAiType(AiType.PICTURE_NOVEL);
 
             userRepository.save(userEntity);
-
+            shortLinkUtil.saveShortLink(userEntity);
+            
             return new CustomUser(userEntity);
         }else{
             return new CustomUser(existData);

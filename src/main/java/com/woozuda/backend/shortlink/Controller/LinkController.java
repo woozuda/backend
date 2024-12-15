@@ -32,22 +32,6 @@ public class LinkController {
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 
-    //특정 유저의 숏링크를 생성한다.
-    @PostMapping("/new")
-    public ResponseEntity<ShortLinkDto> makeShortLink(@AuthenticationPrincipal CustomUser customUser) {
-
-        String username = customUser.getUsername();
-
-        ShortLinkDto shortlinkDto = shareService.makeShortLink(username);
-
-        if(shortlinkDto == null){
-            //해당 계정은 이미 숏링크를 만들었음
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        //정상
-        return ResponseEntity.status(HttpStatus.OK).body(shortlinkDto);
-    }
-
     //특정 유저의 숏링크 값을 받는다
     @GetMapping("")
     public ResponseEntity<ShortLinkDto> getShortLink(@AuthenticationPrincipal CustomUser customUser) {

@@ -1,7 +1,5 @@
 package com.woozuda.backend.ai_recall.dto;
 
-import com.woozuda.backend.ai_recall.entity.AirecallType;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

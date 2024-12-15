@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Airecall_Pmi_ResponseDTO {
+    private long id;
     private LocalDate start_date;
     private LocalDate end_date;
     private String positive;

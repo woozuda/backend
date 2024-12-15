@@ -5,6 +5,7 @@ import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
 import com.woozuda.backend.exception.InvalidEmailException;
 import com.woozuda.backend.exception.UsernameAlreadyExistsException;
+import com.woozuda.backend.shortlink.util.ShortLinkUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +25,7 @@ public class JoinService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ShortLinkUtil shortLinkUtil;
 
     @Transactional
     public void joinProcess(JoinDTO joinDTO){
@@ -45,6 +47,11 @@ public class JoinService {
 
         //레포지터리에 entity를 저장합니다
         userRepository.save(data);
+
+        // 유저에 대한 숏링크 제작
+        shortLinkUtil.saveShortLink(data);
+
+
     }
 
     public static boolean isValidEmail(String username){
