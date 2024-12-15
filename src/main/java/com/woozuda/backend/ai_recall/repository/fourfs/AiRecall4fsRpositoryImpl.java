@@ -26,7 +26,7 @@ public class AiRecall4fsRpositoryImpl implements AiRecall4fsRpositoryCustom {
     }
     @Override
     public Optional<Airecall_4fs> findByAirecall4FS(
-            LocalDate startDate, LocalDate endDate, Long airId, String username) {
+            LocalDate startDate, LocalDate endDate, String username) {
 
         JPAQuery<Airecall_4fs> query = this.query.select(airecall_4fs)
                 .from(airecall_4fs)
@@ -35,7 +35,6 @@ public class AiRecall4fsRpositoryImpl implements AiRecall4fsRpositoryCustom {
                 .where(airecall.type.eq("4FS")
                         .and(airecall.start_date.between(startDate, endDate))
                         .and(airecall.end_date.between(startDate, endDate))
-                        .and(airecall.air_id.eq(airId))
                         .and(userEntity.username.eq(username)));
 
         // 결과 반환

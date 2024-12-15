@@ -30,10 +30,8 @@ public class AIDiaryController {
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
             @AuthenticationPrincipal CustomUser user) {
-        // 유저 아이디 찾고!
         String username = user.getUsername();
 
-        // start_date와 end_date , 유저 아이디 전달하고!
         List<NonRetroNoteEntryResponseDto> diaryList = customeNoteRepoForAiService.getNonRetroNotes(username ,start_date , end_date);
 
         // 일기 분석 실행!
@@ -44,7 +42,6 @@ public class AIDiaryController {
      * 사용자가 분석한 리포트를 들고오자!
      * @param startDate
      * @param endDate
-     * @param id
      * @param user
      * @return
      */
@@ -52,9 +49,8 @@ public class AIDiaryController {
     public ResponseEntity<AiDiaryResponseDTO> getAiDiary(
             @RequestParam("start_date") LocalDate startDate,
             @RequestParam("end_date") LocalDate endDate,
-            @RequestParam("id") Long id,
             @AuthenticationPrincipal CustomUser user) {
-        AiDiaryResponseDTO responseDTO = aiDiaryService.getAiDiaryByDateRangeAndId(startDate, endDate, id, user.getUsername());
+        AiDiaryResponseDTO responseDTO = aiDiaryService.getAiDiaryByDateRangeAndId(startDate, endDate, user.getUsername());
             return ResponseEntity.ok(responseDTO);
         }
     }

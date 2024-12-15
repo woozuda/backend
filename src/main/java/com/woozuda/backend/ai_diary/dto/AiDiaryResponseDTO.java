@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 public class AiDiaryResponseDTO {
-    private Long id;
     private LocalDate start_date; // 월요일
     private LocalDate end_date; // 일요일
     private String place; // 장소

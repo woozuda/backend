@@ -24,7 +24,7 @@ public class AiRecallktpRpositoryImpl implements AiRecallktpRpositoryCustom {
 
     @Override
     public Optional<Airecall_ktp> findByAirecallktp(
-            LocalDate startDate, LocalDate endDate, Long airId, String username) {
+            LocalDate startDate, LocalDate endDate, String username) {
         JPAQuery<Airecall_ktp> query = this.query.select(airecall_ktp)
                 .from(airecall_ktp)
                 .join(airecall).on(airecall_ktp.air_id.eq(airecall.air_id))
@@ -32,7 +32,6 @@ public class AiRecallktpRpositoryImpl implements AiRecallktpRpositoryCustom {
                 .where(airecall.type.eq("KTP")
                         .and(airecall.start_date.between(startDate, endDate))
                         .and(airecall.end_date.between(startDate, endDate))
-                        .and(airecall.air_id.eq(airId))
                         .and(userEntity.username.eq(username)));
 
         // 결과 반환

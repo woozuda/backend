@@ -24,7 +24,7 @@ public class AiRecallscsRpositoryImpl implements AiRecallscsRpositoryCustom {
 
     @Override
     public Optional<Airecall_scs> findByAirecallscs(
-            LocalDate startDate, LocalDate endDate, Long airId, String username) {
+            LocalDate startDate, LocalDate endDate, String username) {
         JPAQuery<Airecall_scs> query = this.query.select(airecall_scs)
                 .from(airecall_scs)
                 .join(airecall).on(airecall_scs.air_id.eq(airecall.air_id))
@@ -32,7 +32,6 @@ public class AiRecallscsRpositoryImpl implements AiRecallscsRpositoryCustom {
                 .where(airecall.type.eq("PMI")
                         .and(airecall.start_date.between(startDate, endDate))
                         .and(airecall.end_date.between(startDate, endDate))
-                        .and(airecall.air_id.eq(airId))
                         .and(userEntity.username.eq(username)));
 
         // 결과 반환

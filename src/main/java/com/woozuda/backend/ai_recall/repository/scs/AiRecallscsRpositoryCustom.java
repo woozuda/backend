@@ -7,6 +7,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface AiRecallscsRpositoryCustom {
-    Optional<Airecall_scs> findByAirecallscs(LocalDate startDate, LocalDate endDate, Long airId, String username);
+    Optional<Airecall_scs> findByAirecallscs(LocalDate startDate, LocalDate endDate, String username);
 
 }

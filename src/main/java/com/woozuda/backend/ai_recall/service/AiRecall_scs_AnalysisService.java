@@ -62,7 +62,7 @@ public class AiRecall_scs_AnalysisService {
                     continue_improvement_plan: 진행 중 개선 계획.
                     stop_improvement_plan: 종료 시점 개선 계획.
                """;
-        log.info("사용자 메시지 내용: {}", userMessage.toString());
+        log.info("사용자 메시지 SCS 내용: {}", userMessage.toString());
         // ChatGPT API 호출
         String response = chatGptService.analyzeDiaryUsingGPT(systemMessage, userMessage.toString());
 

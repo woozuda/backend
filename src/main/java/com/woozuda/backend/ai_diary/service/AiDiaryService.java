@@ -23,19 +23,16 @@ public class AiDiaryService {
      * @param aiDiaryDTO 분석된 일기 DTO
      */
     public void saveAiDiary(AiDiaryDTO aiDiaryDTO) {
-        //유저 아이디 찾고 !
         UserEntity userEntity = userRepository.findByUsername(aiDiaryDTO.getUsername());
-        // 분석 결과와 유저 아이디 저장하고!
         AiDiary aiDiarydate = AiDiary.toEntity(aiDiaryDTO ,userEntity) ;
         aiDiaryRepository.save(aiDiarydate);
     }
-    public AiDiaryResponseDTO getAiDiaryByDateRangeAndId(LocalDate startDate, LocalDate endDate, Long id, String username) {
-        AiDiary aiDiary = aiDiaryRepository.findByAiDiary(startDate, endDate, id, username)
+    public AiDiaryResponseDTO getAiDiaryByDateRangeAndId(LocalDate startDate, LocalDate endDate, String username) {
+        AiDiary aiDiary = aiDiaryRepository.findByAiDiary(startDate, endDate, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~ "));
 
         // 생성자를 사용하여 DTO 객체 생성
         return new AiDiaryResponseDTO(
-                aiDiary.getId(),
                 aiDiary.getStart_date(),
                 aiDiary.getEnd_date(),
                 aiDiary.getPlace(),

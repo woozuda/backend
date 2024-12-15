@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface AiDiaryRepositoryCustom {
-    Optional<AiDiary> findByAiDiary(LocalDate start_date, LocalDate end_date, Long id, String username);
+    Optional<AiDiary> findByAiDiary(LocalDate start_date, LocalDate end_date, String username);
 }

@@ -41,11 +41,10 @@ public class AiRecallService {
         log.info("Airecall 저장 완료: {}", aiRecall4fs);
     }
 
-    public Airecall_4fs_ResponseDTO getAirecall4fs(LocalDate start_date, LocalDate end_date, Long id, String username) {
-        Airecall_4fs airecall_4fs = aiRecall4fsRpository.findByAirecall4FS(start_date, end_date, id, username)
+    public Airecall_4fs_ResponseDTO getAirecall4fs(LocalDate start_date, LocalDate end_date, String username) {
+        Airecall_4fs airecall_4fs = aiRecall4fsRpository.findByAirecall4FS(start_date, end_date, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~"));
         return  new Airecall_4fs_ResponseDTO(
-                airecall_4fs.getAir_id(),
                 airecall_4fs.getStart_date(),
                 airecall_4fs.getEnd_date(),
                 airecall_4fs.getPatternAnalysis(),
@@ -67,11 +66,10 @@ public class AiRecallService {
         log.info("Airecall 저장 완료: {}", aiReacllktp);
     }
 
-    public Airecall_Ktp_ResponseDTO getAirecallktp(LocalDate start_date, LocalDate end_date, Long id, String username) {
-        Airecall_ktp airecall_ktp = aiRecallktpRpository.findByAirecallktp(start_date, end_date, id, username)
+    public Airecall_Ktp_ResponseDTO getAirecallktp(LocalDate start_date, LocalDate end_date, String username) {
+        Airecall_ktp airecall_ktp = aiRecallktpRpository.findByAirecallktp(start_date, end_date, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~"));
         return  new Airecall_Ktp_ResponseDTO(
-                airecall_ktp.getAir_id(),
                 airecall_ktp.getStart_date(),
                 airecall_ktp.getEnd_date(),
                 airecall_ktp.getStrength_analysis(),
@@ -93,11 +91,10 @@ public class AiRecallService {
         log.info("Airecall 저장 완료: {}", aiReacllpmi);
     }
 
-    public Airecall_Pmi_ResponseDTO getAirecallpmi(LocalDate start_date, LocalDate end_date, Long id, String username) {
-        Airecall_pmi airecall_pmi = aiRecallpmiRpository.findByAirecallpmi(start_date, end_date, id, username)
+    public Airecall_Pmi_ResponseDTO getAirecallpmi(LocalDate start_date, LocalDate end_date, String username) {
+        Airecall_pmi airecall_pmi = aiRecallpmiRpository.findByAirecallpmi(start_date, end_date, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~"));
         return new Airecall_Pmi_ResponseDTO(
-                airecall_pmi.getAir_id(),
                 airecall_pmi.getStart_date(),
                 airecall_pmi.getEnd_date(),
                 airecall_pmi.getPositive(),
@@ -120,11 +117,10 @@ public class AiRecallService {
         log.info("Airecall 저장 완료: {}", aiReacllscs);
     }
 
-    public Airecll_Scs_ResponseDTO getAirecallscs(LocalDate start_date, LocalDate end_date, Long id, String username) {
-        Airecall_scs airecall_scs = aiRecallscsRpository.findByAirecallscs(start_date, end_date, id, username)
+    public Airecll_Scs_ResponseDTO getAirecallscs(LocalDate start_date, LocalDate end_date, String username) {
+        Airecall_scs airecall_scs = aiRecallscsRpository.findByAirecallscs(start_date, end_date, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~"));
         return new Airecll_Scs_ResponseDTO(
-                airecall_scs.getAir_id(),
                 airecall_scs.getStart_date(),
                 airecall_scs.getEnd_date(),
                 airecall_scs.getStart_summary(),
