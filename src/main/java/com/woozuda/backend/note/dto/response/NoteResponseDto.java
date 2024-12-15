@@ -18,6 +18,7 @@ import java.util.List;
 public class NoteResponseDto {
 
     private Long id; //노트 ID
+    private Long diaryId; //다이어리 ID
     private String diary; //다이어리 제목
     private String title; //노트 제목
     private String date; //노트 작성 날짜
@@ -29,8 +30,9 @@ public class NoteResponseDto {
     private List<String> content; //노트 내용(type에 상관없이 배열로 저장. COMMON,QUESTION type: content.size()==1, RETROSPECTIVE type: content.size()>1)
 
     @QueryProjection
-    public NoteResponseDto(Long id, String diary, String title, String date, String weather, String season, String feeling, List<String> content) {
+    public NoteResponseDto(Long id, Long diaryId, String diary, String title, String date, String weather, String season, String feeling, List<String> content) {
         this.id = id;
+        this.diaryId = diaryId;
         this.diary = diary;
         this.title = title;
         this.date = date;
@@ -41,8 +43,9 @@ public class NoteResponseDto {
     }
 
     @QueryProjection
-    public NoteResponseDto(Long id, String diary, String title, String date, String weather, String season, String feeling, String question, List<String> content) {
+    public NoteResponseDto(Long id, Long diaryId, String diary, String title, String date, String weather, String season, String feeling, String question, List<String> content) {
         this.id = id;
+        this.diaryId = diaryId;
         this.diary = diary;
         this.title = title;
         this.date = date;
@@ -54,8 +57,9 @@ public class NoteResponseDto {
     }
 
     @QueryProjection
-    public NoteResponseDto(Long id, String diary, String title, String date, String framework, List<String> content) {
+    public NoteResponseDto(Long id, Long diaryId, String diary, String title, String date, String framework, List<String> content) {
         this.id = id;
+        this.diaryId = diaryId;
         this.diary = diary;
         this.title = title;
         this.date = date;

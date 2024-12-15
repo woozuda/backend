@@ -53,6 +53,7 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                         groupBy(commonNote.id).list(
                                 new QNoteResponseDto(
                                         commonNote.id,
+                                        diary.id,
                                         diary.title,
                                         note.title,
                                         note.date.stringValue(),
@@ -78,6 +79,7 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                         groupBy(questionNote.id).list(
                                 new QNoteResponseDto(
                                         questionNote.id,
+                                        diary.id,
                                         diary.title,
                                         note.title,
                                         note.date.stringValue(),
@@ -106,6 +108,7 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                         groupBy(retrospectiveNote.id).list(
                                 new QNoteResponseDto(
                                         retrospectiveNote.id,
+                                        diary.id,
                                         diary.title,
                                         note.title,
                                         note.date.stringValue(),
@@ -130,6 +133,7 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                         groupBy(commonNote.id).list(
                                 new QNoteResponseDto(
                                         commonNote.id,
+                                        diary.id,
                                         diary.title,
                                         commonNote.title,
                                         commonNote.date.stringValue(),
@@ -156,6 +160,7 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                         groupBy(questionNote.id).list(
                                 new QNoteResponseDto(
                                         questionNote.id,
+                                        diary.id,
                                         diary.title,
                                         questionNote.title,
                                         questionNote.date.stringValue(),
@@ -182,6 +187,7 @@ public class CustomNoteRepositoryImpl implements CustomNoteRepository {
                         groupBy(retrospectiveNote.id).list(
                                 new QNoteResponseDto(
                                         retrospectiveNote.id,
+                                        diary.id,
                                         diary.title,
                                         retrospectiveNote.title,
                                         retrospectiveNote.date.stringValue(),
