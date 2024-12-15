@@ -4,7 +4,7 @@ public enum Framework {
 
     FOUR_F_S,
     PMI,
-    KTP,
+    KPT,
     SCS
 
 }

@@ -71,7 +71,7 @@ public class AiRecallController {
             @AuthenticationPrincipal CustomUser user) {
 
         String username = user.getUsername();
-        List<RetroNoteEntryResponseDto> recallList = customeNoteRepoForAiService.getRetroNotes(username, start_date, end_date, Framework.KTP);
+        List<RetroNoteEntryResponseDto> recallList = customeNoteRepoForAiService.getRetroNotes(username, start_date, end_date, Framework.KPT);
         aiRecall_ktp_AnalysisService.analyzeAirecall(recallList, username);
     }
     @GetMapping("/KTP")
