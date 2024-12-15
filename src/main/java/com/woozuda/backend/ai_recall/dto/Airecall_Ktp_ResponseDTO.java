@@ -1,6 +1,5 @@
 package com.woozuda.backend.ai_recall.dto;
 
-import com.woozuda.backend.ai_recall.entity.AirecallType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Airecall_Ktp_ResponseDTO {
+    private long id;
     private LocalDate start_date;
     private LocalDate end_date;
     private String strength_analysis;

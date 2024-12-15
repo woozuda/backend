@@ -3,14 +3,13 @@ package com.woozuda.backend.ai_recall.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woozuda.backend.ai.config.ChatGptService;
-import com.woozuda.backend.ai_recall.entity.AirecallType;
 import com.woozuda.backend.ai_recall.dto.Airecall_4fs_DTO;
 import com.woozuda.backend.forai.dto.RetroNoteEntryResponseDto;
-import com.woozuda.backend.forai.service.CustomeNoteRepoForAiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -42,16 +41,14 @@ public class AiRecall_4fs_AnalysisService {
         // 프롬프트 정의
         String systemMessage = """
                당신은 분석 도우미입니다. 사용자의 회고 데이터를 분석하고 다음과 같은 정보를 제공하세요:
-                1. start_date 와 end_date 는 사용자가 입력한 값 그대로 String 타입으로 출력하세요.
-                   - 예를 들어 "2024-10-12"로 입력되었다면, 정확히 이 값을 출력하세요.
-                2. type 은 분석하지 말고 사용자가 입력한 값 그대로 String 타입으로 출력하세요. 그리고 만약 "FOUR_F_S" 타입으로 입력되었다면
+                1. type 은 분석하지 말고 사용자가 입력한 값 그대로 String 타입으로 출력하세요. 그리고 만약 "FOUR_F_S" 타입으로 입력되었다면
                 4FS로 정확히 출력해주세요.
-                3. patternAnalysis : 사용자가 정한 내용에서 일관된 행동이나 반복되는 패턴을 한 줄로 목록 형식으로 요약해 주세요.
-                4. positiveBehavior : 사용자가 한 행동 중 긍정적이고 유익한 측면을 강조하여 제시해 주세요.
-                5. improvementSuggest : 사용자의 행동이나 패턴을 기반으로 개선할 점을 두 줄 정도로 제시해 주세요.
-                6. utilizationTips : 사용자가 자신의 행동을 더 효율적으로 개선하거나 활용할 수 있는 방법을 두 줄 정도로 제시해 주세요.
-                7. **중요**절대 모든 값의 Null 및 0을 반환하지 마세요. 비슷한 분석 결과값을 반환해주세요.
-                8. 위의 내용을 포함하여 각 항목을 객체 타입으로 한번만 반환해주세요. 예:
+                2. patternAnalysis : 사용자가 정한 내용에서 일관된 행동이나 반복되는 패턴을 한 줄로 목록 형식으로 요약해 주세요.
+                3. positiveBehavior : 사용자가 한 행동 중 긍정적이고 유익한 측면을 강조하여 제시해 주세요.
+                4. improvementSuggest : 사용자의 행동이나 패턴을 기반으로 개선할 점을 두 줄 정도로 제시해 주세요.
+                5. utilizationTips : 사용자가 자신의 행동을 더 효율적으로 개선하거나 활용할 수 있는 방법을 두 줄 정도로 제시해 주세요.
+                6. **중요**절대 모든 값의 Null 및 0을 반환하지 마세요. 비슷한 분석 결과값을 반환해주세요.
+                7. 위의 내용을 포함하여 각 항목을 객체 타입으로 한번만 반환해주세요. 예:
                     start_date: 2024-12-01
                     end_date: 2024-12-31
                     type : 4FS
@@ -88,11 +85,10 @@ public class AiRecall_4fs_AnalysisService {
             /**
              * 날짜 변경
              */
-            String startDateStr = extractValue(content, "start_date").replaceAll("\"", "").replace(",", "").trim();
-            String endDateStr = extractValue(content, "end_date").replaceAll("\"", "").replace(",", "").trim();
+            LocalDate today = LocalDate.now();
+            LocalDate startDate = today.with(DayOfWeek.MONDAY); // 이번 주 월요일
+            LocalDate endDate = today.with(DayOfWeek.SUNDAY); // 이번 주 일요일
 
-            LocalDate startDate = convertStringToDate(startDateStr);
-            LocalDate endDate = convertStringToDate(endDateStr);
             /**
              * type 변경
              */

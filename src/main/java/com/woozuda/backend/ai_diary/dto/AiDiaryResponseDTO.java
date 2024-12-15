@@ -13,8 +13,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 public class AiDiaryResponseDTO {
-    private LocalDate start_date; // 시작 날짜!!
-    private LocalDate end_date; // 끝 날짜!!
+    private Long id;
+    private LocalDate start_date; // 월요일
+    private LocalDate end_date; // 일요일
     private String place; // 장소
     private String activity; // 활동
     private String emotion; // 감정

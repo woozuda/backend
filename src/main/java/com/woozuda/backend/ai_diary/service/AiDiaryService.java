@@ -35,6 +35,7 @@ public class AiDiaryService {
 
         // 생성자를 사용하여 DTO 객체 생성
         return new AiDiaryResponseDTO(
+                aiDiary.getId(),
                 aiDiary.getStart_date(),
                 aiDiary.getEnd_date(),
                 aiDiary.getPlace(),
