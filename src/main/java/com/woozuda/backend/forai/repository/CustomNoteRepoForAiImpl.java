@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,6 +40,8 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
 
         List<NonRetroNoteEntryResponseDto> commonNoteList = getCommonNoteList(startDate, endDate, diaryIdList);
         List<NonRetroNoteEntryResponseDto> questionNoteList = getQuestionNoteList(startDate, endDate, diaryIdList);
+        long commonCount = getCountCommon(startDate, endDate, diaryIdList);
+        long questionCount = getCountQuestion(startDate, endDate, diaryIdList);
 
         return Stream.concat(commonNoteList.stream(), questionNoteList.stream()).collect(Collectors.toList());
     }
@@ -60,7 +63,16 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
                 .where(commonNote.diary.id.in(diaryIdList), commonNote.date.goe(startDate), commonNote.date.loe(endDate))
                 .fetch();
     }
-
+    private long getCountCommon(LocalDate startDate, LocalDate endDate, List<Long> diaryIdList) {
+        Long count = query
+                .select(commonNote.count())
+                .from(commonNote)
+                .where(commonNote.diary.id.in(diaryIdList),
+                        commonNote.date.goe(startDate),
+                        commonNote.date.loe(endDate))
+                .fetchOne();
+        return count != null ? count : 0L; // null일 경우 0 반환
+    }
     // 질문
     private List<NonRetroNoteEntryResponseDto> getQuestionNoteList(LocalDate startDate, LocalDate endDate, List<Long> diaryIdList) {
         return query
@@ -80,7 +92,18 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
                 .where(questionNote.diary.id.in(diaryIdList), questionNote.date.goe(startDate), questionNote.date.loe(endDate))
                 .fetch();
     }
-    // 회고
+    private long getCountQuestion(LocalDate startDate, LocalDate endDate, List<Long> diaryIdList) {
+        Long count = query
+                .select(questionNote.count())
+                .from(questionNote)
+                .where(questionNote.diary.id.in(diaryIdList),
+                        questionNote.date.goe(startDate),
+                        questionNote.date.loe(endDate))
+                .fetchOne();
+        return count != null ? count : 0L; // null일 경우 0 반환
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @Override
     public List<RetroNoteEntryResponseDto> searchRetroNote(String username, LocalDate startDate, LocalDate endDate , Framework type) {
         List<Long> diaryIdList = getDiaryIdList(username);

@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface AiRecall4fsRpositoryCustom {
-    Optional<Airecall_4fs> findByAirecall4FS( LocalDate startDate, LocalDate endDate, Long airId, String username);
+    Optional<Airecall_4fs> findByAirecall4FS( LocalDate startDate, LocalDate endDate, String username);
 }

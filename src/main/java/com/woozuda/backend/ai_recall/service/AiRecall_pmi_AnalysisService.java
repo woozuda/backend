@@ -58,7 +58,7 @@ public class AiRecall_pmi_AnalysisService {
                     interesting : 개선 제안
                     conclusion_action : 활용 팁
                """;
-        log.info("사용자 메시지 내용: {}", userMessage.toString());
+        log.info("사용자 메시지 PMI 내용: {}", userMessage.toString());
         // ChatGPT API 호출
         String response = chatGptService.analyzeDiaryUsingGPT(systemMessage, userMessage.toString());
 

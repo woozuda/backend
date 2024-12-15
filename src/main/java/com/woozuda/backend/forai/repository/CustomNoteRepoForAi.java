@@ -10,7 +10,5 @@ import java.util.List;
 public interface CustomNoteRepoForAi {
 
     List<NonRetroNoteEntryResponseDto> searchNonRetroNote(String username, LocalDate startDate, LocalDate endDate);
-
     List<RetroNoteEntryResponseDto> searchRetroNote(String username, LocalDate startDate, LocalDate endDate , Framework type);
-
 }

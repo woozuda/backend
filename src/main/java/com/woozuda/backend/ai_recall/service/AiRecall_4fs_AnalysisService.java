@@ -59,7 +59,7 @@ public class AiRecall_4fs_AnalysisService {
                
                
                """;
-        log.info("사용자 메시지 내용: {}", userMessage.toString());
+        log.info("사용자 메시지 4FS 내용: {}", userMessage.toString());
         // ChatGPT API 호출
         String response = chatGptService.analyzeDiaryUsingGPT(systemMessage, userMessage.toString());
 

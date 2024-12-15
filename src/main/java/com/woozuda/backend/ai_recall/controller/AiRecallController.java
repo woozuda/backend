@@ -50,9 +50,8 @@ public class AiRecallController {
     public ResponseEntity<Airecall_4fs_ResponseDTO> getAiRecall4FS(
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
-            @RequestParam("id") Long id,
             @AuthenticationPrincipal CustomUser user) {
-        Airecall_4fs_ResponseDTO responseDTO = aiRecallService.getAirecall4fs(start_date,end_date,id ,user.getUsername());
+        Airecall_4fs_ResponseDTO responseDTO = aiRecallService.getAirecall4fs(start_date,end_date, user.getUsername());
 
         // Airecall_4fs 서비스에서 데이터 가져오기
         return ResponseEntity.ok(responseDTO);
@@ -78,9 +77,8 @@ public class AiRecallController {
     public ResponseEntity<Airecall_Ktp_ResponseDTO> getAiRecallKTP(
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
-            @RequestParam("id") Long id,
             @AuthenticationPrincipal CustomUser user) {
-        Airecall_Ktp_ResponseDTO responseDTO = aiRecallService.getAirecallktp(start_date,end_date,id ,user.getUsername());
+        Airecall_Ktp_ResponseDTO responseDTO = aiRecallService.getAirecallktp(start_date,end_date,user.getUsername());
 
         // Airecall_4fs 서비스에서 데이터 가져오기
         return ResponseEntity.ok(responseDTO);
@@ -107,9 +105,8 @@ public class AiRecallController {
     public ResponseEntity<Airecall_Pmi_ResponseDTO> getAiRecallPMI(
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
-            @RequestParam("id") Long id,
             @AuthenticationPrincipal CustomUser user) {
-        Airecall_Pmi_ResponseDTO responseDTO = aiRecallService.getAirecallpmi(start_date,end_date,id ,user.getUsername());
+        Airecall_Pmi_ResponseDTO responseDTO = aiRecallService.getAirecallpmi(start_date,end_date,user.getUsername());
         return ResponseEntity.ok(responseDTO);
     }
 
@@ -132,9 +129,8 @@ public class AiRecallController {
     public ResponseEntity<Airecll_Scs_ResponseDTO> getAiRecallSCS(
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
-            @RequestParam("id") Long id,
             @AuthenticationPrincipal CustomUser user) {
-        Airecll_Scs_ResponseDTO responseDTO = aiRecallService.getAirecallscs(start_date,end_date,id ,user.getUsername());
+        Airecll_Scs_ResponseDTO responseDTO = aiRecallService.getAirecallscs(start_date,end_date,user.getUsername());
         return ResponseEntity.ok(responseDTO);
     }
 
