@@ -7,6 +7,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public interface AiRecallpmiRpositoryCustom {
-    Optional<Airecall_pmi> findByAirecallpmi(LocalDate startDate, LocalDate endDate, Long airId, String username);
+    Optional<Airecall_pmi> findByAirecallpmi(LocalDate startDate, LocalDate endDate, String username);
 
 }

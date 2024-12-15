@@ -21,12 +21,11 @@ public class AiDiaryRepositoryImpl implements AiDiaryRepositoryCustom {
     }
 
     @Override
-    public Optional<AiDiary> findByAiDiary(LocalDate start_date, LocalDate end_date, Long id, String username) {
+    public Optional<AiDiary> findByAiDiary(LocalDate start_date, LocalDate end_date, String username) {
         AiDiary result = query
                 .selectFrom(aiDiary)
                 .join(aiDiary.user, userEntity)
-                .where(aiDiary.id.eq(id)
-                        .and(aiDiary.start_date.eq(start_date))
+                .where(aiDiary.start_date.eq(start_date)  // 필드 이름을 실제 엔티티에 맞게 수정
                         .and(aiDiary.end_date.eq(end_date))
                         .and(userEntity.username.eq(username)))
                 .fetchOne();

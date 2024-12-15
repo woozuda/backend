@@ -24,7 +24,7 @@ public class AiRecallpmiRpositoryImpl implements AiRecallpmiRpositoryCustom {
 
     @Override
     public Optional<Airecall_pmi> findByAirecallpmi(
-            LocalDate startDate, LocalDate endDate, Long airId, String username) {
+            LocalDate startDate, LocalDate endDate, String username) {
         JPAQuery<Airecall_pmi> query = this.query.select(airecall_pmi)
                 .from(airecall_pmi)
                 .join(airecall).on(airecall_pmi.air_id.eq(airecall.air_id))
@@ -32,7 +32,6 @@ public class AiRecallpmiRpositoryImpl implements AiRecallpmiRpositoryCustom {
                 .where(airecall.type.eq("PMI")
                         .and(airecall.start_date.between(startDate, endDate))
                         .and(airecall.end_date.between(startDate, endDate))
-                        .and(airecall.air_id.eq(airId))
                         .and(userEntity.username.eq(username)));
 
         // 결과 반환

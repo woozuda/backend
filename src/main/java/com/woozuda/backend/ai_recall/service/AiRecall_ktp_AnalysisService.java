@@ -56,7 +56,7 @@ public class AiRecall_ktp_AnalysisService {
                     improvement : 개선 제안
                     scalability : 확장 가능성
                """;
-        log.info("사용자 메시지 내용: {}", userMessage.toString());
+        log.info("사용자 메시지 KTP 내용: {}", userMessage.toString());
         // ChatGPT API 호출
         String response = chatGptService.analyzeDiaryUsingGPT(systemMessage, userMessage.toString());
 

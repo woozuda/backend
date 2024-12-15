@@ -10,8 +10,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Airecll_Scs_ResponseDTO {
-    private long id;
-
     private LocalDate start_date;
 
     private LocalDate end_date;
