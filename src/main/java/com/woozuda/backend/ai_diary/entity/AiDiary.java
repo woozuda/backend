@@ -18,6 +18,7 @@ import java.time.LocalDate;
 public class AiDiary extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "aid_id")
     private Long id;
 
     //유저 추가
