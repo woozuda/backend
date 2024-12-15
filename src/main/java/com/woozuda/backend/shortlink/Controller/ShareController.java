@@ -86,14 +86,14 @@ public class ShareController {
 
         Note note1 = CommonNote.of(diary1, "나는 노트 1이다", LocalDate.now(), Visibility.PUBLIC, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note2 = QuestionNote.of(diary1, "나는 노트 2이다", LocalDate.now(), Visibility.PUBLIC, question1, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PUBLIC, Framework.KTP);
+        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PUBLIC, Framework.KPT);
         Note note4 = CommonNote.of(diary2, "나는 노트 4이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note5 = CommonNote.of(diary2, "나는 노트 5이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note6 = RetrospectiveNote.of(diary2, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KTP);
+        Note note6 = RetrospectiveNote.of(diary2, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KPT);
         Note note7 = CommonNote.of(diary1, "나는 노트 7이다", LocalDate.of(2023,1,1), Visibility.PUBLIC, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note8 = QuestionNote.of(diary1, "나는 노트 8이다", LocalDate.of(2023,1,1), Visibility.PUBLIC, question1, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note9 = RetrospectiveNote.of(diary1, "나는 노트 9", LocalDate.of(2023,1,1), Visibility.PUBLIC, Framework.KTP);
-        Note note10 = RetrospectiveNote.of(diary1, "나는 노트 10", LocalDate.of(2023,1,1), Visibility.PRIVATE, Framework.KTP);
+        Note note9 = RetrospectiveNote.of(diary1, "나는 노트 9", LocalDate.of(2023,1,1), Visibility.PUBLIC, Framework.KPT);
+        Note note10 = RetrospectiveNote.of(diary1, "나는 노트 10", LocalDate.of(2023,1,1), Visibility.PRIVATE, Framework.KPT);
 
 
         List<String> content0 = new ArrayList<>(Arrays.asList("안먹고 싶어요", "귀찮아요"));
