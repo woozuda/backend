@@ -91,12 +91,12 @@ class NoteServiceTest {
         assertThat(noteList.getContent())
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactly(
-                        new NoteEntryResponseDto("RETROSPECTIVE", retrospectiveNote2),
-                        new NoteEntryResponseDto("COMMON", commonNote2),
-                        new NoteEntryResponseDto("QUESTION", questionNote2),
-                        new NoteEntryResponseDto("QUESTION", questionNote1),
-                        new NoteEntryResponseDto("COMMON", commonNote1),
-                        new NoteEntryResponseDto("RETROSPECTIVE", retrospectiveNote1)
+                        new NoteEntryResponseDto("retrospective", retrospectiveNote2),
+                        new NoteEntryResponseDto("common", commonNote2),
+                        new NoteEntryResponseDto("question", questionNote2),
+                        new NoteEntryResponseDto("question", questionNote1),
+                        new NoteEntryResponseDto("common", commonNote1),
+                        new NoteEntryResponseDto("retrospective", retrospectiveNote1)
                 );
     }
 
@@ -180,10 +180,10 @@ class NoteServiceTest {
         assertThat(noteList.getContent())
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactly(
-                        new NoteEntryResponseDto("RETROSPECTIVE", retrospectiveNote2),
-                        new NoteEntryResponseDto("QUESTION", questionNote2),
-                        new NoteEntryResponseDto("QUESTION", questionNote1),
-                        new NoteEntryResponseDto("RETROSPECTIVE", retrospectiveNote1)
+                        new NoteEntryResponseDto("retrospective", retrospectiveNote2),
+                        new NoteEntryResponseDto("question", questionNote2),
+                        new NoteEntryResponseDto("question", questionNote1),
+                        new NoteEntryResponseDto("retrospective", retrospectiveNote1)
                 );
     }
 
