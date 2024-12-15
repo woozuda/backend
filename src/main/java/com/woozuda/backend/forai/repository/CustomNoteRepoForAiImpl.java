@@ -42,10 +42,7 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
         List<NonRetroNoteEntryResponseDto> questionNoteList = getQuestionNoteList(startDate, endDate, diaryIdList);
         long commonCount = getCountCommon(startDate, endDate, diaryIdList);
         long questionCount = getCountQuestion(startDate, endDate, diaryIdList);
-        // 조건 확인
-        if ((commonCount + questionCount) < 2 ) {
-            throw new RetroNotPossibleException("분석이 불가능합니다. 일기를 작성해주세요.");
-        }
+
         return Stream.concat(commonNoteList.stream(), questionNoteList.stream()).collect(Collectors.toList());
     }
     // 자유
