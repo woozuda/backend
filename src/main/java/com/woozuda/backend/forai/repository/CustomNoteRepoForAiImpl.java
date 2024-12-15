@@ -42,7 +42,7 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
 
         return Stream.concat(commonNoteList.stream(), questionNoteList.stream()).collect(Collectors.toList());
     }
-
+    // 자유
     private List<NonRetroNoteEntryResponseDto> getCommonNoteList(LocalDate startDate, LocalDate endDate, List<Long> diaryIdList) {
         return query
                 .select(Projections.constructor(NonRetroNoteEntryResponseDto.class,
@@ -61,6 +61,7 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
                 .fetch();
     }
 
+    // 질문
     private List<NonRetroNoteEntryResponseDto> getQuestionNoteList(LocalDate startDate, LocalDate endDate, List<Long> diaryIdList) {
         return query
                 .select(Projections.constructor(NonRetroNoteEntryResponseDto.class,
@@ -79,7 +80,7 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
                 .where(questionNote.diary.id.in(diaryIdList), questionNote.date.goe(startDate), questionNote.date.loe(endDate))
                 .fetch();
     }
-
+    // 회고
     @Override
     public List<RetroNoteEntryResponseDto> searchRetroNote(String username, LocalDate startDate, LocalDate endDate , Framework type) {
         List<Long> diaryIdList = getDiaryIdList(username);

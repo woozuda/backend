@@ -7,10 +7,10 @@ import com.woozuda.backend.ai_recall.entity.Airecall_4fs;
 import com.woozuda.backend.ai_recall.entity.Airecall_ktp;
 import com.woozuda.backend.ai_recall.entity.Airecall_pmi;
 import com.woozuda.backend.ai_recall.entity.Airecall_scs;
-import com.woozuda.backend.ai_recall.repository.AiRecall4fsRpository;
-import com.woozuda.backend.ai_recall.repository.AiRecallktpRpository;
-import com.woozuda.backend.ai_recall.repository.AiRecallpmiRpository;
-import com.woozuda.backend.ai_recall.repository.AiRecallscsRpository;
+import com.woozuda.backend.ai_recall.repository.fourfs.AiRecall4fsRpository;
+import com.woozuda.backend.ai_recall.repository.ktp.AiRecallktpRpository;
+import com.woozuda.backend.ai_recall.repository.pmi.AiRecallpmiRpository;
+import com.woozuda.backend.ai_recall.repository.scs.AiRecallscsRpository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,9 +42,10 @@ public class AiRecallService {
     }
 
     public Airecall_4fs_ResponseDTO getAirecall4fs(LocalDate start_date, LocalDate end_date, Long id, String username) {
-        Airecall_4fs airecall_4fs = aiRecall4fsRpository.findByAirecall4FSTypeAndDateRangeAndUserId(start_date, end_date, id, username)
+        Airecall_4fs airecall_4fs = aiRecall4fsRpository.findByAirecall4FS(start_date, end_date, id, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~"));
         return  new Airecall_4fs_ResponseDTO(
+                airecall_4fs.getAir_id(),
                 airecall_4fs.getStart_date(),
                 airecall_4fs.getEnd_date(),
                 airecall_4fs.getPatternAnalysis(),
@@ -67,9 +68,10 @@ public class AiRecallService {
     }
 
     public Airecall_Ktp_ResponseDTO getAirecallktp(LocalDate start_date, LocalDate end_date, Long id, String username) {
-        Airecall_ktp airecall_ktp = aiRecallktpRpository.findByAirecallTypeKTPAndDateRangeAndUserId(start_date, end_date, id, username)
+        Airecall_ktp airecall_ktp = aiRecallktpRpository.findByAirecallktp(start_date, end_date, id, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~"));
         return  new Airecall_Ktp_ResponseDTO(
+                airecall_ktp.getAir_id(),
                 airecall_ktp.getStart_date(),
                 airecall_ktp.getEnd_date(),
                 airecall_ktp.getStrength_analysis(),
@@ -92,9 +94,10 @@ public class AiRecallService {
     }
 
     public Airecall_Pmi_ResponseDTO getAirecallpmi(LocalDate start_date, LocalDate end_date, Long id, String username) {
-        Airecall_pmi airecall_pmi = aiRecallpmiRpository.findByAirecallTypePMIAndDateRangeAndUserId(start_date, end_date, id, username)
+        Airecall_pmi airecall_pmi = aiRecallpmiRpository.findByAirecallpmi(start_date, end_date, id, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~"));
         return new Airecall_Pmi_ResponseDTO(
+                airecall_pmi.getAir_id(),
                 airecall_pmi.getStart_date(),
                 airecall_pmi.getEnd_date(),
                 airecall_pmi.getPositive(),
@@ -118,9 +121,10 @@ public class AiRecallService {
     }
 
     public Airecll_Scs_ResponseDTO getAirecallscs(LocalDate start_date, LocalDate end_date, Long id, String username) {
-        Airecall_scs airecall_scs = aiRecallscsRpository.findByAirecallTypeSCSAndDateRangeAndUserId(start_date, end_date, id, username)
+        Airecall_scs airecall_scs = aiRecallscsRpository.findByAirecallscs(start_date, end_date, id, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~"));
         return new Airecll_Scs_ResponseDTO(
+                airecall_scs.getAir_id(),
                 airecall_scs.getStart_date(),
                 airecall_scs.getEnd_date(),
                 airecall_scs.getStart_summary(),
