@@ -89,19 +89,19 @@ class NoteRepositoryTest {
         assertThat(responseDtoList)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
-                        new NoteResponseDto(result.commonNote1().getId(), diary1.getTitle(),
+                        new NoteResponseDto(result.commonNote1().getId(), diary1.getId(), diary1.getTitle(),
                                 result.commonNote1().getTitle(), result.commonNote1().getDate().toString(),
                                 result.commonNote1().getWeather().name(), result.commonNote1().getSeason().name(),
                                 result.commonNote1().getFeeling().name(), List.of(result.noteContent1().getContent())),
-                        new NoteResponseDto(result.commonNote2().getId(), diary2.getTitle(),
+                        new NoteResponseDto(result.commonNote2().getId(), diary2.getId(), diary2.getTitle(),
                                 result.commonNote2().getTitle(), result.commonNote2().getDate().toString(),
                                 result.commonNote2().getWeather().name(), result.commonNote2().getSeason().name(),
                                 result.commonNote2().getFeeling().name(), List.of(result.noteContent2().getContent())),
-                        new NoteResponseDto(result.commonNote3().getId(), diary1.getTitle(),
+                        new NoteResponseDto(result.commonNote3().getId(), diary1.getId(), diary1.getTitle(),
                                 result.commonNote3().getTitle(), result.commonNote3().getDate().toString(),
                                 result.commonNote3().getWeather().name(), result.commonNote3().getSeason().name(),
                                 result.commonNote3().getFeeling().name(), List.of(result.noteContent3().getContent())),
-                        new NoteResponseDto(result.commonNote4().getId(), diary2.getTitle(),
+                        new NoteResponseDto(result.commonNote4().getId(), diary2.getId(), diary2.getTitle(),
                                 result.commonNote4().getTitle(), result.commonNote4().getDate().toString(),
                                 result.commonNote4().getWeather().name(), result.commonNote4().getSeason().name(),
                                 result.commonNote4().getFeeling().name(), List.of(result.noteContent4().getContent()))
@@ -136,11 +136,11 @@ class NoteRepositoryTest {
         assertThat(responseDtoList)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
-                        new NoteResponseDto(result.commonNote3.getId(), diary1.getTitle(),
+                        new NoteResponseDto(result.commonNote3.getId(), diary1.getId(), diary1.getTitle(),
                                 result.commonNote3.getTitle(), result.commonNote3.getDate().toString(),
                                 result.commonNote3.getWeather().name(), result.commonNote3.getSeason().name(),
                                 result.commonNote3.getFeeling().name(), List.of(result.noteContent3.getContent())),
-                        new NoteResponseDto(result.commonNote4.getId(), diary2.getTitle(),
+                        new NoteResponseDto(result.commonNote4.getId(), diary2.getId(), diary2.getTitle(),
                                 result.commonNote4.getTitle(), result.commonNote4.getDate().toString(),
                                 result.commonNote4.getWeather().name(), result.commonNote4.getSeason().name(),
                                 result.commonNote4.getFeeling().name(), List.of(result.noteContent4.getContent()))
@@ -175,19 +175,19 @@ class NoteRepositoryTest {
         assertThat(responseDtoList)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
-                        new NoteResponseDto(result.questionNote1().getId(), diary1.getTitle(),
+                        new NoteResponseDto(result.questionNote1().getId(), diary1.getId(), diary1.getTitle(),
                                 result.questionNote1().getTitle(), result.questionNote1().getDate().toString(),
                                 result.questionNote1().getWeather().name(), result.questionNote1().getSeason().name(),
                                 result.questionNote1().getFeeling().name(), result.question1().getContent(), List.of(result.noteContent1().getContent())),
-                        new NoteResponseDto(result.questionNote2().getId(), diary2.getTitle(),
+                        new NoteResponseDto(result.questionNote2().getId(), diary2.getId(), diary2.getTitle(),
                                 result.questionNote2().getTitle(), result.questionNote2().getDate().toString(),
                                 result.questionNote2().getWeather().name(), result.questionNote2().getSeason().name(),
                                 result.questionNote2().getFeeling().name(), result.question1().getContent(), List.of(result.noteContent2().getContent())),
-                        new NoteResponseDto(result.questionNote3().getId(), diary1.getTitle(),
+                        new NoteResponseDto(result.questionNote3().getId(), diary1.getId(), diary1.getTitle(),
                                 result.questionNote3().getTitle(), result.questionNote3().getDate().toString(),
                                 result.questionNote3().getWeather().name(), result.questionNote3().getSeason().name(),
                                 result.questionNote3().getFeeling().name(), result.question2().getContent(), List.of(result.noteContent3().getContent())),
-                        new NoteResponseDto(result.questionNote4().getId(), diary2.getTitle(),
+                        new NoteResponseDto(result.questionNote4().getId(), diary2.getId(), diary2.getTitle(),
                                 result.questionNote4().getTitle(), result.questionNote4().getDate().toString(),
                                 result.questionNote4().getWeather().name(), result.questionNote4().getSeason().name(),
                                 result.questionNote4().getFeeling().name(), result.question2().getContent(), List.of(result.noteContent4().getContent()))
@@ -223,11 +223,11 @@ class NoteRepositoryTest {
         assertThat(responseDtoList)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
-                        new NoteResponseDto(result.questionNote1.getId(), diary1.getTitle(),
+                        new NoteResponseDto(result.questionNote1.getId(), diary1.getId(), diary1.getTitle(),
                                 result.questionNote1.getTitle(), result.questionNote1.getDate().toString(),
                                 result.questionNote1.getWeather().name(), result.questionNote1.getSeason().name(),
                                 result.questionNote1.getFeeling().name(), result.question1.getContent(), List.of(result.noteContent1.getContent())),
-                        new NoteResponseDto(result.questionNote2.getId(), diary2.getTitle(),
+                        new NoteResponseDto(result.questionNote2.getId(), diary2.getId(), diary2.getTitle(),
                                 result.questionNote2.getTitle(), result.questionNote2.getDate().toString(),
                                 result.questionNote2.getWeather().name(), result.questionNote2.getSeason().name(),
                                 result.questionNote2.getFeeling().name(), result.question1.getContent(), List.of(result.noteContent2.getContent()))
@@ -263,19 +263,19 @@ class NoteRepositoryTest {
         assertThat(responseDtoList)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
-                        new NoteResponseDto(result.retrospectiveNote1().getId(), diary1.getTitle(),
+                        new NoteResponseDto(result.retrospectiveNote1().getId(), diary1.getId(), diary1.getTitle(),
                                 result.retrospectiveNote1().getTitle(), result.retrospectiveNote1().getDate().toString(),
                                 result.retrospectiveNote1().getType().name(),
                                 List.of(result.noteContent1().getContent(), result.noteContent2().getContent(), result.noteContent3().getContent(), result.noteContent4().getContent())),
-                        new NoteResponseDto(result.retrospectiveNote2().getId(), diary2.getTitle(),
+                        new NoteResponseDto(result.retrospectiveNote2().getId(), diary2.getId(), diary2.getTitle(),
                                 result.retrospectiveNote2().getTitle(), result.retrospectiveNote2().getDate().toString(),
                                 result.retrospectiveNote2().getType().name(),
                                 List.of(result.noteContent5().getContent(), result.noteContent6().getContent(), result.noteContent7().getContent())),
-                        new NoteResponseDto(result.retrospectiveNote3().getId(), diary2.getTitle(),
+                        new NoteResponseDto(result.retrospectiveNote3().getId(), diary2.getId(),diary2.getTitle(),
                                 result.retrospectiveNote3().getTitle(), result.retrospectiveNote3().getDate().toString(),
                                 result.retrospectiveNote3().getType().name(),
                                 List.of(result.noteContent8().getContent(), result.noteContent9().getContent(), result.noteContent10().getContent())),
-                        new NoteResponseDto(result.retrospectiveNote4().getId(), diary1.getTitle(),
+                        new NoteResponseDto(result.retrospectiveNote4().getId(), diary1.getId(),diary1.getTitle(),
                                 result.retrospectiveNote4().getTitle(), result.retrospectiveNote4().getDate().toString(),
                                 result.retrospectiveNote4().getType().name(),
                                 List.of(result.noteContent11().getContent(), result.noteContent12().getContent(), result.noteContent13().getContent()))
@@ -310,11 +310,11 @@ class NoteRepositoryTest {
         assertThat(responseDtoList)
                 .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrder(
-                        new NoteResponseDto(result.retrospectiveNote1.getId(), diary1.getTitle(),
+                        new NoteResponseDto(result.retrospectiveNote1.getId(), diary1.getId(), diary1.getTitle(),
                                 result.retrospectiveNote1.getTitle(), result.retrospectiveNote1.getDate().toString(),
                                 result.retrospectiveNote1.getType().name(),
                                 List.of(result.noteContent1.getContent(), result.noteContent2.getContent(), result.noteContent3.getContent(), result.noteContent4.getContent())),
-                        new NoteResponseDto(result.retrospectiveNote4.getId(), diary1.getTitle(),
+                        new NoteResponseDto(result.retrospectiveNote4.getId(), diary1.getId(),diary1.getTitle(),
                                 result.retrospectiveNote4.getTitle(), result.retrospectiveNote4.getDate().toString(),
                                 result.retrospectiveNote4.getType().name(),
                                 List.of(result.noteContent11.getContent(), result.noteContent12.getContent(), result.noteContent13.getContent()))

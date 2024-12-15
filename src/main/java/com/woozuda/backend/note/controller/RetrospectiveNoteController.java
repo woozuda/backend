@@ -2,7 +2,6 @@ package com.woozuda.backend.note.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
-import com.woozuda.backend.note.dto.request.QuestionNoteModifyRequestDto;
 import com.woozuda.backend.note.dto.request.RetrospectiveNoteModifyRequestDto;
 import com.woozuda.backend.note.dto.request.RetrospectiveNoteSaveRequestDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
@@ -27,7 +26,7 @@ public class RetrospectiveNoteController {
     private final RetrospectiveNoteService noteService;
 
     @PostMapping
-    public ResponseEntity<NoteIdResponseDto> createCommonNote(
+    public ResponseEntity<NoteIdResponseDto> createRetrospectiveNote(
             @AuthenticationPrincipal CustomUser user,
             @RequestBody @Valid RetrospectiveNoteSaveRequestDto requestDto
     ) {
@@ -37,7 +36,7 @@ public class RetrospectiveNoteController {
     }
 
     @GetMapping("/{noteId}")
-    public ResponseEntity<NoteResponseDto> getQuestionNote(
+    public ResponseEntity<NoteResponseDto> getRetrospectiveNote(
             @AuthenticationPrincipal CustomUser user,
             @PathVariable("noteId") Long noteId
     ) {
@@ -47,7 +46,7 @@ public class RetrospectiveNoteController {
     }
 
     @PatchMapping("/{noteId}")
-    public ResponseEntity<NoteIdResponseDto> modifyCommonNote(
+    public ResponseEntity<NoteIdResponseDto> modifyRetrospectiveNote(
             @AuthenticationPrincipal CustomUser user,
             @PathVariable("noteId") Long noteId,
             @RequestBody @Valid RetrospectiveNoteModifyRequestDto requestDto

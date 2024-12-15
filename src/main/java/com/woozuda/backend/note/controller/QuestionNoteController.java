@@ -27,7 +27,7 @@ public class QuestionNoteController {
     private final QuestionNoteService noteService;
 
     @PostMapping
-    public ResponseEntity<NoteIdResponseDto> createCommonNote(
+    public ResponseEntity<NoteIdResponseDto> createQuestionNote(
             @AuthenticationPrincipal CustomUser user,
             @RequestBody @Valid QuestionNoteSaveRequestDto requestDto
     ) {
@@ -47,7 +47,7 @@ public class QuestionNoteController {
     }
 
     @PatchMapping("/{noteId}")
-    public ResponseEntity<NoteIdResponseDto> modifyCommonNote(
+    public ResponseEntity<NoteIdResponseDto> modifyQuestionNote(
             @AuthenticationPrincipal CustomUser user,
             @PathVariable("noteId") Long noteId,
             @RequestBody @Valid QuestionNoteModifyRequestDto requestDto
