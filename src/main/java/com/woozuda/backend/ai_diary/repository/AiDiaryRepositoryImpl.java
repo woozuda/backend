@@ -8,6 +8,7 @@ import jakarta.persistence.EntityManager;
 
 import static com.woozuda.backend.ai_diary.entity.QAiDiary.aiDiary;
 import static com.woozuda.backend.account.entity.QUserEntity.userEntity;
+
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -21,16 +22,13 @@ public class AiDiaryRepositoryImpl implements AiDiaryRepositoryCustom {
 
     @Override
     public Optional<AiDiary> findByAiDiary(LocalDate start_date, LocalDate end_date, Long id, String username) {
-        QAiDiary aiDiary = QAiDiary.aiDiary; // QAiDiary 클래스
-        QUserEntity user = QUserEntity.userEntity; // QUser 클래스 (AiDiary와 연결된 User 엔티티)
-
         AiDiary result = query
                 .selectFrom(aiDiary)
-                .join(aiDiary.user, user)
+                .join(aiDiary.user, userEntity)
                 .where(aiDiary.id.eq(id)
                         .and(aiDiary.start_date.eq(start_date))
                         .and(aiDiary.end_date.eq(end_date))
-                        .and(user.username.eq(username)))
+                        .and(userEntity.username.eq(username)))
                 .fetchOne();
 
         return Optional.ofNullable(result);
