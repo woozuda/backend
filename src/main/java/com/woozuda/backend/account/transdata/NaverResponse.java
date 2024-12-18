@@ -19,7 +19,7 @@ public class NaverResponse implements OAuth2Response {
         this.provider = "naver";
         this.providerId = attribute_res.get("id").toString();
         this.email = attribute_res.get("email").toString();
-        this.name = attribute_res.get("name").toString();
+        this.name = "";
     }
 
     @Override

@@ -28,6 +28,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String provider = userRequest.getClientRegistration().getRegistrationId();
         OAuth2Response oAuth2Response;
 
+        //System.out.println(oAuth2User.getAttributes());
         oAuth2Response = OAuth2ResponseFactory.getOAuth2Response(provider, oAuth2User.getAttributes());
 
         String username = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
@@ -35,13 +36,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         if (existData == null) {
 
-            UserEntity userEntity = new UserEntity();
-            userEntity.setUsername(username);
-            //userEntity.setEmail(oAuth2Response.getEmail());
-            //userEntity.setName(oAuth2Response.getName());
-            userEntity.setRole("ROLE_ADMIN");
-            userEntity.setAiType(AiType.PICTURE_NOVEL);
-
+            UserEntity userEntity = new UserEntity(null, username, null, "ROLE_ADMIN", AiType.PICTURE_NOVEL, true, oAuth2Response.getEmail(), oAuth2Response.getProvider());
             userRepository.save(userEntity);
             shortLinkUtil.saveShortLink(userEntity);
             
