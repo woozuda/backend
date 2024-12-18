@@ -29,7 +29,7 @@ import static com.woozuda.backend.note.entity.type.Feeling.NEUTRAL;
 import static com.woozuda.backend.note.entity.type.Feeling.SADNESS;
 import static com.woozuda.backend.note.entity.type.Feeling.TIREDNESS;
 import static com.woozuda.backend.note.entity.type.Framework.FOUR_F_S;
-import static com.woozuda.backend.note.entity.type.Framework.KTP;
+import static com.woozuda.backend.note.entity.type.Framework.KPT;
 import static com.woozuda.backend.note.entity.type.Framework.PMI;
 import static com.woozuda.backend.note.entity.type.Framework.SCS;
 import static com.woozuda.backend.note.entity.type.Season.FALL;
@@ -393,7 +393,7 @@ class NoteRepositoryTest {
     private RetrospectiveNoteData initRetrospectiveNoteData() {
         RetrospectiveNote retrospectiveNote1 = RetrospectiveNote.of(diary1, "Retrospective Note Title1", date2, PRIVATE, FOUR_F_S);
         RetrospectiveNote retrospectiveNote2 = RetrospectiveNote.of(diary2, "Retrospective Note Title2", date1, PRIVATE, PMI);
-        RetrospectiveNote retrospectiveNote3 = RetrospectiveNote.of(diary2, "Retrospective Note Title3", date1, PRIVATE, KTP);
+        RetrospectiveNote retrospectiveNote3 = RetrospectiveNote.of(diary2, "Retrospective Note Title3", date1, PRIVATE, KPT);
         RetrospectiveNote retrospectiveNote4 = RetrospectiveNote.of(diary1, "Retrospective Note Title4", date2, PRIVATE, SCS);
         em.persist(retrospectiveNote1);
         em.persist(retrospectiveNote2);

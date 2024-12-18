@@ -1,9 +1,8 @@
-package com.woozuda.backend.shortlink.Controller;
+package com.woozuda.backend.shortlink.controller;
 
 
 import com.woozuda.backend.account.dto.CustomUser;
-import com.woozuda.backend.shortlink.Service.ShareService;
-import com.woozuda.backend.shortlink.dto.NoteIdDto;
+import com.woozuda.backend.shortlink.service.ShareService;
 import com.woozuda.backend.shortlink.dto.SharedNoteResponseDto;
 import com.woozuda.backend.shortlink.dto.ShortLinkDto;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +42,6 @@ public class LinkController {
         return ResponseEntity.status(HttpStatus.OK).body(shortlinkDto);
 
     }
-
 
 
 }

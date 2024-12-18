@@ -8,12 +8,9 @@ import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.entity.*;
 import com.woozuda.backend.note.entity.type.*;
 import com.woozuda.backend.note.repository.NoteRepository;
-import com.woozuda.backend.note.repository.QuestionRepository;
-import com.woozuda.backend.shortlink.Service.ShareService;
 import com.woozuda.backend.shortlink.dto.*;
 import com.woozuda.backend.shortlink.entity.ShortLink;
 import com.woozuda.backend.shortlink.repository.ShortLinkRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,12 +24,8 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.woozuda.backend.account.entity.AiType.PICTURE_NOVEL;
-import static java.util.Arrays.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -87,10 +80,10 @@ public class ShareServiceTest {
 
         Note note1 = CommonNote.of(diary1, "나는 노트 1이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note2 = CommonNote.of(diary1, "나는 노트 2이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PRIVATE, Framework.KTP);
+        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PRIVATE, Framework.KPT);
         Note note4 = CommonNote.of(diary1, "나는 노트 4이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note5 = CommonNote.of(diary1, "나는 노트 5이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note6 = RetrospectiveNote.of(diary1, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KTP);
+        Note note6 = RetrospectiveNote.of(diary1, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KPT);
 
         noteRepository.saveAll(Arrays.asList(note1, note2, note3, note4, note5, note6));
 
@@ -140,10 +133,10 @@ public class ShareServiceTest {
 
         Note note1 = CommonNote.of(diary1, "나는 노트 1이다", LocalDate.now(), Visibility.PUBLIC, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note2 = CommonNote.of(diary1, "나는 노트 2이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PUBLIC, Framework.KTP);
+        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PUBLIC, Framework.KPT);
         Note note4 = CommonNote.of(diary2, "나는 노트 4이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note5 = CommonNote.of(diary2, "나는 노트 5이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note6 = RetrospectiveNote.of(diary2, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KTP);
+        Note note6 = RetrospectiveNote.of(diary2, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KPT);
 
         noteRepository.saveAll(Arrays.asList(note1, note2, note3, note4, note5, note6));
 
