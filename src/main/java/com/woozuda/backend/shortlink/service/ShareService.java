@@ -1,6 +1,5 @@
-package com.woozuda.backend.shortlink.Service;
+package com.woozuda.backend.shortlink.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
 import com.woozuda.backend.note.entity.*;
@@ -39,6 +38,21 @@ public class ShareService {
 
         for (Note note : notes) {
             note.setVisibility(Visibility.PUBLIC);
+        }
+
+        noteRepository.saveAll(notes);
+    }
+
+    @Transactional
+    public void makeUnsharedNote(@RequestBody NoteIdDto noteIdDto) {
+
+        List<Long> noteId = noteIdDto.getId();
+        List<Note> notes = noteRepository.findAllById(noteId);
+
+        //System.out.println(noteId);
+
+        for (Note note : notes) {
+            note.setVisibility(Visibility.PRIVATE);
         }
 
         noteRepository.saveAll(notes);
