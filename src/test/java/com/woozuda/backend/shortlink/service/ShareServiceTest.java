@@ -87,10 +87,10 @@ public class ShareServiceTest {
 
         Note note1 = CommonNote.of(diary1, "나는 노트 1이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note2 = CommonNote.of(diary1, "나는 노트 2이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PRIVATE, Framework.KTP);
+        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PRIVATE, Framework.KPT);
         Note note4 = CommonNote.of(diary1, "나는 노트 4이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note5 = CommonNote.of(diary1, "나는 노트 5이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note6 = RetrospectiveNote.of(diary1, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KTP);
+        Note note6 = RetrospectiveNote.of(diary1, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KPT);
 
         noteRepository.saveAll(Arrays.asList(note1, note2, note3, note4, note5, note6));
 
@@ -140,10 +140,10 @@ public class ShareServiceTest {
 
         Note note1 = CommonNote.of(diary1, "나는 노트 1이다", LocalDate.now(), Visibility.PUBLIC, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note2 = CommonNote.of(diary1, "나는 노트 2이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PUBLIC, Framework.KTP);
+        Note note3 = RetrospectiveNote.of(diary1, "나는 노트 3", LocalDate.now(), Visibility.PUBLIC, Framework.KPT);
         Note note4 = CommonNote.of(diary2, "나는 노트 4이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
         Note note5 = CommonNote.of(diary2, "나는 노트 5이다", LocalDate.now(), Visibility.PRIVATE, Feeling.JOY, Weather.SUNNY, Season.WINTER);
-        Note note6 = RetrospectiveNote.of(diary2, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KTP);
+        Note note6 = RetrospectiveNote.of(diary2, "나는 노트 6", LocalDate.now(), Visibility.PRIVATE, Framework.KPT);
 
         noteRepository.saveAll(Arrays.asList(note1, note2, note3, note4, note5, note6));
 
