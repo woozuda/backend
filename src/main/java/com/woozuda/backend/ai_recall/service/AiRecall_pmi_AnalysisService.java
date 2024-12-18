@@ -33,17 +33,17 @@ public class AiRecall_pmi_AnalysisService {
 
 
         // 회고 내용 추가
-        for (RetroNoteEntryResponseDto recall_4fs : recallList) {
-            userMessage.append("title: ").append(recall_4fs.getTitle()).append("\n");
-            userMessage.append("date: ").append(recall_4fs.getDate()).append("\n");
-            userMessage.append("framework").append(recall_4fs.getFramework()).append("\n");
-            userMessage.append("content").append(recall_4fs.getContent()).append("\n");
+        for (RetroNoteEntryResponseDto recall_pmi : recallList) {
+            userMessage.append("title: ").append(recall_pmi.getTitle()).append("\n");
+            userMessage.append("date: ").append(recall_pmi.getDate()).append("\n");
+            userMessage.append("framework: ").append(recall_pmi.getFramework()).append("\n");
+            userMessage.append("content : ").append(recall_pmi.getContent()).append("\n");
         }
 
         // 프롬프트 정의
         String systemMessage = """
                당신은 분석 도우미입니다. 사용자의 회고 데이터를 분석하고 다음과 같은 정보를 제공하세요:
-                1. type 은 분석하지 말고 사용자가 입력한 값 그대로 String 타입으로 출력하세요.
+                1. type 이 "PMI" 인 경우 PMI 을 정확히 출력해주세요.
                 2. positive : 일기 내용에서 긍정적이고 강력한 측면을 분석하여 설명해 주세요.
                 3. minus : 일기 내용에서 개선이 필요한 부분이나 부정적인 측면을 식별하고 설명해 주세요.
                 4. interesting : 일기 내용에서 흥미롭거나 주목할 만한 요소를 분석하고 설명해 주세요.
@@ -74,12 +74,11 @@ public class AiRecall_pmi_AnalysisService {
     private Airecall_Pmi_DTO mapResponseToAirecall(String response , String username) {
         try {
             JsonNode root = objectMapper.readTree(response);
-            JsonNode contentNode = root
-                    .path("choices")
-                    .get(0)
-                    .path("message")
-                    .path("content");
-
+            JsonNode choicesNode = root.path("choices");
+            JsonNode firstChoiceNode = choicesNode.get(0);
+            JsonNode messageNode = firstChoiceNode.path("message");
+            JsonNode contentNode = messageNode.path("content");
+            // content 값을 String으로 변환
             String content = contentNode.asText();
             /**
              * 날짜 변경
@@ -113,16 +112,6 @@ public class AiRecall_pmi_AnalysisService {
         } catch (Exception e) {
             log.error("응답 매핑 중 오류 발생: {}", e.getMessage(), e);
             throw new RuntimeException("응답 매핑 중 오류 발생: " + e.getMessage());
-        }
-    }
-
-    private LocalDate convertStringToDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        try {
-            return LocalDate.parse(date, formatter);
-        } catch (DateTimeParseException e) {
-            log.error("잘못된 날짜 형식: '{}'. 기본값을 사용합니다.", date);
-            return LocalDate.now(); // 기본값 설정
         }
     }
 

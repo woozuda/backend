@@ -1,9 +1,7 @@
 package com.woozuda.backend.ai_diary.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.woozuda.backend.account.entity.QUserEntity;
 import com.woozuda.backend.ai_diary.entity.AiDiary;
-import com.woozuda.backend.ai_diary.entity.QAiDiary;
 import jakarta.persistence.EntityManager;
 
 import static com.woozuda.backend.ai_diary.entity.QAiDiary.aiDiary;

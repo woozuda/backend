@@ -63,7 +63,7 @@ public class AiRecallController {
      * @param end_date
      * @param user
      */
-    @PostMapping("/analyze/KTP")
+    @PostMapping("/analyze/KPT")
     public void analyzeRecallktp(
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
@@ -73,7 +73,7 @@ public class AiRecallController {
         List<RetroNoteEntryResponseDto> recallList = customeNoteRepoForAiService.getRetroNotes(username, start_date, end_date, Framework.KPT);
         aiRecall_ktp_AnalysisService.analyzeAirecall(recallList, username);
     }
-    @GetMapping("/KTP")
+    @GetMapping("/KPT")
     public ResponseEntity<Airecall_Ktp_ResponseDTO> getAiRecallKTP(
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,

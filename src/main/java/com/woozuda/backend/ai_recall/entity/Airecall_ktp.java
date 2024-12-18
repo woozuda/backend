@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "retrospective_ktp")
-@DiscriminatorValue("KTP")
+@DiscriminatorValue("KPT")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
