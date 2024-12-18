@@ -10,9 +10,9 @@ public class KakaoResponse implements OAuth2Response {
 
     // kakao : {id=3812693211, connected_at=2024-11-29T08:37:05Z, properties={nickname=이동현}, kakao_account={profile_nickname_needs_agreement=false, profile={nickname=이동현, is_default_nickname=false}}}
     public KakaoResponse(Map<String, Object> attribute){
-        this.provider = attribute.get("id").toString();
-        this.providerId = "";
-        this.email = "";
+        this.provider = "kakao";
+        this.providerId = attribute.get("id").toString();
+        this.email = attribute.get("email").toString();
         this.name = "";
     }
 

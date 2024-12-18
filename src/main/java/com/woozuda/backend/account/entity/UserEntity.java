@@ -24,6 +24,7 @@ public class UserEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String username;
 
+    @Column
     private String password;
 
     @Column(nullable = false)
@@ -33,7 +34,19 @@ public class UserEntity extends BaseTimeEntity {
     @Column(length = 255, name = "ai_type", nullable = false)
     private AiType aiType;
 
+    //알람 on off
+    @Column
+    private boolean alarm;
+
+    //이메일 주소
+    @Column
+    private String email;
+
+    //가입 경로
+    @Column
+    private String provider;
+
     public static UserEntity transEntity(JoinDTO joinDTO){
-        return new UserEntity(null, joinDTO.getUsername(), joinDTO.getPassword(), "ROLE_ADMIN", AiType.PICTURE_NOVEL);
+        return new UserEntity(null, joinDTO.getUsername(), joinDTO.getPassword(), "ROLE_ADMIN", AiType.PICTURE_NOVEL, true, joinDTO.getUsername(), "woozuda");
     }
 }
