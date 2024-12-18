@@ -8,12 +8,9 @@ import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.entity.*;
 import com.woozuda.backend.note.entity.type.*;
 import com.woozuda.backend.note.repository.NoteRepository;
-import com.woozuda.backend.note.repository.QuestionRepository;
-import com.woozuda.backend.shortlink.Service.ShareService;
 import com.woozuda.backend.shortlink.dto.*;
 import com.woozuda.backend.shortlink.entity.ShortLink;
 import com.woozuda.backend.shortlink.repository.ShortLinkRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,12 +24,8 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.woozuda.backend.account.entity.AiType.PICTURE_NOVEL;
-import static java.util.Arrays.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
