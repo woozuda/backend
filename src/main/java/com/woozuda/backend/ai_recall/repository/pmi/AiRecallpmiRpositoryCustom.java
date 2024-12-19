@@ -1,6 +1,5 @@
 package com.woozuda.backend.ai_recall.repository.pmi;
 
-import com.woozuda.backend.ai_recall.entity.Airecall_ktp;
 import com.woozuda.backend.ai_recall.entity.Airecall_pmi;
 
 import java.time.LocalDate;

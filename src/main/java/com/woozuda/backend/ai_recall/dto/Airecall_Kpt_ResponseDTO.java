@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Airecall_Ktp_ResponseDTO {
+public class Airecall_Kpt_ResponseDTO {
     private LocalDate start_date;
     private LocalDate end_date;
     private String strength_analysis;

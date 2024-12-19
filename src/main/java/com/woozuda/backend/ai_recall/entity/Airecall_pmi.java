@@ -1,7 +1,6 @@
 package com.woozuda.backend.ai_recall.entity;
 
 import com.woozuda.backend.account.entity.UserEntity;
-import com.woozuda.backend.ai_recall.dto.Airecall_Ktp_DTO;
 import com.woozuda.backend.ai_recall.dto.Airecall_Pmi_DTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
