@@ -32,15 +32,15 @@ jobs:
         run: ./gradlew clean build
 
       # 5. 빌드 실패 시 코멘트 추가
-      - name: Comment on PR if failure occurs
-        if: failure()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { owner, repo, number } = context.issue;
-            await github.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number: number,
-              body: `:x: 빌드 테스트가 실패했습니다. 자세한 내용은 Github Actions 탭에서 확인해주세요`
-            });
+#      - name: Comment on PR if failure occurs
+#        if: failure()
+#        uses: actions/github-script@v7
+#        with:
+#          script: |
+#            const { owner, repo, number } = context.issue;
+#            await github.rest.issues.createComment({
+#              owner,
+#              repo,
+#              issue_number: number,
+#              body: `:x: 빌드 테스트가 실패했습니다. 자세한 내용은 Github Actions 탭에서 확인해주세요`
+#            });
