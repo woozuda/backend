@@ -3,7 +3,7 @@ package com.woozuda.backend.ai_recall.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woozuda.backend.ai.config.ChatGptService;
-import com.woozuda.backend.ai_recall.dto.Airecall_Ktp_DTO;
+import com.woozuda.backend.ai_recall.dto.Airecall_Kpt_DTO;
 import com.woozuda.backend.forai.dto.RetroNoteEntryResponseDto;
 import com.woozuda.backend.forai.service.CustomeNoteRepoForAiService;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +19,10 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AiRecall_ktp_AnalysisService {
+public class AiRecall_kpt_AnalysisService {
     private final ChatGptService chatGptService;
     private final ObjectMapper objectMapper;
     private final AiRecallService aiRecallService;
-    private final CustomeNoteRepoForAiService customeNoteRepoForAiService;
 
     public void analyzeAirecall(List<RetroNoteEntryResponseDto> recallList, String username) {
         // 회고 분석 요청 메시지 작성
@@ -61,13 +60,13 @@ public class AiRecall_ktp_AnalysisService {
         log.info("AI 응답 내용: {}", response);
 
         // 응답 매핑
-        Airecall_Ktp_DTO airecall_ktp_dto = mapResponseToAirecall(response, username);
+        Airecall_Kpt_DTO airecall_kpt_dto = mapResponseToAirecall(response, username);
 
         // DB에 저장
-        aiRecallService.saveAirecall_ktp(airecall_ktp_dto);
+        aiRecallService.saveAirecall_ktp(airecall_kpt_dto);
     }
 
-    private Airecall_Ktp_DTO mapResponseToAirecall(String response, String username) {
+    private Airecall_Kpt_DTO mapResponseToAirecall(String response, String username) {
         try {
             JsonNode root = objectMapper.readTree(response);
             JsonNode choicesNode = root.path("choices");
@@ -93,7 +92,7 @@ public class AiRecall_ktp_AnalysisService {
             String scalability = extractValue(content, "scalability");
 
 
-            return new Airecall_Ktp_DTO(
+            return new Airecall_Kpt_DTO(
                     airecallType,
                     startDate,
                     endDate,

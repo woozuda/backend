@@ -1,8 +1,11 @@
 package com.woozuda.backend.ai_recall.entity;
 
 import com.woozuda.backend.account.entity.UserEntity;
-import com.woozuda.backend.ai_recall.dto.Airecall_Ktp_DTO;
-import jakarta.persistence.*;
+import com.woozuda.backend.ai_recall.dto.Airecall_Kpt_DTO;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +18,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Airecall_ktp extends Airecall{
+public class Airecall_kpt extends Airecall{
     @Column(nullable = false, columnDefinition = "TEXT")
     private String strength_analysis;
 
@@ -26,7 +29,7 @@ public class Airecall_ktp extends Airecall{
     private String scalability;
 
     // 자식 엔터티 생성자: 부모 필드 + 자식 필드 초기화
-    public Airecall_ktp(
+    public Airecall_kpt(
             UserEntity user,
             String type,
             LocalDate start_date,
@@ -42,8 +45,8 @@ public class Airecall_ktp extends Airecall{
     }
 
     // 정적 팩토리 메서드
-    public static Airecall_ktp toairecallktpEntity(Airecall_Ktp_DTO dto , UserEntity user) {
-        return new Airecall_ktp(
+    public static Airecall_kpt toairecallktpEntity(Airecall_Kpt_DTO dto , UserEntity user) {
+        return new Airecall_kpt(
                 user,
                 dto.getAirecallType(),
                 dto.getStart_date(),

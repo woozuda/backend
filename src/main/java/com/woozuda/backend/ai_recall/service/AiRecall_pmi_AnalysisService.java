@@ -25,7 +25,7 @@ public class AiRecall_pmi_AnalysisService {
     private final ChatGptService chatGptService;
     private final ObjectMapper objectMapper;
     private final AiRecallService aiRecallService;
-    private final CustomeNoteRepoForAiService customeNoteRepoForAiService;
+
 
     public void analyzeAirecall(List<RetroNoteEntryResponseDto> recallList , String username) {
         // 회고 분석 요청 메시지 작성

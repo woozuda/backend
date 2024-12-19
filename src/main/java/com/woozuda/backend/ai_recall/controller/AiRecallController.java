@@ -1,12 +1,10 @@
 package com.woozuda.backend.ai_recall.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
-import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.ai_recall.dto.Airecall_4fs_ResponseDTO;
-import com.woozuda.backend.ai_recall.dto.Airecall_Ktp_ResponseDTO;
+import com.woozuda.backend.ai_recall.dto.Airecall_Kpt_ResponseDTO;
 import com.woozuda.backend.ai_recall.dto.Airecall_Pmi_ResponseDTO;
 import com.woozuda.backend.ai_recall.dto.Airecll_Scs_ResponseDTO;
-import com.woozuda.backend.ai_recall.entity.Airecall_4fs;
 import com.woozuda.backend.ai_recall.service.*;
 import com.woozuda.backend.forai.dto.RetroNoteEntryResponseDto;
 import com.woozuda.backend.forai.service.CustomeNoteRepoForAiService;
@@ -24,7 +22,7 @@ import java.util.List;
 @RequestMapping("api/report/recall")
 public class AiRecallController {
     private final AiRecall_4fs_AnalysisService aiRecall_4fs_AnalysisService; // 4fs
-    private final AiRecall_ktp_AnalysisService aiRecall_ktp_AnalysisService; // ktp
+    private final AiRecall_kpt_AnalysisService aiRecall_kpt_AnalysisService; // ktp
     private final AiRecall_pmi_AnalysisService aiRecall_pmi_AnalysisService; // pmi
     private final AiRecall_scs_AnalysisService aiRecall_scs_AnalysisService; // scs
     private final AiRecallService aiRecallService;
@@ -71,14 +69,14 @@ public class AiRecallController {
 
         String username = user.getUsername();
         List<RetroNoteEntryResponseDto> recallList = customeNoteRepoForAiService.getRetroNotes(username, start_date, end_date, Framework.KPT);
-        aiRecall_ktp_AnalysisService.analyzeAirecall(recallList, username);
+        aiRecall_kpt_AnalysisService.analyzeAirecall(recallList, username);
     }
     @GetMapping("/KPT")
-    public ResponseEntity<Airecall_Ktp_ResponseDTO> getAiRecallKTP(
+    public ResponseEntity<Airecall_Kpt_ResponseDTO> getAiRecallKTP(
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
             @AuthenticationPrincipal CustomUser user) {
-        Airecall_Ktp_ResponseDTO responseDTO = aiRecallService.getAirecallktp(start_date,end_date,user.getUsername());
+        Airecall_Kpt_ResponseDTO responseDTO = aiRecallService.getAirecallktp(start_date,end_date,user.getUsername());
 
         // Airecall_4fs 서비스에서 데이터 가져오기
         return ResponseEntity.ok(responseDTO);
