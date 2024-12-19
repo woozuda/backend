@@ -4,11 +4,11 @@ import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
 import com.woozuda.backend.ai_recall.dto.*;
 import com.woozuda.backend.ai_recall.entity.Airecall_4fs;
-import com.woozuda.backend.ai_recall.entity.Airecall_ktp;
+import com.woozuda.backend.ai_recall.entity.Airecall_kpt;
 import com.woozuda.backend.ai_recall.entity.Airecall_pmi;
 import com.woozuda.backend.ai_recall.entity.Airecall_scs;
 import com.woozuda.backend.ai_recall.repository.fourfs.AiRecall4fsRpository;
-import com.woozuda.backend.ai_recall.repository.ktp.AiRecallktpRpository;
+import com.woozuda.backend.ai_recall.repository.kpt.AiRecallkptRpository;
 import com.woozuda.backend.ai_recall.repository.pmi.AiRecallpmiRpository;
 import com.woozuda.backend.ai_recall.repository.scs.AiRecallscsRpository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.time.LocalDate;
 public class AiRecallService {
 
     private final AiRecall4fsRpository aiRecall4fsRpository;
-    private final AiRecallktpRpository aiRecallktpRpository;
+    private final AiRecallkptRpository aiRecallkptRpository;
     private final AiRecallpmiRpository aiRecallpmiRpository;
     private final AiRecallscsRpository aiRecallscsRpository;
     private final UserRepository userRepository;
@@ -56,25 +56,25 @@ public class AiRecallService {
 
     /**
      * KTP
-     * @param airecall_ktp_dto
+     * @param airecall_kpt_dto
      */
-    public void saveAirecall_ktp(Airecall_Ktp_DTO airecall_ktp_dto) {
-        UserEntity username = userRepository.findByUsername(airecall_ktp_dto.getUsername());
-        Airecall_ktp aiReacllktp = Airecall_ktp.toairecallktpEntity(airecall_ktp_dto , username);
+    public void saveAirecall_ktp(Airecall_Kpt_DTO airecall_kpt_dto) {
+        UserEntity username = userRepository.findByUsername(airecall_kpt_dto.getUsername());
+        Airecall_kpt aiReacllkpt = Airecall_kpt.toairecallktpEntity(airecall_kpt_dto, username);
 
-        aiRecallktpRpository.save(aiReacllktp);
-        log.info("Airecall 저장 완료: {}", aiReacllktp);
+        aiRecallkptRpository.save(aiReacllkpt);
+        log.info("Airecall 저장 완료: {}", aiReacllkpt);
     }
 
-    public Airecall_Ktp_ResponseDTO getAirecallktp(LocalDate start_date, LocalDate end_date, String username) {
-        Airecall_ktp airecall_ktp = aiRecallktpRpository.findByAirecallktp(start_date, end_date, username)
+    public Airecall_Kpt_ResponseDTO getAirecallktp(LocalDate start_date, LocalDate end_date, String username) {
+        Airecall_kpt airecall_kpt = aiRecallkptRpository.findByAirecallktp(start_date, end_date, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~"));
-        return  new Airecall_Ktp_ResponseDTO(
-                airecall_ktp.getStart_date(),
-                airecall_ktp.getEnd_date(),
-                airecall_ktp.getStrength_analysis(),
-                airecall_ktp.getImprovement(),
-                airecall_ktp.getScalability()
+        return  new Airecall_Kpt_ResponseDTO(
+                airecall_kpt.getStart_date(),
+                airecall_kpt.getEnd_date(),
+                airecall_kpt.getStrength_analysis(),
+                airecall_kpt.getImprovement(),
+                airecall_kpt.getScalability()
         );
     }
 

@@ -25,6 +25,9 @@ public class CustomeNoteRepoForAiService {
     public List<NonRetroNoteEntryResponseDto> getNonRetroNotes(String username, LocalDate start_date, LocalDate end_date) {
         return customNoteRepoForAi.searchNonRetroNote(username, start_date, end_date);
     }
+    public long getDiaryCount (String username, LocalDate start_date, LocalDate end_date) {
+        return customNoteRepoForAi.aiDiaryCount(username, start_date, end_date);
+    }
 
     /**
      * 사용자 , 주간 , 회고 가져오기

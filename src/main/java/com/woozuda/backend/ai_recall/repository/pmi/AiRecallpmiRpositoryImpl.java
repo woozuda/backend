@@ -2,9 +2,7 @@ package com.woozuda.backend.ai_recall.repository.pmi;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.woozuda.backend.account.entity.QUserEntity;
 import com.woozuda.backend.ai_recall.entity.*;
-import com.woozuda.backend.ai_recall.repository.ktp.AiRecallktpRpositoryCustom;
 import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;

@@ -36,7 +36,7 @@ public class UserEntity extends BaseTimeEntity {
 
     //알람 on off
     @Column
-    private boolean alarm;
+    private Boolean alarm;
 
     //이메일 주소
     @Column
