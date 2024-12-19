@@ -4,11 +4,7 @@ import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
-import com.woozuda.backend.note.entity.CommonNote;
-import com.woozuda.backend.note.entity.NoteContent;
-import com.woozuda.backend.note.entity.Question;
-import com.woozuda.backend.note.entity.QuestionNote;
-import com.woozuda.backend.note.entity.RetrospectiveNote;
+import com.woozuda.backend.note.entity.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,27 +17,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.woozuda.backend.account.entity.AiType.PICTURE_NOVEL;
-import static com.woozuda.backend.note.entity.type.Feeling.ANGER;
-import static com.woozuda.backend.note.entity.type.Feeling.CONTENT;
-import static com.woozuda.backend.note.entity.type.Feeling.DISSATISFACTION;
-import static com.woozuda.backend.note.entity.type.Feeling.JOY;
-import static com.woozuda.backend.note.entity.type.Feeling.NEUTRAL;
-import static com.woozuda.backend.note.entity.type.Feeling.SADNESS;
-import static com.woozuda.backend.note.entity.type.Feeling.TIREDNESS;
-import static com.woozuda.backend.note.entity.type.Framework.FOUR_F_S;
-import static com.woozuda.backend.note.entity.type.Framework.KPT;
-import static com.woozuda.backend.note.entity.type.Framework.PMI;
-import static com.woozuda.backend.note.entity.type.Framework.SCS;
+import static com.woozuda.backend.note.entity.type.Feeling.*;
+import static com.woozuda.backend.note.entity.type.Framework.*;
 import static com.woozuda.backend.note.entity.type.Season.FALL;
 import static com.woozuda.backend.note.entity.type.Season.WINTER;
 import static com.woozuda.backend.note.entity.type.Visibility.PRIVATE;
 import static com.woozuda.backend.note.entity.type.Visibility.PUBLIC;
-import static com.woozuda.backend.note.entity.type.Weather.CLEAR;
-import static com.woozuda.backend.note.entity.type.Weather.CLOUDY;
-import static com.woozuda.backend.note.entity.type.Weather.RAIN;
-import static com.woozuda.backend.note.entity.type.Weather.SNOW;
-import static com.woozuda.backend.note.entity.type.Weather.SUNNY;
-import static com.woozuda.backend.note.entity.type.Weather.THUNDERSTORM;
+import static com.woozuda.backend.note.entity.type.Weather.*;
 import static java.time.Month.DECEMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,7 +45,7 @@ class NoteRepositoryTest {
 
     @BeforeEach
     void userDiaryAndDateInit() {
-        user = new UserEntity(null, "hwang", "asdf", "ROLE_USER", PICTURE_NOVEL);
+        user = new UserEntity(null, "hwang", "asdf", "ROLE_USER", PICTURE_NOVEL, true, "hwang", "woozuda");
         em.persist(user);
 
         diary1 = Diary.of(user, "asdf", "Diary title1");
