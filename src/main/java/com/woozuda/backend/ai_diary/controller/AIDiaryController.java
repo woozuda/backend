@@ -27,6 +27,27 @@ public class AIDiaryController {
     private final AiDiaryService aiDiaryService;
     private final CustomeNoteRepoForAiService customeNoteRepoForAiService;
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> getDiaryCount(
+            @RequestParam("start_date") LocalDate start_date,
+            @RequestParam("end_date") LocalDate end_date,
+            @AuthenticationPrincipal CustomUser user
+    ) {
+        String username = user.getUsername();
+        long diaryCount = customeNoteRepoForAiService.getDiaryCount(username, start_date, end_date);
+
+        if (diaryCount <= 1) {
+            log.info("Diary count: {}", diaryCount);
+            return ResponseEntity
+                    .badRequest()
+                    .body(diaryCount); // 단순히 BAD_REQUEST 반환
+        }
+
+        log.info("Diary count: {}", diaryCount);
+        return ResponseEntity.ok(diaryCount); // 숫자만 반환
+
+
+    }
     @PostMapping("/analyze")
     public ResponseEntity<String> analyzeDiary(
             @RequestParam("start_date") LocalDate start_date,

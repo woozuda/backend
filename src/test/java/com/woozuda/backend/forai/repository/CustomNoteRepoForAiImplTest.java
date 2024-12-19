@@ -31,11 +31,10 @@ class CustomNoteRepoForAiImplTest {
         String username = "woozuda@gmail.com";
         LocalDate startDate = LocalDate.of(2024, 12, 15);
         LocalDate endDate = LocalDate.of(2024, 12, 22);
-
         // When: CountAiDiary 메서드 호출
-        long result = customNoteRepoForAi.aiDiaryCount(username, startDate, endDate);
-        System.out.println("result " + result);
+       long result = customNoteRepoForAi.aiDiaryCount(username, startDate, endDate);
         // Then: 결과 검증
-        //assertThat(result).isEqualTo(1);
+       System.out.println("result " + result);
+
     }
 }
