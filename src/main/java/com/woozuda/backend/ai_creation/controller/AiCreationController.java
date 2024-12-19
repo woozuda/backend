@@ -13,10 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +21,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("api/creation")
+@RestController
 public class AiCreationController {
     private final AiCreationService aiCreationService;
     private final CreationPoetryAnalysisService creationPoetryAnalysisService;
@@ -76,5 +74,33 @@ public class AiCreationController {
         // 정상적인 경우는 OK 상태와 함께 성공 메시지 또는 데이터를 반환
         return ResponseEntity.ok("일기 분석 성공");
     }
+    @GetMapping
+    public ResponseEntity<AiCreationResponseDTO> getAiCreation(
+            @RequestParam("start_date") LocalDate startDate,
+            @RequestParam("end_date") LocalDate endDate,
+            @AuthenticationPrincipal CustomUser user){
+        AiCreationResponseDTO responseDTO = aiCreationService.getAiCreationResponseDTO(startDate, endDate, user.getUsername());
+        return ResponseEntity.ok(responseDTO);
+    }
+    @GetMapping("/count")
+    public ResponseEntity<Long> getDiaryCount(
+            @RequestParam("start_date") LocalDate start_date,
+            @RequestParam("end_date") LocalDate end_date,
+            @AuthenticationPrincipal CustomUser user
+    ) {
+        String username = user.getUsername();
+        long diaryCount = customeNoteRepoForAiService.getDiaryCount(username, start_date, end_date);
 
+        if (diaryCount <= 1) {
+            log.info("Diary count: {}", diaryCount);
+            return ResponseEntity
+                    .badRequest()
+                    .body(diaryCount);
+        }
+
+        log.info("Diary count: {}", diaryCount);
+        return ResponseEntity.ok(diaryCount); // 숫자만 반환
+
+
+    }
 }

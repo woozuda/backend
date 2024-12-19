@@ -13,7 +13,7 @@ public class AiCreationDTO {
     private LocalDate start_date;
     private LocalDate end_date;
     private String creationType;
-    private String imageUrl;
+    private String image_url;
     private String text;
     private String creationVisibility;
     private String username;

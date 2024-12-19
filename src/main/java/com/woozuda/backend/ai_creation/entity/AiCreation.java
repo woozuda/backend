@@ -54,7 +54,7 @@ public class AiCreation extends BaseTimeEntity {
                 creationType,  // 이미 Enum 타입이므로 그대로 사용
                 aiCreationDTO.getStart_date(),
                 aiCreationDTO.getEnd_date(),
-                aiCreationDTO.getImageUrl(),
+                aiCreationDTO.getImage_url(),
                 aiCreationDTO.getText(),
                 creationVisibility // 이미 Enum 타입이므로 그대로 사용
         );

@@ -62,8 +62,6 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
                 .fetch();
 
         int aiDiaryCount = 0;
-
-
         for (Tuple tuple : result) {
             if (tuple.get(note.dtype).equals("COMMON") || tuple.get(note.dtype).equals("QUESTION")) {
                 aiDiaryCount += tuple.get(note.count());
@@ -77,42 +75,48 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
         // 1. 사용자의 다이어리 ID 리스트 가져오기
         List<Long> diaryIdList = getDiaryIdList(username);
 
+        // 2. QueryDSL 쿼리 실행
         List<Tuple> result = query
                 .select(
-                        retrospectiveNote.type, // Framework 타입
-                        retrospectiveNote.count() // 카운트
+                        retrospectiveNote.type,     // Framework 타입
+                        retrospectiveNote.count()    // 카운트
                 )
                 .from(retrospectiveNote)
+                .join(retrospectiveNote.noteContents, noteContent)  // NoteContent와 조인
+                .join(noteContent.note, note)    // Note와 조인
+                .join(note.diary, diary)               // Diary와 join
                 .where(
-                        retrospectiveNote.diary.id.in(diaryIdList),
-                        retrospectiveNote.date.goe(startDate),
-                        retrospectiveNote.date.loe(endDate)
+                        diary.id.in(diaryIdList),          // 다이어리 ID 목록에 포함되는 것
+                        retrospectiveNote.date.goe(startDate),  // 시작 날짜 이후
+                        retrospectiveNote.date.loe(endDate)     // 종료 날짜 이전
                 )
-                .groupBy(retrospectiveNote.type)
+                .groupBy(retrospectiveNote.type)           // Framework 타입별로 그룹화
                 .fetch();
 
+        // 3. 각 회고 타입별 카운트 초기화
         int ffs = 0;
         int ktp = 0;
         int pmi = 0;
         int scs = 0;
 
+        // 4. 결과 처리
         for (Tuple tuple : result) {
             String type = tuple.get(retrospectiveNote.type.stringValue());  // Framework 타입
             Long count = tuple.get(retrospectiveNote.count()); // 해당 타입의 카운트
 
-            // 타입별로 카운트 분배
-            if (type.equals("FOUR_FS")) {
+            // 5. 타입별로 카운트 분배
+            if ("FOUR_FS".equals(type)) {
                 ffs += count.intValue();
-            } else if (type.equals("KPT")) {
+            } else if ("KPT".equals(type)) {
                 ktp += count.intValue();
-            } else if (type.equals("PMI")) {
+            } else if ("PMI".equals(type)) {
                 pmi += count.intValue();
-            } else if (type.equals("SCS")) {
+            } else if ("SCS".equals(type)) {
                 scs += count.intValue();
             }
         }
 
-        // 5. CountRecallDto 객체 반환
+        // 6. CountRecallDto 객체 반환
         return new CountRecallDto(ffs, ktp, pmi, scs);
     }
 
