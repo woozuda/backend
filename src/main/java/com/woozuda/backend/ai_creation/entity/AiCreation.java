@@ -35,7 +35,7 @@ public class AiCreation {
     private LocalDate end_date;
 
     @Column(nullable = false)
-    private String imageUrl;
+    private String image_url;
 
     @Column(nullable = false)
     private String text;
