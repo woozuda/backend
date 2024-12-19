@@ -1,28 +1,15 @@
 package com.woozuda.backend.shortlink.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
-import com.woozuda.backend.account.entity.UserEntity;
-import com.woozuda.backend.account.repository.UserRepository;
-import com.woozuda.backend.diary.entity.Diary;
-import com.woozuda.backend.diary.repository.DiaryRepository;
-import com.woozuda.backend.note.entity.*;
-import com.woozuda.backend.note.entity.type.*;
-import com.woozuda.backend.note.repository.NoteRepository;
-import com.woozuda.backend.note.repository.QuestionRepository;
+import com.woozuda.backend.shortlink.dto.ai_creation.AiCreationIdDto;
 import com.woozuda.backend.shortlink.service.ShareService;
-import com.woozuda.backend.shortlink.dto.NoteIdDto;
-import com.woozuda.backend.shortlink.dto.SharedNoteResponseDto;
+import com.woozuda.backend.shortlink.dto.note.NoteIdDto;
+import com.woozuda.backend.shortlink.dto.note.SharedNoteResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @RequestMapping("/api/shared")
 @RestController
@@ -42,6 +29,19 @@ public class ShareController {
         shareService.makeUnsharedNote(noteIdDto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    @PostMapping("/ai")
+    public ResponseEntity<Void> makeSharedAiCreation(@RequestBody AiCreationIdDto aiCreationIdDto){
+        shareService.makeSharedAiCreation(aiCreationIdDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping("/ai/unshare")
+    public ResponseEntity<Void> makeUnsharedAiCreation(@RequestBody AiCreationIdDto aiCreationIdDto){
+        shareService.makeUnsharedAiCreation(aiCreationIdDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 
     @GetMapping("/note")
     public ResponseEntity<SharedNoteResponseDto> getSharedNote(@AuthenticationPrincipal CustomUser customUser){

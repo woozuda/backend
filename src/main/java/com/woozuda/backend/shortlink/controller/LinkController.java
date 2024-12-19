@@ -3,7 +3,7 @@ package com.woozuda.backend.shortlink.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.shortlink.service.ShareService;
-import com.woozuda.backend.shortlink.dto.SharedNoteResponseDto;
+import com.woozuda.backend.shortlink.dto.note.SharedNoteResponseDto;
 import com.woozuda.backend.shortlink.dto.ShortLinkDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

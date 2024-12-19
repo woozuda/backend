@@ -1,4 +1,4 @@
-package com.woozuda.backend.shortlink.dto;
+package com.woozuda.backend.shortlink.dto.note;
 
 import lombok.Getter;
 import lombok.Setter;
