@@ -9,7 +9,7 @@ import com.woozuda.backend.note.entity.*;
 import com.woozuda.backend.note.entity.type.Visibility;
 import com.woozuda.backend.note.repository.NoteRepository;
 import com.woozuda.backend.shortlink.dto.*;
-import com.woozuda.backend.shortlink.dto.ai_creation.AiCreationIdDto;
+import com.woozuda.backend.shortlink.dto.ai_creation.*;
 import com.woozuda.backend.shortlink.dto.note.*;
 import com.woozuda.backend.shortlink.entity.ShortLink;
 import com.woozuda.backend.shortlink.repository.ShortLinkRepository;
@@ -146,6 +146,30 @@ public class ShareService {
 
         return new SharedNoteResponseDto(allSharedNotes.size(), sharedNotesByDateDtoList);
 
+    }
+
+    @Transactional
+    public SharedAiResponse getSharedAiCreation(String username) {
+
+        //query 문 실행 직후
+        List<SearchSharedAiCreationDto> results = aiCreationRepository.searchSharedAiCreation(username);
+
+        //type 식별자 달아주기
+        List<SharedAiByType> sharedAiByType = results.stream()
+                .map(result -> new SharedAiByType(result.getCreationType(), result))
+                .toList();
+
+        // 날짜 별로 group by (map)
+        Map<LocalDate, List<SharedAiByType>> sharedAiByDateMap = sharedAiByType.stream()
+                .collect(Collectors.groupingBy(dto -> dto.getAiCreation().getStart_date()));
+
+        // 날짜 별로 group by (map-> dto)
+        List<SharedAiByDate> sharedNotesByDateDtoList = sharedAiByDateMap.entrySet().stream()
+                .map(entry -> new SharedAiByDate(entry.getKey(), entry.getValue()))
+                .toList();
+
+        // totalCount 반영
+        return new SharedAiResponse(results.size(), sharedNotesByDateDtoList);
     }
 
     @Transactional

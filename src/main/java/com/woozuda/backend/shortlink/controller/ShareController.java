@@ -1,15 +1,26 @@
 package com.woozuda.backend.shortlink.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
+import com.woozuda.backend.account.entity.UserEntity;
+import com.woozuda.backend.account.repository.UserRepository;
+import com.woozuda.backend.ai_creation.entity.AiCreation;
+import com.woozuda.backend.ai_creation.entity.CreationType;
+import com.woozuda.backend.ai_creation.entity.CreationVisibility;
+import com.woozuda.backend.ai_creation.repository.AiCreationRepository;
 import com.woozuda.backend.shortlink.dto.ai_creation.AiCreationIdDto;
+import com.woozuda.backend.shortlink.dto.ai_creation.SharedAiResponse;
 import com.woozuda.backend.shortlink.service.ShareService;
 import com.woozuda.backend.shortlink.dto.note.NoteIdDto;
 import com.woozuda.backend.shortlink.dto.note.SharedNoteResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.Arrays;
 
 @RequestMapping("/api/shared")
 @RestController
@@ -47,6 +58,13 @@ public class ShareController {
     public ResponseEntity<SharedNoteResponseDto> getSharedNote(@AuthenticationPrincipal CustomUser customUser){
         String username = customUser.getUsername();
         SharedNoteResponseDto dtos = shareService.getSharedNote(username);
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+    }
+
+    @GetMapping("/ai")
+    public ResponseEntity<SharedAiResponse> getSharedAiCreation(@AuthenticationPrincipal CustomUser customUser){
+        String username = customUser.getUsername();
+        SharedAiResponse dtos = shareService.getSharedAiCreation(username);
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
 }
