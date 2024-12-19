@@ -30,7 +30,7 @@ class DiaryRepositoryTest {
     @Test
     void givenUserId_whenSaveDiary_thenReturnsCorrect() {
         // Given
-        UserEntity user = new UserEntity(null, "hwang", "qwe123!", "ROLE_USER", PICTURE_NOVEL);
+        UserEntity user = new UserEntity(null, "hwang", "qwe123!", "ROLE_USER", PICTURE_NOVEL, true, "hwang", "woozuda");
 
         em.persist(user);
 
@@ -60,7 +60,7 @@ class DiaryRepositoryTest {
     @Test
     void searchDiarySummaryList_ShouldReturnExpectedResults() {
         //Given
-        UserEntity user = new UserEntity(null, "test_user", "password", "ROLE_USER", PICTURE_NOVEL);
+        UserEntity user = new UserEntity(null, "test_user", "password", "ROLE_USER", PICTURE_NOVEL, true, "test_user", "woozuda");
         em.persist(user);
 
         Tag tag1 = Tag.of("Tag1");
@@ -105,7 +105,7 @@ class DiaryRepositoryTest {
     @Test
     void searchSingleDiarySummaryTest() {
         //Given
-        UserEntity user = new UserEntity(null, "test_user", "password", "ROLE_USER", PICTURE_NOVEL);
+        UserEntity user = new UserEntity(null, "test_user", "password", "ROLE_USER", PICTURE_NOVEL, true, "test_user", "woozuda");
         em.persist(user);
 
         Tag tag1 = Tag.of("Tag1");
