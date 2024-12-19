@@ -43,10 +43,9 @@ public class MypageService {
     }
 
     @Transactional
-    public boolean alarmOff(String username){
+    public void alarmOff(String username){
         UserEntity userEntity = userRepository.findByUsername(username);
         userEntity.setAlarm(false);
         userRepository.save(userEntity);
-        return true;
     }
 }
