@@ -4,6 +4,7 @@ import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.account.entity.AiType;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
+import com.woozuda.backend.ai_creation.dto.AiCreationCountResponseDTO;
 import com.woozuda.backend.ai_creation.dto.AiCreationResponseDTO;
 import com.woozuda.backend.ai_creation.service.AiCreationService;
 import com.woozuda.backend.ai_creation.service.CreationPoetryAnalysisService;
@@ -39,9 +40,7 @@ public class AiCreationController {
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
             @AuthenticationPrincipal CustomUser user) {
-        // CustomUser에서 UserEntity를 가져옴
         userRepository.findByUsername(user.getName());
-
         String username = user.getUsername();
         UserEntity userEntity = customeNoteRepoForAiService.getUserEntity(username);
         AiType aiType = userEntity.getAiType();
@@ -67,32 +66,28 @@ public class AiCreationController {
         return ResponseEntity.ok("창작 완료");
     }
     @GetMapping
-    public ResponseEntity<AiCreationResponseDTO> getAiCreation(
+    public ResponseEntity<AiCreationCountResponseDTO> getAiCreation(
             @RequestParam("start_date") LocalDate startDate,
             @RequestParam("end_date") LocalDate endDate,
-            @AuthenticationPrincipal CustomUser user){
-        AiCreationResponseDTO responseDTO = aiCreationService.getAiCreationResponseDTO(startDate, endDate, user.getUsername());
-        return ResponseEntity.ok(responseDTO);
-    }
-    @GetMapping("/count")
-    public ResponseEntity<Long> getDiaryCount(
-            @RequestParam("start_date") LocalDate start_date,
-            @RequestParam("end_date") LocalDate end_date,
-            @AuthenticationPrincipal CustomUser user
-    ) {
-        String username = user.getUsername();
-        long diaryCount = customeNoteRepoForAiService.getDiaryCount(username, start_date, end_date);
+            @AuthenticationPrincipal CustomUser user) {
 
+        String username = user.getUsername();
+
+        // 다이어리 카운트 가져오기
+        long diaryCount = customeNoteRepoForAiService.getDiaryCount(username, startDate, endDate);
+
+        // 다이어리 카운트가 1 이하일 경우 BAD_REQUEST 반환
         if (diaryCount <= 1) {
-            log.info("Diary count: {}", diaryCount);
             return ResponseEntity
-                    .badRequest()
-                    .body(diaryCount);
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new AiCreationCountResponseDTO(null, diaryCount)); // 다이어리 카운트만 반환
         }
 
-        log.info("Diary count: {}", diaryCount);
-        return ResponseEntity.ok(diaryCount); // 숫자만 반환
+        // AI 생성 응답 가져오기
+        AiCreationResponseDTO responseDTO = aiCreationService.getAiCreationResponseDTO(startDate, endDate, username);
 
-
+        // 둘을 묶어서 반환
+        AiCreationCountResponseDTO result = new AiCreationCountResponseDTO(responseDTO, diaryCount);
+        return ResponseEntity.ok(result);
     }
 }

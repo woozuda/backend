@@ -1,8 +1,10 @@
 package com.woozuda.backend.forai.repository;
 
 import com.woozuda.backend.diary.entity.Diary;
+import com.woozuda.backend.forai.dto.CountRecallDto;
 import com.woozuda.backend.note.entity.CommonNote;
 import com.woozuda.backend.note.entity.QuestionNote;
+import com.woozuda.backend.note.entity.type.Framework;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +38,15 @@ class CustomNoteRepoForAiImplTest {
         // Then: 결과 검증
        System.out.println("result " + result);
 
+    }
+    @Test
+    void testCountRecall(){
+        String username = "woozuda@gmail.com";
+        LocalDate startDate = LocalDate.of(2024, 12, 16);
+        LocalDate endDate = LocalDate.of(2024, 12, 22);
+        Framework type = Framework.FOUR_F_S;
+        CountRecallDto result = customNoteRepoForAi.countRecallDto(username, startDate, endDate);
+        //long result = customNoteRepoForAi.getRetrospectiveNoteCount(username, startDate, endDate);
+        System.out.println("result " + result);
     }
 }

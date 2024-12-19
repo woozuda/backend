@@ -2,6 +2,7 @@ package com.woozuda.backend.forai.repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woozuda.backend.forai.dto.CountRecallDto;
@@ -77,50 +78,70 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
 
         // 2. QueryDSL 쿼리 실행
         List<Tuple> result = query
-                .select(
-                        retrospectiveNote.type,     // Framework 타입
-                        retrospectiveNote.count()    // 카운트
-                )
+        .select(
+                retrospectiveNote.type,  // 'retrospectiveNote'의 'type' 컬럼
+                retrospectiveNote.count(),  // 'retrospectiveNote'의 'id' 카운트
+                JPAExpressions
+                        .select(
+                                note.dtype
+                        )
+                        .from(note)
+                        .where(
+                                note.diary.id.in(diaryIdList),
+                                note.date.between(startDate, endDate),
+                                note.dtype.eq("RETROSPECTIVE")
+                        )
+        )
                 .from(retrospectiveNote)
-                .join(retrospectiveNote.noteContents, noteContent)  // NoteContent와 조인
-                .join(noteContent.note, note)    // Note와 조인
-                .join(note.diary, diary)               // Diary와 join
-                .where(
-                        diary.id.in(diaryIdList),          // 다이어리 ID 목록에 포함되는 것
-                        retrospectiveNote.date.goe(startDate),  // 시작 날짜 이후
-                        retrospectiveNote.date.loe(endDate)     // 종료 날짜 이전
-                )
-                .groupBy(retrospectiveNote.type)           // Framework 타입별로 그룹화
+                .groupBy(retrospectiveNote.type)  // 'type'별로 그룹화
                 .fetch();
 
         // 3. 각 회고 타입별 카운트 초기화
-        int ffs = 0;
-        int ktp = 0;
-        int pmi = 0;
-        int scs = 0;
+        long ffs = 0;
+        long ktp = 0;
+        long pmi = 0;
+        long scs = 0;
 
         // 4. 결과 처리
         for (Tuple tuple : result) {
-            String type = tuple.get(retrospectiveNote.type.stringValue());  // Framework 타입
-            Long count = tuple.get(retrospectiveNote.count()); // 해당 타입의 카운트
+            String typeString = tuple.get(retrospectiveNote.type).toString(); // 타입 가져오기
+            long count = tuple.get(retrospectiveNote.id.count()); // 카운트 가져오기
 
             // 5. 타입별로 카운트 분배
-            if ("FOUR_FS".equals(type)) {
-                ffs += count.intValue();
-            } else if ("KPT".equals(type)) {
-                ktp += count.intValue();
-            } else if ("PMI".equals(type)) {
-                pmi += count.intValue();
-            } else if ("SCS".equals(type)) {
-                scs += count.intValue();
+            if (typeString.equals("FOUR_F_S")) {
+                ffs += count;
+            } else if (typeString.equals("KPT")) {
+                ktp += count;
+            } else if (typeString.equals("PMI")) {
+                pmi += count;
+            } else if (typeString.equals("SCS")) {
+                scs += count;
             }
         }
 
         // 6. CountRecallDto 객체 반환
         return new CountRecallDto(ffs, ktp, pmi, scs);
     }
+@Override
+public long getRetrospectiveNoteCount(String username, LocalDate startDate, LocalDate endDate) {
+    List<Long> diaryIdList = getDiaryIdList(username);
 
-    // 자유
+    List<Long> result = query
+            .select(
+                    retrospectiveNote.count()  // note_id의 개수를 계산
+            )
+            .from(retrospectiveNote)
+            .leftJoin(noteContent).on(noteContent.note.id.eq(retrospectiveNote.id))   // 'retrospective_note'와 'note' 테이블을 조인
+            .where(
+                    retrospectiveNote.type.eq(Framework.valueOf("FOUR_F_S")),   // type이 'FOUR_F_S'인 조건
+                    note.date.between(startDate, endDate),    // 날짜 범위 조건
+                    retrospectiveNote.diary.id.in(diaryIdList)  // diary ID 리스트 조건
+            )
+            .fetch();  // 여러 결과를 리스트로 반환
+
+    return result.isEmpty() ? 0L : result.get(0);  // 리스트가 비어 있으면 0L 반환, 아니면 첫 번째 값을 반환
+}
+
     private List<NonRetroNoteEntryResponseDto> getCommonNoteList(LocalDate startDate, LocalDate endDate, List<Long> diaryIdList) {
         return query
                 .select(Projections.constructor(NonRetroNoteEntryResponseDto.class,

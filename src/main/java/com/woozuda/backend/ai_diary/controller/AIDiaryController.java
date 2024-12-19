@@ -2,6 +2,9 @@ package com.woozuda.backend.ai_diary.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.account.entity.UserEntity;
+import com.woozuda.backend.ai_creation.dto.AiCreationCountResponseDTO;
+import com.woozuda.backend.ai_creation.dto.AiCreationResponseDTO;
+import com.woozuda.backend.ai_diary.dto.AiDiaryCountResponseDTO;
 import com.woozuda.backend.ai_diary.dto.AiDiaryResponseDTO;
 import com.woozuda.backend.ai_diary.entity.AiDiary;
 import com.woozuda.backend.ai_diary.service.AiDiaryService;
@@ -48,6 +51,7 @@ public class AIDiaryController {
 
 
     }
+
     @PostMapping("/analyze")
     public ResponseEntity<String> analyzeDiary(
             @RequestParam("start_date") LocalDate start_date,
@@ -70,22 +74,42 @@ public class AIDiaryController {
         // 정상적인 경우는 OK 상태와 함께 성공 메시지 또는 데이터를 반환
         return ResponseEntity.ok("일기 분석 성공");
     }
+
     /**
      * 사용자가 분석한 리포트를 들고오자!
+     *
      * @param startDate
      * @param endDate
      * @param user
      * @return
      */
     @GetMapping
-    public ResponseEntity<AiDiaryResponseDTO> getAiDiary(
+    public ResponseEntity<AiDiaryCountResponseDTO> getAiDiary(
             @RequestParam("start_date") LocalDate startDate,
             @RequestParam("end_date") LocalDate endDate,
             @AuthenticationPrincipal CustomUser user) {
-        AiDiaryResponseDTO responseDTO = aiDiaryService.getAiDiaryByDateRangeAndId(startDate, endDate, user.getUsername());
-            return ResponseEntity.ok(responseDTO);
+
+        String username = user.getUsername();
+
+        // 다이어리 카운트 가져오기
+        long diaryCount = customeNoteRepoForAiService.getDiaryCount(username, startDate, endDate);
+
+        // 다이어리 카운트가 1 이하일 경우 BAD_REQUEST 반환
+        if (diaryCount <= 1) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new AiDiaryCountResponseDTO(null, diaryCount)); // AI 생성 DTO 없이 다이어리 카운트만 반환
         }
+
+        // AI 다이어리 응답 가져오기
+        AiDiaryResponseDTO responseDTO = aiDiaryService.getAiDiaryByDateRangeAndId(startDate, endDate, user.getUsername());
+
+        // 둘을 묶어서 반환
+        AiDiaryCountResponseDTO result = new AiDiaryCountResponseDTO(responseDTO, diaryCount);
+        return ResponseEntity.ok(result);
     }
+
+}
 
 
 
