@@ -122,25 +122,7 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
         // 6. CountRecallDto 객체 반환
         return new CountRecallDto(ffs, ktp, pmi, scs);
     }
-@Override
-public long getRetrospectiveNoteCount(String username, LocalDate startDate, LocalDate endDate) {
-    List<Long> diaryIdList = getDiaryIdList(username);
 
-    List<Long> result = query
-            .select(
-                    retrospectiveNote.count()  // note_id의 개수를 계산
-            )
-            .from(retrospectiveNote)
-            .leftJoin(noteContent).on(noteContent.note.id.eq(retrospectiveNote.id))   // 'retrospective_note'와 'note' 테이블을 조인
-            .where(
-                    retrospectiveNote.type.eq(Framework.valueOf("FOUR_F_S")),   // type이 'FOUR_F_S'인 조건
-                    note.date.between(startDate, endDate),    // 날짜 범위 조건
-                    retrospectiveNote.diary.id.in(diaryIdList)  // diary ID 리스트 조건
-            )
-            .fetch();  // 여러 결과를 리스트로 반환
-
-    return result.isEmpty() ? 0L : result.get(0);  // 리스트가 비어 있으면 0L 반환, 아니면 첫 번째 값을 반환
-}
 
     private List<NonRetroNoteEntryResponseDto> getCommonNoteList(LocalDate startDate, LocalDate endDate, List<Long> diaryIdList) {
         return query

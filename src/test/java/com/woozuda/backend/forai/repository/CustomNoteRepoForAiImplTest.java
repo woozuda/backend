@@ -39,14 +39,4 @@ class CustomNoteRepoForAiImplTest {
        System.out.println("result " + result);
 
     }
-    @Test
-    void testCountRecall(){
-        String username = "woozuda@gmail.com";
-        LocalDate startDate = LocalDate.of(2024, 12, 16);
-        LocalDate endDate = LocalDate.of(2024, 12, 22);
-        Framework type = Framework.FOUR_F_S;
-        CountRecallDto result = customNoteRepoForAi.countRecallDto(username, startDate, endDate);
-        //long result = customNoteRepoForAi.getRetrospectiveNoteCount(username, startDate, endDate);
-        System.out.println("result " + result);
-    }
 }
