@@ -34,9 +34,9 @@ public class SharedAiCreationRepoImpl implements SharedAiCreationRepo{
                         aiCreation.image_url,
                         aiCreation.text))
                 .from(aiCreation)
-                .where(aiCreation.creationVisibility.eq(CreationVisibility.PUBLIC))
                 .leftJoin(aiCreation.user, userEntity)
-                .where(userEntity.username.eq(username))
+                .where(aiCreation.creationVisibility.eq(CreationVisibility.PUBLIC)
+                        .and(userEntity.username.eq(username)))
                 .fetch();
     }
 }

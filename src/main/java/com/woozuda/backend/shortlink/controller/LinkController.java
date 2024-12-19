@@ -2,6 +2,7 @@ package com.woozuda.backend.shortlink.controller;
 
 
 import com.woozuda.backend.account.dto.CustomUser;
+import com.woozuda.backend.shortlink.dto.ai_creation.SharedAiResponse;
 import com.woozuda.backend.shortlink.service.ShareService;
 import com.woozuda.backend.shortlink.dto.note.SharedNoteResponseDto;
 import com.woozuda.backend.shortlink.dto.ShortLinkDto;
@@ -27,6 +28,19 @@ public class LinkController {
 
         //username 의 사용자가 공유한 일기 리스트 반환
         SharedNoteResponseDto dtos = shareService.getSharedNote(username);
+
+        return ResponseEntity.status(HttpStatus.OK).body(dtos);
+    }
+
+    //숏링크 해쉬 값 기반으로 ai 창작물을 반환 한다
+    @GetMapping("/ai/{hashcode}")
+    public ResponseEntity<SharedAiResponse> getShortlinkAiContent(@PathVariable String hashcode){
+
+        //hashcode -> username 도출
+        String username = shareService.getUsername(hashcode);
+
+        //username 의 사용자가 공유한 ai 창작물
+        SharedAiResponse dtos = shareService.getSharedAiCreation(username);
 
         return ResponseEntity.status(HttpStatus.OK).body(dtos);
     }
