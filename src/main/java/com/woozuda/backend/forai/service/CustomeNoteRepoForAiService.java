@@ -1,5 +1,7 @@
 package com.woozuda.backend.forai.service;
 
+import com.woozuda.backend.account.entity.UserEntity;
+import com.woozuda.backend.account.repository.UserRepository;
 import com.woozuda.backend.forai.dto.CountRecallDto;
 import com.woozuda.backend.forai.repository.CustomNoteRepoForAi;
 import com.woozuda.backend.forai.dto.NonRetroNoteEntryResponseDto;
@@ -15,7 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomeNoteRepoForAiService {
     private final CustomNoteRepoForAi customNoteRepoForAi;
+    private final UserRepository userRepository;
 
+    // 사용자 유저 정보 가져오기
+    public UserEntity getUserEntity(String username) {
+        return userRepository.findByUsername(username);
+    }
     /**
      * 사용자 , 주간 , 일기가져오기
      * @param username
