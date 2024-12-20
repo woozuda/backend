@@ -72,7 +72,9 @@ public class AiRecallController {
         String username = user.getUsername();
         long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date, Framework.FOUR_F_S);
         if(result <= 1) {
-            return ResponseEntity.ok(result);
+            return ResponseEntity
+                    .badRequest()
+                    .body(result);
         }
         return ResponseEntity.ok(result);
     }
@@ -118,7 +120,9 @@ public class AiRecallController {
         String username = user.getUsername();
         long result = customeNoteRepoForAiService.getCountkpt(username, start_date, end_date, Framework.KPT);
         if(result <= 1) {
-            return ResponseEntity.ok(result);
+            return ResponseEntity
+                    .badRequest()
+                    .body(result);
         }
         return ResponseEntity.ok(result);
     }
@@ -165,7 +169,9 @@ public class AiRecallController {
         String username = user.getUsername();
         long result = customeNoteRepoForAiService.getCountpmi(username, start_date, end_date, Framework.PMI);
         if(result <= 1) {
-            return ResponseEntity.ok(result);
+            return ResponseEntity
+                    .badRequest()
+                    .body(result);
         }
         return ResponseEntity.ok(result);
     }
@@ -209,7 +215,9 @@ public class AiRecallController {
         String username = user.getUsername();
         long result = customeNoteRepoForAiService.getCountscs(username, start_date, end_date, Framework.SCS);
         if(result <= 1) {
-            return ResponseEntity.ok(result);
+            return ResponseEntity
+                    .badRequest()
+                    .body(result);
         }
         return ResponseEntity.ok(result);
     }
