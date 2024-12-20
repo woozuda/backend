@@ -80,19 +80,14 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
         List<Tuple> result = query
         .select(
                 retrospectiveNote.type,  // 'retrospectiveNote'의 'type' 컬럼
-                retrospectiveNote.count(),  // 'retrospectiveNote'의 'id' 카운트
-                JPAExpressions
-                        .select(
-                                note.dtype
-                        )
-                        .from(note)
-                        .where(
-                                note.diary.id.in(diaryIdList),
-                                note.date.between(startDate, endDate),
-                                note.dtype.eq("RETROSPECTIVE")
-                        )
+                retrospectiveNote.count() // 'retrospectiveNote'의 'id' 카운트
         )
                 .from(retrospectiveNote)
+                .join(note).on(note.id.eq(retrospectiveNote.id))
+                .where(
+                        note.diary.id.in(diaryIdList), // diaryIdList 조건
+                        note.date.between(startDate, endDate)
+                )
                 .groupBy(retrospectiveNote.type)  // 'type'별로 그룹화
                 .fetch();
 
@@ -104,10 +99,8 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
 
         // 4. 결과 처리
         for (Tuple tuple : result) {
-            String typeString = tuple.get(retrospectiveNote.type).toString(); // 타입 가져오기
+            String typeString = tuple.get(retrospectiveNote.type).toString();
             long count = tuple.get(retrospectiveNote.id.count()); // 카운트 가져오기
-
-            // 5. 타입별로 카운트 분배
             if (typeString.equals("FOUR_F_S")) {
                 ffs += count;
             } else if (typeString.equals("KPT")) {
@@ -160,8 +153,6 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
                 .where(questionNote.diary.id.in(diaryIdList), questionNote.date.goe(startDate), questionNote.date.loe(endDate))
                 .fetch();
     }
-
-
 
 
     @Override
