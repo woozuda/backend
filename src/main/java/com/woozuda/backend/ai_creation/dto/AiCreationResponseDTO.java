@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 public class AiCreationResponseDTO {
+    private Long id;
     private LocalDate start_date;
     private LocalDate end_date;
     private String image_url;
