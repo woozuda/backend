@@ -1,31 +1,17 @@
 package com.woozuda.backend.note.service;
 
-import com.woozuda.backend.note.dto.request.CommonNoteSaveRequestDto;
-import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
 import com.woozuda.backend.note.dto.request.NoteIdRequestDto;
-import com.woozuda.backend.note.dto.request.QuestionNoteSaveRequestDto;
-import com.woozuda.backend.note.dto.request.RetrospectiveNoteSaveRequestDto;
 import com.woozuda.backend.note.dto.response.DateInfoResponseDto;
 import com.woozuda.backend.note.dto.response.DateListResponseDto;
 import com.woozuda.backend.note.dto.response.NoteCountResponseDto;
 import com.woozuda.backend.note.dto.response.NoteEntryResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
-import com.woozuda.backend.note.entity.CommonNote;
-import com.woozuda.backend.note.entity.Note;
-import com.woozuda.backend.note.entity.NoteContent;
-import com.woozuda.backend.note.entity.Question;
-import com.woozuda.backend.note.entity.QuestionNote;
-import com.woozuda.backend.note.entity.RetrospectiveNote;
-import com.woozuda.backend.note.entity.type.Feeling;
-import com.woozuda.backend.note.entity.type.Framework;
-import com.woozuda.backend.note.entity.type.Season;
-import com.woozuda.backend.note.entity.type.Weather;
 import com.woozuda.backend.note.repository.NoteRepository;
-import com.woozuda.backend.note.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -35,16 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
-
-import static com.woozuda.backend.note.entity.type.Visibility.PRIVATE;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class NoteService {
 
     private final NoteRepository noteRepository;
@@ -109,10 +93,18 @@ public class NoteService {
     TODO 이것도 삭제하고자 하는 엔티티가 로그인한 사용자의 것인지 확인하는 로직이 없음
         차라리 노트 엔티티에 createdBy나 ownedBy 같은 칼럼을 추가해서 username 을 직접 들고 있게 하는 게 좋을 듯
     TODO 회고의 경우 연관된 NoteContent 를 일괄적으로 삭제하는 게 아니라 하나씩 삭제함 -> 성능 최적화
+    TODO 이 서비스 로직이 끝나고, 관련된 noteContent를 삭제하기 위해 각 note의 noteContent를 조회하는 쿼리가 나감
+        즉 3개의 note를 삭제하려면 3변의 'select note_content from note_content where note_content.note_id = ?' 가 나가는 것 (n+1)
+        -> 성능 최적화하기
      */
     public void deleteNotes(String username, NoteIdRequestDto requestDto) {
-        List<Note> notesToDelete = noteRepository.findAllById(requestDto.getId());
-        noteRepository.deleteAll(notesToDelete);
+        List<Diary> diariesToChange = diaryRepository.searchDiariesHaving(requestDto.getId());
+
+        log.info("diaries To Change size = {}", diariesToChange.size());
+
+        for (Diary diary : diariesToChange) {
+            diary.updateNoteInfo(requestDto.getId());
+        }
     }
 
     public NoteCountResponseDto getNoteCount(String username, LocalDate startDate, LocalDate endDate) {
