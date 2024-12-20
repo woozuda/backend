@@ -51,7 +51,6 @@ public class CreationPoetryAnalysisService {
                 1. 일기를 읽고 창작으로 시를 써주세요.
                 2. **중요** 분석이 불가능한 경우 비슷한 데이터라도 출력해주세요. 절대 Null 반환 금지
                 3. 위의 내용을 포함하여 각 항목을 반환해주세요. 예:
-                    image_url: "시로 창작한 부분을 이미지 URL을 반환해주세요"
                     text : 창작한 시를  반환해주세요.
                 """;
         log.info("사용자 메시지 내용 Diary: {}", userMessage.toString());

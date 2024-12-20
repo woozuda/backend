@@ -8,7 +8,6 @@ import com.woozuda.backend.ai_creation.dto.AiCreationResponseDTO;
 import com.woozuda.backend.ai_creation.service.AiCreationService;
 import com.woozuda.backend.ai_creation.service.CreationPoetryAnalysisService;
 import com.woozuda.backend.ai_creation.service.CreationWritingAnalysisService;
-import com.woozuda.backend.ai_diary.dto.AiDiaryResponseDTO;
 import com.woozuda.backend.forai.dto.NonRetroNoteEntryResponseDto;
 import com.woozuda.backend.forai.service.CustomeNoteRepoForAiService;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +38,7 @@ public class AiCreationController {
             @RequestParam("start_date") LocalDate start_date,
             @RequestParam("end_date") LocalDate end_date,
             @AuthenticationPrincipal CustomUser user) {
-        // CustomUser에서 UserEntity를 가져옴
         userRepository.findByUsername(user.getName());
-
         String username = user.getUsername();
         UserEntity userEntity = customeNoteRepoForAiService.getUserEntity(username);
         AiType aiType = userEntity.getAiType();
@@ -66,6 +63,7 @@ public class AiCreationController {
         // 정상적인 경우는 OK 상태와 함께 성공 메시지 또는 데이터를 반환
         return ResponseEntity.ok("창작 완료");
     }
+
     @GetMapping
     public ResponseEntity<AiCreationResponseDTO> getAiCreation(
             @RequestParam("start_date") LocalDate startDate,
@@ -74,6 +72,7 @@ public class AiCreationController {
         AiCreationResponseDTO responseDTO = aiCreationService.getAiCreationResponseDTO(startDate, endDate, user.getUsername());
         return ResponseEntity.ok(responseDTO);
     }
+
     @GetMapping("/count")
     public ResponseEntity<Long> getDiaryCount(
             @RequestParam("start_date") LocalDate start_date,

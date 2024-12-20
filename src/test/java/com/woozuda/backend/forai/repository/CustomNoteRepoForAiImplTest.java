@@ -1,8 +1,10 @@
 package com.woozuda.backend.forai.repository;
 
 import com.woozuda.backend.diary.entity.Diary;
+import com.woozuda.backend.forai.dto.CountRecallDto;
 import com.woozuda.backend.note.entity.CommonNote;
 import com.woozuda.backend.note.entity.QuestionNote;
+import com.woozuda.backend.note.entity.type.Framework;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

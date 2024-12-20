@@ -15,4 +15,5 @@ public interface CustomNoteRepoForAi {
 
     long aiDiaryCount(String username, LocalDate startDate, LocalDate endDate);
     CountRecallDto countRecallDto(String username, LocalDate startDate, LocalDate endDate);
+
 }

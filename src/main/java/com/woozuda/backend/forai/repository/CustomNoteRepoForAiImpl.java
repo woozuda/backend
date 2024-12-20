@@ -2,6 +2,7 @@ package com.woozuda.backend.forai.repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLTemplates;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woozuda.backend.forai.dto.CountRecallDto;
@@ -77,42 +78,37 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
 
         // 2. QueryDSL 쿼리 실행
         List<Tuple> result = query
-                .select(
-                        retrospectiveNote.type,     // Framework 타입
-                        retrospectiveNote.count()    // 카운트
-                )
+        .select(
+                retrospectiveNote.type,  // 'retrospectiveNote'의 'type' 컬럼
+                retrospectiveNote.count() // 'retrospectiveNote'의 'id' 카운트
+        )
                 .from(retrospectiveNote)
-                .join(retrospectiveNote.noteContents, noteContent)  // NoteContent와 조인
-                .join(noteContent.note, note)    // Note와 조인
-                .join(note.diary, diary)               // Diary와 join
+                .join(note).on(note.id.eq(retrospectiveNote.id))
                 .where(
-                        diary.id.in(diaryIdList),          // 다이어리 ID 목록에 포함되는 것
-                        retrospectiveNote.date.goe(startDate),  // 시작 날짜 이후
-                        retrospectiveNote.date.loe(endDate)     // 종료 날짜 이전
+                        note.diary.id.in(diaryIdList), // diaryIdList 조건
+                        note.date.between(startDate, endDate)
                 )
-                .groupBy(retrospectiveNote.type)           // Framework 타입별로 그룹화
+                .groupBy(retrospectiveNote.type)  // 'type'별로 그룹화
                 .fetch();
 
         // 3. 각 회고 타입별 카운트 초기화
-        int ffs = 0;
-        int ktp = 0;
-        int pmi = 0;
-        int scs = 0;
+        long ffs = 0;
+        long ktp = 0;
+        long pmi = 0;
+        long scs = 0;
 
         // 4. 결과 처리
         for (Tuple tuple : result) {
-            String type = tuple.get(retrospectiveNote.type.stringValue());  // Framework 타입
-            Long count = tuple.get(retrospectiveNote.count()); // 해당 타입의 카운트
-
-            // 5. 타입별로 카운트 분배
-            if ("FOUR_FS".equals(type)) {
-                ffs += count.intValue();
-            } else if ("KPT".equals(type)) {
-                ktp += count.intValue();
-            } else if ("PMI".equals(type)) {
-                pmi += count.intValue();
-            } else if ("SCS".equals(type)) {
-                scs += count.intValue();
+            String typeString = tuple.get(retrospectiveNote.type).toString();
+            long count = tuple.get(retrospectiveNote.id.count()); // 카운트 가져오기
+            if (typeString.equals("FOUR_F_S")) {
+                ffs += count;
+            } else if (typeString.equals("KPT")) {
+                ktp += count;
+            } else if (typeString.equals("PMI")) {
+                pmi += count;
+            } else if (typeString.equals("SCS")) {
+                scs += count;
             }
         }
 
@@ -120,7 +116,7 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
         return new CountRecallDto(ffs, ktp, pmi, scs);
     }
 
-    // 자유
+
     private List<NonRetroNoteEntryResponseDto> getCommonNoteList(LocalDate startDate, LocalDate endDate, List<Long> diaryIdList) {
         return query
                 .select(Projections.constructor(NonRetroNoteEntryResponseDto.class,
@@ -157,8 +153,6 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
                 .where(questionNote.diary.id.in(diaryIdList), questionNote.date.goe(startDate), questionNote.date.loe(endDate))
                 .fetch();
     }
-
-
 
 
     @Override
