@@ -4,12 +4,10 @@ import com.woozuda.backend.account.dto.CustomUser;
 import com.woozuda.backend.account.entity.AiType;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
-import com.woozuda.backend.ai_creation.dto.AiCreationCountResponseDTO;
 import com.woozuda.backend.ai_creation.dto.AiCreationResponseDTO;
 import com.woozuda.backend.ai_creation.service.AiCreationService;
 import com.woozuda.backend.ai_creation.service.CreationPoetryAnalysisService;
 import com.woozuda.backend.ai_creation.service.CreationWritingAnalysisService;
-import com.woozuda.backend.ai_diary.dto.AiDiaryResponseDTO;
 import com.woozuda.backend.forai.dto.NonRetroNoteEntryResponseDto;
 import com.woozuda.backend.forai.service.CustomeNoteRepoForAiService;
 import lombok.RequiredArgsConstructor;
@@ -65,29 +63,35 @@ public class AiCreationController {
         // 정상적인 경우는 OK 상태와 함께 성공 메시지 또는 데이터를 반환
         return ResponseEntity.ok("창작 완료");
     }
+
     @GetMapping
-    public ResponseEntity<AiCreationCountResponseDTO> getAiCreation(
+    public ResponseEntity<AiCreationResponseDTO> getAiCreation(
             @RequestParam("start_date") LocalDate startDate,
             @RequestParam("end_date") LocalDate endDate,
-            @AuthenticationPrincipal CustomUser user) {
+            @AuthenticationPrincipal CustomUser user){
+        AiCreationResponseDTO responseDTO = aiCreationService.getAiCreationResponseDTO(startDate, endDate, user.getUsername());
+        return ResponseEntity.ok(responseDTO);
+    }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> getDiaryCount(
+            @RequestParam("start_date") LocalDate start_date,
+            @RequestParam("end_date") LocalDate end_date,
+            @AuthenticationPrincipal CustomUser user
+    ) {
         String username = user.getUsername();
+        long diaryCount = customeNoteRepoForAiService.getDiaryCount(username, start_date, end_date);
 
-        // 다이어리 카운트 가져오기
-        long diaryCount = customeNoteRepoForAiService.getDiaryCount(username, startDate, endDate);
-
-        // 다이어리 카운트가 1 이하일 경우 BAD_REQUEST 반환
         if (diaryCount <= 1) {
+            log.info("Diary count: {}", diaryCount);
             return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new AiCreationCountResponseDTO(null, diaryCount)); // 다이어리 카운트만 반환
+                    .badRequest()
+                    .body(diaryCount);
         }
 
-        // AI 생성 응답 가져오기
-        AiCreationResponseDTO responseDTO = aiCreationService.getAiCreationResponseDTO(startDate, endDate, username);
+        log.info("Diary count: {}", diaryCount);
+        return ResponseEntity.ok(diaryCount); // 숫자만 반환
 
-        // 둘을 묶어서 반환
-        AiCreationCountResponseDTO result = new AiCreationCountResponseDTO(responseDTO, diaryCount);
-        return ResponseEntity.ok(result);
+
     }
 }

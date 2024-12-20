@@ -1,12 +1,7 @@
 package com.woozuda.backend.ai_diary.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
-import com.woozuda.backend.account.entity.UserEntity;
-import com.woozuda.backend.ai_creation.dto.AiCreationCountResponseDTO;
-import com.woozuda.backend.ai_creation.dto.AiCreationResponseDTO;
-import com.woozuda.backend.ai_diary.dto.AiDiaryCountResponseDTO;
 import com.woozuda.backend.ai_diary.dto.AiDiaryResponseDTO;
-import com.woozuda.backend.ai_diary.entity.AiDiary;
 import com.woozuda.backend.ai_diary.service.AiDiaryService;
 import com.woozuda.backend.ai_diary.service.DiaryAnalysisService;
 import com.woozuda.backend.forai.dto.NonRetroNoteEntryResponseDto;
@@ -84,29 +79,12 @@ public class AIDiaryController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<AiDiaryCountResponseDTO> getAiDiary(
+    public ResponseEntity<AiDiaryResponseDTO> getAiDiary(
             @RequestParam("start_date") LocalDate startDate,
             @RequestParam("end_date") LocalDate endDate,
             @AuthenticationPrincipal CustomUser user) {
-
-        String username = user.getUsername();
-
-        // 다이어리 카운트 가져오기
-        long diaryCount = customeNoteRepoForAiService.getDiaryCount(username, startDate, endDate);
-
-        // 다이어리 카운트가 1 이하일 경우 BAD_REQUEST 반환
-        if (diaryCount <= 1) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new AiDiaryCountResponseDTO(null, diaryCount)); // AI 생성 DTO 없이 다이어리 카운트만 반환
-        }
-
-        // AI 다이어리 응답 가져오기
         AiDiaryResponseDTO responseDTO = aiDiaryService.getAiDiaryByDateRangeAndId(startDate, endDate, user.getUsername());
-
-        // 둘을 묶어서 반환
-        AiDiaryCountResponseDTO result = new AiDiaryCountResponseDTO(responseDTO, diaryCount);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(responseDTO);
     }
 
 }
