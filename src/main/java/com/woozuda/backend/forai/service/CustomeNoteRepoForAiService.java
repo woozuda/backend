@@ -50,17 +50,17 @@ public class CustomeNoteRepoForAiService {
         return customNoteRepoForAi.searchRetroNote(username, start_date, end_date , type);
     }
     // 4fs
-    public long getCount4fs(String username, LocalDate start_date, LocalDate end_date ,Framework type) {
-        return customNoteRepoForAi.count4fs(username,start_date,end_date,type);
+    public long getCount4fs(String username, LocalDate start_date, LocalDate end_date) {
+        return customNoteRepoForAi.count4fs(username,start_date,end_date);
     }
-    public long getCountkpt(String username, LocalDate start_date, LocalDate end_date ,Framework type) {
-        return customNoteRepoForAi.countkpt(username,start_date,end_date,type);
+    public long getCountkpt(String username, LocalDate start_date, LocalDate end_date) {
+        return customNoteRepoForAi.countkpt(username,start_date,end_date);
     }
-    public long getCountpmi(String username, LocalDate start_date, LocalDate end_date ,Framework type) {
-        return customNoteRepoForAi.countpmi(username,start_date,end_date,type);
+    public long getCountpmi(String username, LocalDate start_date, LocalDate end_date) {
+        return customNoteRepoForAi.countpmi(username,start_date,end_date);
     }
-    public long getCountscs(String username, LocalDate start_date, LocalDate end_date ,Framework type) {
-        return customNoteRepoForAi.countscs(username,start_date,end_date,type);
+    public long getCountscs(String username, LocalDate start_date, LocalDate end_date) {
+        return customNoteRepoForAi.countscs(username,start_date,end_date);
     }
 
 }

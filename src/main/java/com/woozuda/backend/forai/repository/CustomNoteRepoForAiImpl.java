@@ -72,7 +72,7 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
         return aiDiaryCount;
     }
     @Override
-    public long count4fs(String username, LocalDate startDate, LocalDate endDate , Framework type) {
+    public long count4fs(String username, LocalDate startDate, LocalDate endDate) {
         // 1. 사용자의 다이어리 ID 리스트 가져오기
         List<Long> diaryIdList = getDiaryIdList(username);
 
@@ -105,7 +105,7 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
         return ffs;
     }
     @Override
-    public long countkpt(String username, LocalDate startDate, LocalDate endDate , Framework type) {
+    public long countkpt(String username, LocalDate startDate, LocalDate endDate) {
         // 1. 사용자의 다이어리 ID 리스트 가져오기
         List<Long> diaryIdList = getDiaryIdList(username);
 
@@ -138,7 +138,7 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
         return kpt;
     }
     @Override
-    public long countpmi(String username, LocalDate startDate, LocalDate endDate , Framework type) {
+    public long countpmi(String username, LocalDate startDate, LocalDate endDate) {
         // 1. 사용자의 다이어리 ID 리스트 가져오기
         List<Long> diaryIdList = getDiaryIdList(username);
 
@@ -171,7 +171,7 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
         return pmi;
     }
     @Override
-    public long countscs(String username, LocalDate startDate, LocalDate endDate , Framework type) {
+    public long countscs(String username, LocalDate startDate, LocalDate endDate) {
         // 1. 사용자의 다이어리 ID 리스트 가져오기
         List<Long> diaryIdList = getDiaryIdList(username);
 

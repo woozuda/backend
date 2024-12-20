@@ -56,12 +56,14 @@ public class CreationPoetryAnalysisService {
                 """;
         log.info("사용자 메시지 내용 Diary: {}", userMessage.toString());
 
-        //String img = chatDALL_EService.generateImageUsingDallE(userMessage.toString());
+
         // ChatGPT API 호출
         String response = chatGptService.analyzeDiaryUsingGPT(systemMessage, userMessage.toString());
+        String img = chatDALL_EService.generateImageUsingDallE(response);
 
         // 로그: AI가 응답한 내용 출력
         log.info("AI 응답 내용: {}", response);
+        log.info("달이 응답 내용: {}", img);
 
         // GPT 응답을 AiDiaryDTO로 매핑
         AiCreationDTO aiCreationDTO = mapResponseToAiDiaryDTO(response , username);

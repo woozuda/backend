@@ -44,7 +44,7 @@ public class AiRecallController {
             @AuthenticationPrincipal CustomUser user) {
 
        String username = user.getUsername();
-       long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date, Framework.FOUR_F_S);
+       long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date);
        if(result <= 1) {
            return ResponseEntity
                    .status(HttpStatus.BAD_REQUEST)
@@ -70,7 +70,7 @@ public class AiRecallController {
             @RequestParam("end_date") LocalDate end_date,
             @AuthenticationPrincipal CustomUser user) {
         String username = user.getUsername();
-        long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date, Framework.FOUR_F_S);
+        long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date);
         if(result <= 1) {
             return ResponseEntity
                     .badRequest()
@@ -92,7 +92,7 @@ public class AiRecallController {
             @AuthenticationPrincipal CustomUser user) {
 
         String username = user.getUsername();
-        long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date, Framework.KPT);
+        long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date);
         if(result <= 1) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -118,7 +118,7 @@ public class AiRecallController {
             @RequestParam("end_date") LocalDate end_date,
             @AuthenticationPrincipal CustomUser user) {
         String username = user.getUsername();
-        long result = customeNoteRepoForAiService.getCountkpt(username, start_date, end_date, Framework.KPT);
+        long result = customeNoteRepoForAiService.getCountkpt(username, start_date, end_date);
         if(result <= 1) {
             return ResponseEntity
                     .badRequest()
@@ -141,7 +141,7 @@ public class AiRecallController {
             @AuthenticationPrincipal CustomUser user) {
 
         String username = user.getUsername();
-        long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date, Framework.PMI);
+        long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date);
         if(result <= 1) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -167,7 +167,7 @@ public class AiRecallController {
             @RequestParam("end_date") LocalDate end_date,
             @AuthenticationPrincipal CustomUser user) {
         String username = user.getUsername();
-        long result = customeNoteRepoForAiService.getCountpmi(username, start_date, end_date, Framework.PMI);
+        long result = customeNoteRepoForAiService.getCountpmi(username, start_date, end_date);
         if(result <= 1) {
             return ResponseEntity
                     .badRequest()
@@ -188,7 +188,7 @@ public class AiRecallController {
             @RequestParam("end_date") LocalDate end_date,
             @AuthenticationPrincipal CustomUser user) {
         String username = user.getUsername();
-        long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date, Framework.SCS);
+        long result = customeNoteRepoForAiService.getCount4fs(username, start_date, end_date);
         if(result <= 1) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
@@ -213,7 +213,7 @@ public class AiRecallController {
             @RequestParam("end_date") LocalDate end_date,
             @AuthenticationPrincipal CustomUser user) {
         String username = user.getUsername();
-        long result = customeNoteRepoForAiService.getCountscs(username, start_date, end_date, Framework.SCS);
+        long result = customeNoteRepoForAiService.getCountscs(username, start_date, end_date);
         if(result <= 1) {
             return ResponseEntity
                     .badRequest()
