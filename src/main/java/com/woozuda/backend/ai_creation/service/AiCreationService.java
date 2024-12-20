@@ -32,6 +32,7 @@ public class AiCreationService {
         AiCreation aiCreation = aiCreationRepository.findByAiCreation(startDate, endDate, username)
                 .orElseThrow(() -> new IllegalArgumentException("분석 결과 없음~ "));
         return new AiCreationResponseDTO(
+                aiCreation.getAi_creation_id(),
                 aiCreation.getStart_date(),
                 aiCreation.getEnd_date(),
                 aiCreation.getImage_url(),
