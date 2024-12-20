@@ -93,6 +93,9 @@ public class NoteService {
     TODO 이것도 삭제하고자 하는 엔티티가 로그인한 사용자의 것인지 확인하는 로직이 없음
         차라리 노트 엔티티에 createdBy나 ownedBy 같은 칼럼을 추가해서 username 을 직접 들고 있게 하는 게 좋을 듯
     TODO 회고의 경우 연관된 NoteContent 를 일괄적으로 삭제하는 게 아니라 하나씩 삭제함 -> 성능 최적화
+    TODO 이 서비스 로직이 끝나고, 관련된 noteContent를 삭제하기 위해 각 note의 noteContent를 조회하는 쿼리가 나감
+        즉 3개의 note를 삭제하려면 3변의 'select note_content from note_content where note_content.note_id = ?' 가 나가는 것 (n+1)
+        -> 성능 최적화하기
      */
     public void deleteNotes(String username, NoteIdRequestDto requestDto) {
         List<Diary> diariesToChange = diaryRepository.searchDiariesHaving(requestDto.getId());
