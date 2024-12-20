@@ -18,4 +18,6 @@ public interface CustomDiaryRepository {
     Diary searchDiary(Long diaryId, String username);
 
     DiaryNameListResponseDto searchNames(String username);
+
+    List<Diary> searchDiariesHaving(List<Long> noteIdList);
 }

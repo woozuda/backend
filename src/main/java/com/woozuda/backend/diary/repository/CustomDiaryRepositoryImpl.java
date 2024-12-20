@@ -8,6 +8,7 @@ import com.woozuda.backend.diary.dto.response.DiaryNameListResponseDto;
 import com.woozuda.backend.diary.dto.response.DiaryNameResponseDto;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
+import com.woozuda.backend.note.entity.QNote;
 import jakarta.persistence.EntityManager;
 
 import java.util.ArrayList;
@@ -17,9 +18,11 @@ import java.util.Map;
 
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.list;
+import static com.querydsl.jpa.JPAExpressions.select;
 import static com.woozuda.backend.account.entity.QUserEntity.userEntity;
 import static com.woozuda.backend.diary.entity.QDiary.diary;
 import static com.woozuda.backend.diary.entity.QDiaryTag.diaryTag;
+import static com.woozuda.backend.note.entity.QNote.note;
 import static com.woozuda.backend.tag.entity.QTag.tag;
 
 public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
@@ -136,5 +139,23 @@ public class CustomDiaryRepositoryImpl implements CustomDiaryRepository {
                 .fetch();
 
         return new DiaryNameListResponseDto(nameList);
+    }
+
+    @Override
+    public List<Diary> searchDiariesHaving(List<Long> noteIdList) {
+        QNote noteSub = new QNote("noteSub");
+
+        return query
+                .selectFrom(diary)
+                .leftJoin(diary.noteList, note)
+                .leftJoin(note.noteContents)
+                .where(
+                        diary.id.in(
+                                select(noteSub.diary.id)
+                                        .from(noteSub)
+                                        .where(noteSub.id.in(noteIdList))
+                        )
+                )
+                .fetch();
     }
 }
