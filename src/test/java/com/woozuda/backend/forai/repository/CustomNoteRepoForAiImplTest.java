@@ -1,8 +1,10 @@
 package com.woozuda.backend.forai.repository;
 
 import com.woozuda.backend.diary.entity.Diary;
+import com.woozuda.backend.forai.dto.CountRecallDto;
 import com.woozuda.backend.note.entity.CommonNote;
 import com.woozuda.backend.note.entity.QuestionNote;
+import com.woozuda.backend.note.entity.type.Framework;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,10 @@ class CustomNoteRepoForAiImplTest {
         String username = "woozuda@gmail.com";
         LocalDate startDate = LocalDate.of(2024, 12, 15);
         LocalDate endDate = LocalDate.of(2024, 12, 22);
-
         // When: CountAiDiary 메서드 호출
-        long result = customNoteRepoForAi.aiDiaryCount(username, startDate, endDate);
-        System.out.println("result " + result);
+       long result = customNoteRepoForAi.aiDiaryCount(username, startDate, endDate);
         // Then: 결과 검증
-        //assertThat(result).isEqualTo(1);
+       System.out.println("result " + result);
+
     }
 }

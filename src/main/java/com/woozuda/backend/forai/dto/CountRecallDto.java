@@ -8,9 +8,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class CountRecallDto {
-    private Integer ffs;
-    private Integer kpt;
-    private Integer pmi;
-    private Integer scs;
-
+    private long ffs;
+    private long kpt;
+    private long pmi;
+    private long scs;
+    @Override
+    public String toString() {
+        return "CountRecallDto{" +
+                "ffs=" + ffs +
+                ", kpt=" + kpt +
+                ", pmi=" + pmi +
+                ", scs=" + scs +
+                '}';
+    }
 }

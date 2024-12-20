@@ -8,6 +8,8 @@ on:
 # TODO job을 build, upload, deploy로 나눌 수 있으면 나누기
 jobs:
   deploy:
+    if: github.repository == 'woozuda/backend' # 원본 리포지토리 확인
+
     runs-on: ubuntu-latest
 
     steps:

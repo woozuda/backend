@@ -2,6 +2,7 @@ package com.woozuda.backend.ai_creation.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.woozuda.backend.ai.config.ChatDALL_EService;
 import com.woozuda.backend.ai.config.ChatGptService;
 import com.woozuda.backend.ai_creation.dto.AiCreationDTO;
 import com.woozuda.backend.forai.dto.NonRetroNoteEntryResponseDto;
@@ -20,8 +21,10 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class CreationPoetryAnalysisService {
     private final ChatGptService chatGptService;
+    private final ChatDALL_EService chatDALL_EService;
     private final ObjectMapper objectMapper;
     private final AiCreationService aiCreationService;
+
 
     public void analyze(List<NonRetroNoteEntryResponseDto> diaryList , String username) {
         if (diaryList == null || diaryList.isEmpty()) {
@@ -45,19 +48,22 @@ public class CreationPoetryAnalysisService {
         // 프롬프트 정의
         String systemMessage = """
                 당신은 분석 도우미입니다. 사용자의 일기를 분석하고 다음과 같은 정보를 제공하세요:
-                1. 일기를 읽고 창작으로 글을 써주세요.
+                1. 일기를 읽고 창작으로 시를 써주세요.
                 2. **중요** 분석이 불가능한 경우 비슷한 데이터라도 출력해주세요. 절대 Null 반환 금지
                 3. 위의 내용을 포함하여 각 항목을 반환해주세요. 예:
-                    imageUrl: "시로 창작한 부분을 이미지 URL을 반환해주세요"
+                    image_url: "글로 창작한 부분을 이미지 url로 반환해주세요"
                     text : 창작한 시를  반환해주세요.
                 """;
         log.info("사용자 메시지 내용 Diary: {}", userMessage.toString());
 
+
         // ChatGPT API 호출
         String response = chatGptService.analyzeDiaryUsingGPT(systemMessage, userMessage.toString());
+        String img = chatDALL_EService.generateImageUsingDallE(response);
 
         // 로그: AI가 응답한 내용 출력
         log.info("AI 응답 내용: {}", response);
+        log.info("달이 응답 내용: {}", img);
 
         // GPT 응답을 AiDiaryDTO로 매핑
         AiCreationDTO aiCreationDTO = mapResponseToAiDiaryDTO(response , username);
@@ -82,7 +88,7 @@ public class CreationPoetryAnalysisService {
 
             // 항목 추출
             String creationType = "WRITING";
-            String imageUrl = extractValue(content, "imageUrl");
+            String image_url = extractValue(content, "image_url");
             String text = extractValue(content, "text");
             String visibility = "PRIVATE";
 
@@ -90,7 +96,7 @@ public class CreationPoetryAnalysisService {
                     startDate,
                     endDate,
                     creationType,
-                    imageUrl,
+                    image_url,
                     text,
                     visibility,
                     username

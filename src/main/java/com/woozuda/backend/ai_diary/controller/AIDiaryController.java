@@ -1,9 +1,7 @@
 package com.woozuda.backend.ai_diary.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
-import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.ai_diary.dto.AiDiaryResponseDTO;
-import com.woozuda.backend.ai_diary.entity.AiDiary;
 import com.woozuda.backend.ai_diary.service.AiDiaryService;
 import com.woozuda.backend.ai_diary.service.DiaryAnalysisService;
 import com.woozuda.backend.forai.dto.NonRetroNoteEntryResponseDto;
@@ -27,6 +25,28 @@ public class AIDiaryController {
     private final AiDiaryService aiDiaryService;
     private final CustomeNoteRepoForAiService customeNoteRepoForAiService;
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> getDiaryCount(
+            @RequestParam("start_date") LocalDate start_date,
+            @RequestParam("end_date") LocalDate end_date,
+            @AuthenticationPrincipal CustomUser user
+    ) {
+        String username = user.getUsername();
+        long diaryCount = customeNoteRepoForAiService.getDiaryCount(username, start_date, end_date);
+
+        if (diaryCount <= 1) {
+            log.info("Diary count: {}", diaryCount);
+            return ResponseEntity
+                    .badRequest()
+                    .body(diaryCount); // 단순히 BAD_REQUEST 반환
+        }
+
+        log.info("Diary count: {}", diaryCount);
+        return ResponseEntity.ok(diaryCount); // 숫자만 반환
+
+
+    }
+
     @PostMapping("/analyze")
     public ResponseEntity<String> analyzeDiary(
             @RequestParam("start_date") LocalDate start_date,
@@ -49,8 +69,10 @@ public class AIDiaryController {
         // 정상적인 경우는 OK 상태와 함께 성공 메시지 또는 데이터를 반환
         return ResponseEntity.ok("일기 분석 성공");
     }
+
     /**
      * 사용자가 분석한 리포트를 들고오자!
+     *
      * @param startDate
      * @param endDate
      * @param user
@@ -62,9 +84,10 @@ public class AIDiaryController {
             @RequestParam("end_date") LocalDate endDate,
             @AuthenticationPrincipal CustomUser user) {
         AiDiaryResponseDTO responseDTO = aiDiaryService.getAiDiaryByDateRangeAndId(startDate, endDate, user.getUsername());
-            return ResponseEntity.ok(responseDTO);
-        }
+        return ResponseEntity.ok(responseDTO);
     }
+
+}
 
 
 

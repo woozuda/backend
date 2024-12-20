@@ -1,7 +1,5 @@
-package com.woozuda.backend.shortlink.dto;
+package com.woozuda.backend.shortlink.dto.note;
 
-import com.woozuda.backend.diary.entity.Diary;
-import com.woozuda.backend.note.entity.NoteContent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
