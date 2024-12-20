@@ -72,48 +72,136 @@ public class CustomNoteRepoForAiImpl implements CustomNoteRepoForAi {
         return aiDiaryCount;
     }
     @Override
-    public CountRecallDto countRecallDto(String username, LocalDate startDate, LocalDate endDate) {
+    public long count4fs(String username, LocalDate startDate, LocalDate endDate) {
         // 1. 사용자의 다이어리 ID 리스트 가져오기
         List<Long> diaryIdList = getDiaryIdList(username);
 
         // 2. QueryDSL 쿼리 실행
         List<Tuple> result = query
-        .select(
-                retrospectiveNote.type,  // 'retrospectiveNote'의 'type' 컬럼
-                retrospectiveNote.count() // 'retrospectiveNote'의 'id' 카운트
-        )
+                .select(
+                        retrospectiveNote.type,  // 'retrospectiveNote'의 'type' 컬럼
+                        retrospectiveNote.count() // 'retrospectiveNote'의 'id' 카운트
+                )
                 .from(retrospectiveNote)
-                .join(note).on(note.id.eq(retrospectiveNote.id))
-                .where(
-                        note.diary.id.in(diaryIdList), // diaryIdList 조건
-                        note.date.between(startDate, endDate)
+                .leftJoin(noteContent).on(noteContent.note.id.eq(retrospectiveNote.id))
+                .where(retrospectiveNote.diary.id.in(diaryIdList),
+                        retrospectiveNote.date.goe(startDate),
+                        retrospectiveNote.date.loe(endDate),
+                        retrospectiveNote.type.eq(Framework.valueOf("FOUR_F_S"))
                 )
                 .groupBy(retrospectiveNote.type)  // 'type'별로 그룹화
                 .fetch();
 
-        // 3. 각 회고 타입별 카운트 초기화
+        // 3. ffs 카운트 변수 초기화
         long ffs = 0;
-        long ktp = 0;
+
+        // 4. 결과 처리
+        for (Tuple tuple : result) {
+            long count = tuple.get(retrospectiveNote.count()); // 카운트 가져오기
+            ffs += count; // ffs에만 카운트를 더함
+        }
+
+        // 5. ffs 값 반환
+        return ffs;
+    }
+    @Override
+    public long countkpt(String username, LocalDate startDate, LocalDate endDate) {
+        // 1. 사용자의 다이어리 ID 리스트 가져오기
+        List<Long> diaryIdList = getDiaryIdList(username);
+
+        // 2. QueryDSL 쿼리 실행
+        List<Tuple> result = query
+                .select(
+                        retrospectiveNote.type,  // 'retrospectiveNote'의 'type' 컬럼
+                        retrospectiveNote.count() // 'retrospectiveNote'의 'id' 카운트
+                )
+                .from(retrospectiveNote)
+                .leftJoin(noteContent).on(noteContent.note.id.eq(retrospectiveNote.id))
+                .where(retrospectiveNote.diary.id.in(diaryIdList),
+                        retrospectiveNote.date.goe(startDate),
+                        retrospectiveNote.date.loe(endDate),
+                        retrospectiveNote.type.eq(Framework.valueOf("KPT"))
+                )
+                .groupBy(retrospectiveNote.type)  // 'type'별로 그룹화
+                .fetch();
+
+        // 3. ffs 카운트 변수 초기화
+        long kpt = 0;
+
+        // 4. 결과 처리
+        for (Tuple tuple : result) {
+            long count = tuple.get(retrospectiveNote.count()); // 카운트 가져오기
+            kpt += count; // ffs에만 카운트를 더함
+        }
+
+        // 5. ffs 값 반환
+        return kpt;
+    }
+    @Override
+    public long countpmi(String username, LocalDate startDate, LocalDate endDate) {
+        // 1. 사용자의 다이어리 ID 리스트 가져오기
+        List<Long> diaryIdList = getDiaryIdList(username);
+
+        // 2. QueryDSL 쿼리 실행
+        List<Tuple> result = query
+                .select(
+                        retrospectiveNote.type,  // 'retrospectiveNote'의 'type' 컬럼
+                        retrospectiveNote.count() // 'retrospectiveNote'의 'id' 카운트
+                )
+                .from(retrospectiveNote)
+                .leftJoin(noteContent).on(noteContent.note.id.eq(retrospectiveNote.id))
+                .where(retrospectiveNote.diary.id.in(diaryIdList),
+                        retrospectiveNote.date.goe(startDate),
+                        retrospectiveNote.date.loe(endDate),
+                        retrospectiveNote.type.eq(Framework.valueOf("PMI"))
+                )
+                .groupBy(retrospectiveNote.type)  // 'type'별로 그룹화
+                .fetch();
+
+        // 3. ffs 카운트 변수 초기화
         long pmi = 0;
+
+        // 4. 결과 처리
+        for (Tuple tuple : result) {
+            long count = tuple.get(retrospectiveNote.count()); // 카운트 가져오기
+            pmi += count; // ffs에만 카운트를 더함
+        }
+
+        // 5. ffs 값 반환
+        return pmi;
+    }
+    @Override
+    public long countscs(String username, LocalDate startDate, LocalDate endDate) {
+        // 1. 사용자의 다이어리 ID 리스트 가져오기
+        List<Long> diaryIdList = getDiaryIdList(username);
+
+        // 2. QueryDSL 쿼리 실행
+        List<Tuple> result = query
+                .select(
+                        retrospectiveNote.type,
+                        retrospectiveNote.count()
+                )
+                .from(retrospectiveNote)
+                .leftJoin(noteContent).on(noteContent.note.id.eq(retrospectiveNote.id))
+                .where(retrospectiveNote.diary.id.in(diaryIdList),
+                        retrospectiveNote.date.goe(startDate),
+                        retrospectiveNote.date.loe(endDate),
+                        retrospectiveNote.type.eq(Framework.valueOf("SCS"))
+                )
+                .groupBy(retrospectiveNote.type)  // 'type'별로 그룹화
+                .fetch();
+
+        // 3. ffs 카운트 변수 초기화
         long scs = 0;
 
         // 4. 결과 처리
         for (Tuple tuple : result) {
-            String typeString = tuple.get(retrospectiveNote.type).toString();
-            long count = tuple.get(retrospectiveNote.id.count()); // 카운트 가져오기
-            if (typeString.equals("FOUR_F_S")) {
-                ffs += count;
-            } else if (typeString.equals("KPT")) {
-                ktp += count;
-            } else if (typeString.equals("PMI")) {
-                pmi += count;
-            } else if (typeString.equals("SCS")) {
-                scs += count;
-            }
+            long count = tuple.get(retrospectiveNote.count()); // 카운트 가져오기
+            scs += count; // ffs에만 카운트를 더함
         }
 
-        // 6. CountRecallDto 객체 반환
-        return new CountRecallDto(ffs, ktp, pmi, scs);
+        // 5. ffs 값 반환
+        return scs;
     }
 
 

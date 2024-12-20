@@ -64,6 +64,7 @@ public class AiCreationController {
         return ResponseEntity.ok("창작 완료");
     }
 
+
     @GetMapping
     public ResponseEntity<AiCreationResponseDTO> getAiCreation(
             @RequestParam("start_date") LocalDate startDate,
