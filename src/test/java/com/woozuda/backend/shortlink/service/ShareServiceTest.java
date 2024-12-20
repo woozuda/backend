@@ -8,7 +8,8 @@ import com.woozuda.backend.diary.repository.DiaryRepository;
 import com.woozuda.backend.note.entity.*;
 import com.woozuda.backend.note.entity.type.*;
 import com.woozuda.backend.note.repository.NoteRepository;
-import com.woozuda.backend.shortlink.dto.*;
+import com.woozuda.backend.shortlink.dto.note.NoteIdDto;
+import com.woozuda.backend.shortlink.dto.note.SharedNoteResponseDto;
 import com.woozuda.backend.shortlink.entity.ShortLink;
 import com.woozuda.backend.shortlink.repository.ShortLinkRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -72,7 +73,7 @@ public class ShareServiceTest {
     void makeSharedNoteTest() throws Exception {
 
         //given - 데이터 넣기 (user 1명, diary 1개, question 1개 ,note 5개)
-        UserEntity user = new UserEntity(null, "woozuda@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL);
+        UserEntity user = new UserEntity(null, "woozuda@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL, true, "woozuda@gmail.com", "woozuda");
         userRepository.save(user);
 
         Diary diary1 = Diary.of(user, "https://woozuda-image.kr.object.ncloudstorage.com/random-image-1.jpg", "my first diary");
@@ -121,8 +122,8 @@ public class ShareServiceTest {
     void getSharedNoteTest() throws Exception {
 
         //given - 데이터 넣기 (user 1명, diary 1개, question 1개 ,note 5개)
-        UserEntity user1 = new UserEntity(null, "woozuda@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL);
-        UserEntity user2 = new UserEntity(null, "rodom1018@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL);
+        UserEntity user1 = new UserEntity(null, "woozuda@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL, true, "woozuda@gmail.com", "woozuda");
+        UserEntity user2 = new UserEntity(null, "rodom1018@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL, true, "rodom1018@gmail.com", "woozuda");
         userRepository.save(user1);
         userRepository.save(user2);
 
@@ -150,7 +151,7 @@ public class ShareServiceTest {
     @Test
     void getShortLinkTest(){
 
-        UserEntity user1 = new UserEntity(null, "woozuda@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL);
+        UserEntity user1 = new UserEntity(null, "woozuda@gmail.com", "1234", "ROLE_ADMIN", PICTURE_NOVEL, true, "woozuda@gmail.com", "woozuda");
         userRepository.save(user1);
 
         shortLinkRepository.save(new ShortLink(null, "asdfasdf", user1));

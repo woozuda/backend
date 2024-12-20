@@ -12,6 +12,6 @@ import java.util.Optional;
 
 @Repository
 
-public interface AiDiaryRepository extends JpaRepository<AiDiary, Long> ,AiDiaryRepositoryCustom {
+public interface AiDiaryRepository extends JpaRepository<AiDiary, Long> , AiDiaryRepositoryCustom {
 
 }

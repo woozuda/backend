@@ -1,5 +1,6 @@
 package com.woozuda.backend.account.dto;
 
+import com.woozuda.backend.account.entity.AiType;
 import com.woozuda.backend.account.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,4 +51,5 @@ public class CustomUser implements OAuth2User, UserDetails {
     public String getName() {
         return "";
     }
+
 }

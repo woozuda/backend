@@ -35,7 +35,7 @@ class NoteServiceTest {
     @InjectMocks
     private NoteService noteService;
 
-    UserEntity user = new UserEntity(1L, "hwang", "asdfasdf", "ROLE_USER", PICTURE_NOVEL);
+    UserEntity user = new UserEntity(1L, "hwang", "asdfasdf", "ROLE_USER", PICTURE_NOVEL, true, "hwang", "woozuda");
     NoteCondRequestDto cond = new NoteCondRequestDto();
 
     NoteResponseDto commonNote1 = new NoteResponseDto(1L, 1L, "diary1", "common note1", "2024-12-04", "SUNNY", "SPRING", "JOY", List.of("common content1"));

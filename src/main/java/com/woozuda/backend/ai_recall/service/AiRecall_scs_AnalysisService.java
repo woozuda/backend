@@ -25,7 +25,6 @@ public class AiRecall_scs_AnalysisService {
     private final ChatGptService chatGptService;
     private final ObjectMapper objectMapper;
     private final AiRecallService aiRecallService;
-    private final CustomeNoteRepoForAiService customeNoteRepoForAiService;
 
     public void analyzeAirecall(List<RetroNoteEntryResponseDto> recallList , String username) {
         // 회고 분석 요청 메시지 작성
@@ -36,14 +35,14 @@ public class AiRecall_scs_AnalysisService {
         for (RetroNoteEntryResponseDto recall : recallList) {
             userMessage.append("title: ").append(recall.getTitle()).append("\n");
             userMessage.append("date: ").append(recall.getDate()).append("\n");
-            userMessage.append("framework").append(recall.getFramework()).append("\n");
+            userMessage.append("framework: ").append(recall.getFramework()).append("\n");
             userMessage.append("content").append(recall.getContent()).append("\n");
         }
 
         // 프롬프트 정의
         String systemMessage = """
                 당신은 분석 도우미입니다. 사용자의 회고 데이터를 분석하고 다음과 같은 정보를 제공하세요:
-                 1. type 은 분석하지 말고 사용자가 입력한 값 그대로 String 타입으로 출력하세요.
+                 1. type 이 "SCS" 인 경우 SCS 을 정확히 출력해주세요.
                  2.**중요**절대 모든 값의 Null 및 0을 반환하지 마세요. 비슷한 분석 결과값을 반환해주세요.
                  3. 위의 내용을 포함하여 각 항목을 객체 타입으로 한번만 반환해주세요. 예:
                     start_date: 2024-12-01
@@ -78,12 +77,11 @@ public class AiRecall_scs_AnalysisService {
     private Airecll_Scs_DTO mapResponseToAirecall(String response , String username) {
         try {
             JsonNode root = objectMapper.readTree(response);
-            JsonNode contentNode = root
-                    .path("choices")
-                    .get(0)
-                    .path("message")
-                    .path("content");
-
+            JsonNode choicesNode = root.path("choices");
+            JsonNode firstChoiceNode = choicesNode.get(0);
+            JsonNode messageNode = firstChoiceNode.path("message");
+            JsonNode contentNode = messageNode.path("content");
+            // content 값을 String으로 변환
             String content = contentNode.asText();
             /**
              * 날짜 변경
