@@ -14,6 +14,8 @@ public interface CustomNoteRepoForAi {
     List<RetroNoteEntryResponseDto> searchRetroNote(String username, LocalDate startDate, LocalDate endDate , Framework type);
 
     long aiDiaryCount(String username, LocalDate startDate, LocalDate endDate);
-    CountRecallDto countRecallDto(String username, LocalDate startDate, LocalDate endDate);
-
+    long count4fs(String username, LocalDate startDate, LocalDate endDate , Framework type);
+    long countkpt(String username, LocalDate startDate, LocalDate endDate , Framework type);
+    long countpmi(String username, LocalDate startDate, LocalDate endDate , Framework type);
+    long countscs(String username, LocalDate startDate, LocalDate endDate , Framework type);
 }
