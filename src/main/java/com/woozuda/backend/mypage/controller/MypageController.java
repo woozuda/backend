@@ -1,6 +1,7 @@
 package com.woozuda.backend.mypage.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
+import com.woozuda.backend.mypage.dto.AiCreationDto;
 import com.woozuda.backend.mypage.dto.EmailDto;
 import com.woozuda.backend.mypage.service.MypageService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,13 @@ public class MypageController {
         String username = user.getUsername();
         EmailDto emailDto = mypageService.getEmail(username);
         return ResponseEntity.status(HttpStatus.OK).body(emailDto);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<AiCreationDto> getNovelPoem(@AuthenticationPrincipal CustomUser user){
+        String username = user.getUsername();
+        AiCreationDto aiCreationDto = mypageService.getNovelPoem(username);
+        return ResponseEntity.status(HttpStatus.OK).body(aiCreationDto);
     }
 
     @PostMapping("/novel")
