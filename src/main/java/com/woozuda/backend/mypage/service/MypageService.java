@@ -3,6 +3,7 @@ package com.woozuda.backend.mypage.service;
 import com.woozuda.backend.account.entity.AiType;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
+import com.woozuda.backend.mypage.dto.AiCreationDto;
 import com.woozuda.backend.mypage.dto.EmailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,11 @@ public class MypageService {
     public EmailDto getEmail(String username){
         UserEntity userEntity = userRepository.findByUsername(username);
         return new EmailDto(userEntity.getEmail());
+    }
+
+    public AiCreationDto getNovelPoem(String username){
+        UserEntity userEntity = userRepository.findByUsername(username);
+        return new AiCreationDto(userEntity.getAiType());
     }
 
     @Transactional
