@@ -4,6 +4,7 @@ import com.woozuda.backend.account.entity.AiType;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
 import com.woozuda.backend.mypage.dto.AiCreationDto;
+import com.woozuda.backend.mypage.dto.AlarmDto;
 import com.woozuda.backend.mypage.dto.EmailDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,15 @@ public class MypageService {
     public AiCreationDto getNovelPoem(String username){
         UserEntity userEntity = userRepository.findByUsername(username);
         return new AiCreationDto(userEntity.getAiType());
+    }
+
+    public AlarmDto getAlarm(String username){
+        UserEntity userEntity = userRepository.findByUsername(username);
+        if(userEntity.getAlarm()){
+            return new AlarmDto("on");
+        }else{
+            return new AlarmDto("off");
+        }
     }
 
     @Transactional
