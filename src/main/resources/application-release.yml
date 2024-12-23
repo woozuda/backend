@@ -14,7 +14,6 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
 
   jwt:
@@ -84,3 +83,6 @@ management:
   endpoint:
     prometheus:
       enabled: true #default
+
+logging:
+  config: "classpath:./logback-release.xml"
