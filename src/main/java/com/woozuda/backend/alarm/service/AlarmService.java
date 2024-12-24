@@ -106,6 +106,7 @@ public class AlarmService {
     @Scheduled(fixedRate = 60000) // 60초마다 하트비트
     public void sendHeartbeat() {
 
+        log.info("하트비트 확인용 ");
         for (Map.Entry<String, SseEmitter> entry : emitters.entrySet()) {
 
             SseEmitter emitter = entry.getValue();
