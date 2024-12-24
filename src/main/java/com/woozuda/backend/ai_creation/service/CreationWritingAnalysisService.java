@@ -87,7 +87,6 @@ public class CreationWritingAnalysisService {
             // 항목 추출
             String creationType = "WRITING";
             String text = extractValue(content, "text");
-            text = removeHtmlTags(text);
             String img = "";
             String visibility = "PRIVATE";
             return new AiCreationDTO(
@@ -134,11 +133,5 @@ public class CreationWritingAnalysisService {
 
         log.warn("값 추출 실패: {}", key);
         return "분석불가"; // 기본값 설정
-    }
-    private String removeHtmlTags(String text) {
-        if (text == null) {
-            return null;
-        }
-        return text.replaceAll("<[^>]*>", ""); // 모든 HTML 태그 제거
     }
 }
