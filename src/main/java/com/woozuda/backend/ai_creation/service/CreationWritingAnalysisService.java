@@ -86,8 +86,8 @@ public class CreationWritingAnalysisService {
             LocalDate end_date = convertStringToDate(endDate);
             // 항목 추출
             String creationType = "WRITING";
-            String text = extractValue(content, "text");
-            String img = "";
+            String img = extractValue(content, "text");
+            String text = " ";
             String visibility = "PRIVATE";
             return new AiCreationDTO(
                     start_date,
