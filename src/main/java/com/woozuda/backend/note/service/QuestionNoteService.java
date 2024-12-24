@@ -1,5 +1,6 @@
 package com.woozuda.backend.note.service;
 
+import com.woozuda.backend.alarm.service.AlarmService;
 import com.woozuda.backend.diary.dto.response.NoteIdResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.repository.DiaryRepository;
@@ -34,6 +35,7 @@ public class QuestionNoteService {
     private final NoteRepository noteRepository;
     private final DiaryRepository diaryRepository;
     private final QuestionRepository questionRepository;
+    private final AlarmService alarmService;
 
     public NoteIdResponseDto saveQuestionNote(String username, QuestionNoteSaveRequestDto requestDto) {
         Diary foundDiary = diaryRepository.searchDiary(requestDto.getDiaryId(), username);
@@ -58,6 +60,9 @@ public class QuestionNoteService {
         savedQuestionNote.addContent(noteContent);
 
         foundDiary.addNote(savedQuestionNote.getDate());
+
+        // 이번에 저장한 질문일기가 그 주의 3번째 일기라면(자유일기 + 질문일기 기준), 알람을 발생합니다.
+        alarmService.threePostAlarm(username, requestDto.getDate());
 
         return NoteIdResponseDto.of(savedQuestionNote.getId());
     }
