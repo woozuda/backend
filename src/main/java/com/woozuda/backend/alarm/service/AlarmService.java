@@ -4,6 +4,7 @@ import com.woozuda.backend.shortlink.repository.SharedNoteRepoImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Local;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -100,5 +101,22 @@ public class AlarmService {
             log.info("테스트 알람 메세지 못보냈음");
             emitters.remove(username);
         }
+    }
+
+    @Scheduled(fixedRate = 60000) // 60초마다 하트비트
+    public void sendHeartbeat() {
+
+        for (Map.Entry<String, SseEmitter> entry : emitters.entrySet()) {
+
+            SseEmitter emitter = entry.getValue();
+
+            try {
+                emitter.send(SseEmitter.event()
+                        .name("ping")
+                        .data("heartbeat"));
+            } catch (IOException e) {
+                log.info("emitter 핑 실패");
+            }
+        };
     }
 }
