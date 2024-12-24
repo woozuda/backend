@@ -36,9 +36,19 @@ public class AlarmService {
         emitters.put(username, emitter);
 
         //emitter 가 완료 되거나 타임아웃 되면 리스트에서 제거
-        emitter.onCompletion(() -> emitters.remove(username));
+        emitter.onCompletion(() -> {
+            log.info("emitter.onCompletion 발생");
+            emitters.remove(username);
+        });
+
         emitter.onTimeout(() -> {
+            log.info("emitter.onTimeout 발생");
             emitter.complete();
+            emitters.remove(username);
+        });
+
+        emitter.onError((e) -> {
+            log.info("emitter.onError 발생 : {}", e.getMessage());
             emitters.remove(username);
         });
 
@@ -50,6 +60,7 @@ public class AlarmService {
         }catch(IOException e){
             log.info("초기 연결 메세지 못보냈음");
             emitter.completeWithError(e);
+            emitters.remove(username);
         }
 
         return emitter;
@@ -103,7 +114,7 @@ public class AlarmService {
         }
     }
 
-    @Scheduled(fixedRate = 20000) // 20초마다 하트비트
+    @Scheduled(fixedDelay = 60000) // 60초마다 하트비트
     public void sendHeartbeat() {
 
         log.info("하트비트 확인용 ");
