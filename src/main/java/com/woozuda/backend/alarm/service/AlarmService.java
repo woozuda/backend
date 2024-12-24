@@ -31,7 +31,7 @@ public class AlarmService {
 
     public SseEmitter connect(String username){
 
-        SseEmitter emitter = new SseEmitter(0L);
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
 
         emitters.put(username, emitter);
 
