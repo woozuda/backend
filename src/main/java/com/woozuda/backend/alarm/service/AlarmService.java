@@ -4,6 +4,7 @@ import com.woozuda.backend.shortlink.repository.SharedNoteRepoImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Local;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -30,14 +31,24 @@ public class AlarmService {
 
     public SseEmitter connect(String username){
 
-        SseEmitter emitter = new SseEmitter(0L);
+        SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
 
         emitters.put(username, emitter);
 
         //emitter 가 완료 되거나 타임아웃 되면 리스트에서 제거
-        emitter.onCompletion(() -> emitters.remove(username));
+        emitter.onCompletion(() -> {
+            log.info("emitter.onCompletion 발생");
+            emitters.remove(username);
+        });
+
         emitter.onTimeout(() -> {
+            log.info("emitter.onTimeout 발생");
             emitter.complete();
+            emitters.remove(username);
+        });
+
+        emitter.onError((e) -> {
+            log.info("emitter.onError 발생 : {}", e.getMessage());
             emitters.remove(username);
         });
 
@@ -49,6 +60,7 @@ public class AlarmService {
         }catch(IOException e){
             log.info("초기 연결 메세지 못보냈음");
             emitter.completeWithError(e);
+            emitters.remove(username);
         }
 
         return emitter;
@@ -100,5 +112,23 @@ public class AlarmService {
             log.info("테스트 알람 메세지 못보냈음");
             emitters.remove(username);
         }
+    }
+
+    @Scheduled(fixedDelay = 60000) // 60초마다 하트비트
+    public void sendHeartbeat() {
+
+        //log.info("하트비트 확인용 ");
+        for (Map.Entry<String, SseEmitter> entry : emitters.entrySet()) {
+
+            SseEmitter emitter = entry.getValue();
+
+            try {
+                emitter.send(SseEmitter.event()
+                        .name("ping")
+                        .data("heartbeat"));
+            } catch (IOException e) {
+                log.info("emitter 핑 실패");
+            }
+        };
     }
 }
