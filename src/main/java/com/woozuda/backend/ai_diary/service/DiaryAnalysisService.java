@@ -56,7 +56,8 @@ public class DiaryAnalysisService {
                     - `positive`와 `denial`의 합은 꼭 100%가 되어야 합니다. 절대 Null 과 0.0을 출력하지 마세요.
                 5. 개선 사항이나 추천 행동(suggestion)을 반드시 작성하세요.
                 6. **중요** 분석이 불가능한 경우 비슷한 데이터라도 출력해주세요. 절대 Null 반환 금지
-                7. 위의 내용을 포함하여 각 항목을 반환해주세요. 예:
+                7. 시작날짜와 끝나는 날짜는 꼭 출력해주세요.
+                8. 위의 내용을 포함하여 각 항목을 반환해주세요. 예:
                     start_date: 2024-12-01
                     end_date: 2024-12-31
                     place: "장소1, 장소2"
@@ -89,20 +90,16 @@ public class DiaryAnalysisService {
         try {
             JsonNode root = objectMapper.readTree(response);
 
-            // "choices" 배열 가져오기
             JsonNode choicesNode = root.path("choices");
-            // 첫 번째 요소 가져오기
             JsonNode firstChoiceNode = choicesNode.get(0);
-            // "message" 필드 가져오기
             JsonNode messageNode = firstChoiceNode.path("message");
-            // "content" 필드 가져오기
             JsonNode contentNode = messageNode.path("content");
-            // content 값을 String으로 변환
             String content = contentNode.asText();
 
-            LocalDate today = LocalDate.now();
-            LocalDate startDate = today.with(DayOfWeek.MONDAY); // 이번 주 월요일
-            LocalDate endDate = today.with(DayOfWeek.SUNDAY); // 이번 주 일요일
+            String startDate = extractValue(content, "start_date");
+            String endDate = extractValue(content, "end_date");
+            LocalDate start_date = convertStringToDate(startDate);
+            LocalDate end_date = convertStringToDate(endDate);
 
             // 항목 추출
             String place = extractValue(content, "place");
@@ -125,8 +122,8 @@ public class DiaryAnalysisService {
             String suggestion = extractValue(content, "suggestion");
 
             return new AiDiaryDTO(
-                    startDate,
-                    endDate,
+                    start_date,
+                    end_date,
                     place,
                     activity,
                     emotion,
@@ -141,6 +138,18 @@ public class DiaryAnalysisService {
         } catch (Exception e) {
             log.error("응답 매핑 중 오류 발생: {}", e.getMessage(), e);
             throw new RuntimeException("응답 매핑 중 오류 발생: " + e.getMessage());
+        }
+    }
+    private LocalDate convertStringToDate(String date) {
+        if (date != null) {
+            date = date.replaceAll("\"", ""); // 따옴표 제거
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            return LocalDate.parse(date, formatter);
+        } catch (DateTimeParseException e) {
+            log.error("잘못된 날짜 형식: '{}'. 기본값을 사용합니다.", date);
+            return LocalDate.now(); // 기본값 설정
         }
     }
 
