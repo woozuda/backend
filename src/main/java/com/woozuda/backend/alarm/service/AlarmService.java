@@ -103,7 +103,7 @@ public class AlarmService {
         }
     }
 
-    @Scheduled(fixedRate = 60000) // 60초마다 하트비트
+    @Scheduled(fixedRate = 20000) // 20초마다 하트비트
     public void sendHeartbeat() {
 
         log.info("하트비트 확인용 ");
