@@ -1,8 +1,17 @@
 package com.woozuda.backend.alarm.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
+import com.woozuda.backend.account.entity.UserEntity;
+import com.woozuda.backend.account.repository.UserRepository;
 import com.woozuda.backend.alarm.service.AlarmService;
+import com.woozuda.backend.diary.entity.Diary;
+import com.woozuda.backend.diary.repository.DiaryRepository;
+import com.woozuda.backend.note.entity.*;
+import com.woozuda.backend.note.entity.type.*;
+import com.woozuda.backend.note.repository.NoteRepository;
+import com.woozuda.backend.note.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,6 +19,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/alarm")
@@ -24,6 +38,7 @@ public class AlarmController {
         return alarmService.connect(username);
     }
 
+    //프론트 테스트용 api - 매번 일기 3개 만들기가 쉽지 않을 것 같아서 제작.
     @GetMapping("/connect/test")
     public ResponseEntity<Void> alarmTest(@AuthenticationPrincipal CustomUser customUser){
         String username = customUser.getUsername();
