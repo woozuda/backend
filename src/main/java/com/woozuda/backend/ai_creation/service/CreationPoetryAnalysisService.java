@@ -89,7 +89,6 @@ public class CreationPoetryAnalysisService {
             // 항목 추출
             String creationType = "WRITING";
             String text = extractValue(content, "text");
-            text = text.replace("\n", " "); //
             String img = "";
             String visibility = "PRIVATE";
 
