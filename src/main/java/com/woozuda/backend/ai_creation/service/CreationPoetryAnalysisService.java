@@ -88,16 +88,16 @@ public class CreationPoetryAnalysisService {
 
             // 항목 추출
             String creationType = "WRITING";
-            String text = extractValue(content, "text");
-            String img = "";
+            String img = extractValue(content, "text");
+            String text = " ";
             String visibility = "PRIVATE";
 
             return new AiCreationDTO(
                     start_date,
                     end_date,
                     creationType,
-                    img,
                     text,
+                    img,
                     visibility,
                     username
             );
