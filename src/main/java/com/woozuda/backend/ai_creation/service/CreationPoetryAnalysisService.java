@@ -50,10 +50,11 @@ public class CreationPoetryAnalysisService {
                 1. 일기를 읽고 창작으로 시를 간단하게 써주세요.
                 2. **중요** 분석이 불가능한 경우 비슷한 데이터라도 출력해주세요. 절대 Null 반환 금지
                 3. 시작날짜와 끝나는 날짜는 꼭 출력해주세요.
-                4. 위의 내용을 포함하여 각 항목처럼 반환해주세요. 예:
+                4. text 는 첫 줄만 띄어쓰기를 꼭 하고, 줄바꿈 없이 230자 이하로 창착한 시를 출력해주세요.
+                5. 위의 내용을 포함하여 각 항목처럼 반환해주세요. 예:
                     start_date : 2024-12-01
                     end_date : 2024-12-31
-                    text : 줄바꿈 없이 창작한 시를 반환해주세요.
+                    text : 비 내리는 창밖, 커피 한 잔에 관해 비 소리는 마음 정리 음악 시간 멈춤
                 """;
         log.info("창작 메세지 Creation: {}", userMessage.toString());
 
@@ -89,7 +90,10 @@ public class CreationPoetryAnalysisService {
             // 항목 추출
             String creationType = "WRITING";
             String img = extractValue(content, "text");
-            String text = " ";
+            String text = img;
+
+            // 이제 text에는 줄바꿈 없이 공백으로만 구분된 텍스트가 저장됩니다.
+            System.out.println(text);
             String visibility = "PRIVATE";
 
             return new AiCreationDTO(
