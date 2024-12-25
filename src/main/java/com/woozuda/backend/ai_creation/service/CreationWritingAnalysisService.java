@@ -50,10 +50,11 @@ public class CreationWritingAnalysisService {
                 1. 일기를 읽고 창작으로 시를 간단하게 써주세요.
                 2. **중요** 분석이 불가능한 경우 비슷한 데이터라도 출력해주세요. 절대 Null 반환 금지
                 3. 시작날짜와 끝나는 날짜는 꼭 출력해주세요.
-                4. 위의 내용을 포함하여 각 항목처럼 반환해주세요. 예:
+                4. text 는 줄바꿈 없이 230 이하로 창착한 글을 출력해주세요.
+                5. 위의 내용을 포함하여 각 항목처럼 반환해주세요. 예:
                     start_date :2024-12-01
                     end_date :2024-12-31
-                    text : 줄바꿈 없이 창작한 시를 반환해주세요.
+                    text : 오늘의 내 기분은 그렇게 좋지 않았다.
                 """;
         log.info("사용자 메시지 내용 Diary: {}", userMessage.toString());
 
@@ -87,7 +88,8 @@ public class CreationWritingAnalysisService {
             // 항목 추출
             String creationType = "WRITING";
             String img = extractValue(content, "text");
-            String text = " ";
+            String text = img;
+
             String visibility = "PRIVATE";
             return new AiCreationDTO(
                     start_date,
