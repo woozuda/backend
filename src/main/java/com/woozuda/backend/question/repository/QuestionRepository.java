@@ -1,6 +1,6 @@
-package com.woozuda.backend.note.repository;
+package com.woozuda.backend.question.repository;
 
-import com.woozuda.backend.note.entity.Question;
+import com.woozuda.backend.question.entity.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

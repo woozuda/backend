@@ -1,6 +1,6 @@
-package com.woozuda.backend.note.dto.response;
+package com.woozuda.backend.question.dto.response;
 
-import com.woozuda.backend.note.entity.Question;
+import com.woozuda.backend.question.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

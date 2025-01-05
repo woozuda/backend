@@ -5,6 +5,7 @@ import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
 import com.woozuda.backend.note.entity.*;
+import com.woozuda.backend.question.entity.Question;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
