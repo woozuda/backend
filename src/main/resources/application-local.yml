@@ -70,7 +70,7 @@ ncp:
     bucketName : "${object-storage.bucketName}"
   clova-studio:
     question-creation:
-      task-id: "${questionCreation.taskId}"
+      url: "${questionCreation.url}"
       api-key: "${questionCreation.apiKey}"
       apigw-key: "${questionCreation.apigwKey}"
 
