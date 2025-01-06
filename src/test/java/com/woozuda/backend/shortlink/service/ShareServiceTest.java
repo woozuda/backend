@@ -141,7 +141,7 @@ public class ShareServiceTest {
         //userRepository.save(user2);
 
         //after
-        List<UserEntity> userEntityList = UserEntityBuilder.createUniqueMultipleUser(2);
+        List<UserEntity> userEntityList = UserEntityBuilder.createUniqueMultipleUser(10);
         userRepository.saveAll(userEntityList);
 
         Diary diary1 = Diary.of(userEntityList.get(0), "https://woozuda-image.kr.object.ncloudstorage.com/random-image-1.jpg", "my first diary");

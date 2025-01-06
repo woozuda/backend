@@ -87,3 +87,9 @@ management:
   endpoint:
     prometheus:
       enabled: true #default
+
+allow-ips:
+  121.129.200.106,
+  127.0.0.1,
+  0:0:0:0:0:0:0:1
+
