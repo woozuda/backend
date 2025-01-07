@@ -16,7 +16,4 @@ public class QuestionResponseDto {
         return new QuestionResponseDto(question.getContent());
     }
 
-    public static QuestionResponseDto of(String question) {
-        return new QuestionResponseDto(question);
-    }
 }
