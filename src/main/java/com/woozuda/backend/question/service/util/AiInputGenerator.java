@@ -15,6 +15,7 @@ public class AiInputGenerator {
 
     private final static String INPUT_SUFFIX = "에 대한 질문을 작성해줘.";
 
+    //keywords 기반 랜덤 질문 생성
     public static String execute() {
         int randomIndex = new Random().nextInt(keywords.size());
         return keywords.get(randomIndex) + INPUT_SUFFIX;

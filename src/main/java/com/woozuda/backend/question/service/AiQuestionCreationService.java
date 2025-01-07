@@ -33,6 +33,7 @@ public class AiQuestionCreationService {
         AiQuestionRequestDto requestDto = AiQuestionRequestDto.of(AiInputGenerator.execute());
         log.info("[AI Question Creator] input={}", requestDto.getText());
 
+        //AI 질문 생성기 API 호출
         AiQuestionResponseDto responseDto = apiClient.makeAiQuestion(
                 apiKey,
                 apigwKey,
@@ -46,6 +47,7 @@ public class AiQuestionCreationService {
         String output = responseDto.getResult().getText();
         log.info("[AI Question Creator] output={}", output);
 
+        //생성된 질문 저장
         questionRepository.save(Question.of(output));
     }
 
