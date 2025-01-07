@@ -51,6 +51,7 @@ public class AiQuestionCreationService {
         questionRepository.save(Question.of(output));
     }
 
+    //응답 상태 코드가 20000번대(성공)가 아니면 false 반환
     private boolean hasError(AiQuestionResponseDto response) {
         String code = response.getStatus().getCode();
         return !code.equals("20000") && !code.equals("20400");
