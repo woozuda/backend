@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@FeignClient(name = "QuestionCreationApiClient", url = "${ncp.clova-studio.question-creation.url}")
-public interface AiQuestionCreationApiClient {
+@FeignClient(name = "AiQuestionCreatorApiClient", url = "${ncp.clova-studio.question-creator.url}")
+public interface AiQuestionCreatorApiClient {
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
     AiQuestionResponseDto makeAiQuestion(

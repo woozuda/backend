@@ -19,12 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class AiQuestionCreationService {
 
     private final QuestionRepository questionRepository;
-    private final AiQuestionCreationApiClient apiClient;
+    private final AiQuestionCreatorApiClient apiClient;
 
-    @Value("${ncp.clova-studio.question-creation.api-key}")
+    @Value("${ncp.clova-studio.question-creator.api-key}")
     private String apiKey;
 
-    @Value("${ncp.clova-studio.question-creation.apigw-key}")
+    @Value("${ncp.clova-studio.question-creator.apigw-key}")
     private String apigwKey;
 
     // 매일 자정 12시 00분 1초에 새로운 질문 생성

@@ -69,10 +69,10 @@ ncp:
     secretKey: "${object-storage.secretKey}"
     bucketName : "${object-storage.bucketName}"
   clova-studio:
-    question-creation:
-      url: "${questionCreation.url}"
-      api-key: "${questionCreation.apiKey}"
-      apigw-key: "${questionCreation.apigwKey}"
+    question-creator:
+      url: "${questionCreator.url}"
+      api-key: "${questionCreator.apiKey}"
+      apigw-key: "${questionCreator.apigwKey}"
 
 openai:
   api:
