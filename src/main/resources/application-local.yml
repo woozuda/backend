@@ -92,3 +92,6 @@ management:
   endpoint:
     prometheus:
       enabled: true #default
+
+aes:
+  password: "${aes-password}"
