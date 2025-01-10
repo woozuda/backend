@@ -91,3 +91,6 @@ management:
 
 logging:
   config: "classpath:./logback-release.xml"
+
+aes:
+  password: "${aes_password}"
