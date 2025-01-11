@@ -1,4 +1,4 @@
-package com.woozuda.backend.exception;
+package com.woozuda.backend.exception.account;
 
 public class UsernameAlreadyExistsException extends RuntimeException {
     public UsernameAlreadyExistsException(String message) {

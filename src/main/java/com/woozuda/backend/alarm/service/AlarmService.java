@@ -114,7 +114,7 @@ public class AlarmService {
         }
     }
 
-    @Scheduled(fixedDelay = 60000) // 60초마다 하트비트
+    @Scheduled(fixedDelay = 21600000) // 360분(6시간)마다 하트비트
     public void sendHeartbeat() {
 
         //log.info("하트비트 확인용 ");

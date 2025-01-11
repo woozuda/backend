@@ -27,7 +27,7 @@ public class JWTFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // 헤더 버전
-        //String authorization= request.getHeader("Authorization");
+        // String authorization = request.getHeader("Authorization");
 
         String authorization = null;
 

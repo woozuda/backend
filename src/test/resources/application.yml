@@ -12,7 +12,7 @@ spring:
 
 
   jwt:
-    secret: jwthascode111
+    secret: samplejwtsecret=samplejwtsecret=samplejwtsecret
 
   security:
     oauth2:
@@ -69,6 +69,5 @@ openai:
       temperature: 0.6  # 생성되는 텍스트의 다양성 정도를 조절하는 파라미터 (0.0 ~ 1.0)
 
 allow-ips:
-  121.129.200.106,
   127.0.0.1,
   0:0:0:0:0:0:0:1

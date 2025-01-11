@@ -24,6 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("로그인 디버깅 로그 - ");
         log.info(username);
         UserEntity userData = userRepository.findByUsername(username);
+
         if(userData != null){
             return new CustomUser(userData);
         }
