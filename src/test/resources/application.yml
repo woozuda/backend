@@ -59,6 +59,11 @@ ncp:
     accessKey: "access_key"
     secretKey: "secret_key"
     bucketName : "bucket_name"
+  clova-studio:
+    question-creator:
+      url: "question_creator_url"
+      api-key: "question_creator_api_key"
+      apigw-key: "question_creator_apigw_key"
 
 openai:
   api:
@@ -71,3 +76,6 @@ openai:
 allow-ips:
   127.0.0.1,
   0:0:0:0:0:0:0:1
+  
+aes:
+  password: "aes_password"

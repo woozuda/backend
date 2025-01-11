@@ -64,6 +64,11 @@ ncp:
     accessKey: "${object_storage_access_key}"
     secretKey: "${object_storage_secret_key}"
     bucketName: "${object_storage_bucket_name}"
+  clova-studio:
+    question-creator:
+      url: "${question_creator_url}"
+      api-key: "${question_creator_api_key}"
+      apigw-key: "${question_creator_apigw_key}"
 
 openai:
   api:
@@ -88,3 +93,6 @@ logging:
   config: "classpath:./logback-release.xml"
 
 allow-ips: "${allow_ips}"
+
+aes:
+  password: "${aes_password}"

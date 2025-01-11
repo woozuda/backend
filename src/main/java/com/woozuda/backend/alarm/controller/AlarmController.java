@@ -1,17 +1,8 @@
 package com.woozuda.backend.alarm.controller;
 
 import com.woozuda.backend.account.dto.CustomUser;
-import com.woozuda.backend.account.entity.UserEntity;
-import com.woozuda.backend.account.repository.UserRepository;
 import com.woozuda.backend.alarm.service.AlarmService;
-import com.woozuda.backend.diary.entity.Diary;
-import com.woozuda.backend.diary.repository.DiaryRepository;
-import com.woozuda.backend.note.entity.*;
-import com.woozuda.backend.note.entity.type.*;
-import com.woozuda.backend.note.repository.NoteRepository;
-import com.woozuda.backend.note.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,11 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/alarm")

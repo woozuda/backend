@@ -6,6 +6,10 @@ plugins {
 	id 'idea'
 }
 
+ext {
+	springCloudVersion = "2023.0.4"
+}
+
 group = 'com.woozuda'
 version = '0.0.1-SNAPSHOT'
 
@@ -86,10 +90,19 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	//prometheus(metrics)
 	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
+	//OpenFeign: 외부 API 사용
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.4'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+	}
 }
 
 
