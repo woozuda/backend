@@ -93,5 +93,8 @@ management:
     prometheus:
       enabled: true #default
 
+allow-ips: "${allow_ips}"
+
 aes:
   password: "${aes-password}"
+

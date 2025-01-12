@@ -92,5 +92,7 @@ management:
 logging:
   config: "classpath:./logback-release.xml"
 
+allow-ips: "${allow_ips}"
+
 aes:
   password: "${aes_password}"

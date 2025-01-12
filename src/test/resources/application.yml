@@ -12,7 +12,7 @@ spring:
 
 
   jwt:
-    secret: jwthascode111
+    secret: samplejwtsecret=samplejwtsecret=samplejwtsecret
 
   security:
     oauth2:
@@ -73,5 +73,9 @@ openai:
       model: "gpt-3.5-turbo"  # 사용할 AI 모델 (예: gpt-3.5-turbo)
       temperature: 0.6  # 생성되는 텍스트의 다양성 정도를 조절하는 파라미터 (0.0 ~ 1.0)
 
+allow-ips:
+  127.0.0.1,
+  0:0:0:0:0:0:0:1
+  
 aes:
   password: "aes_password"
