@@ -93,6 +93,9 @@ dependencies {
 
 	//OpenFeign: 외부 API 사용
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.4'
+
+	// html 파싱을 위한 jsoup
+	implementation 'org.jsoup:jsoup:1.16.1'
 }
 
 tasks.named('test') {
