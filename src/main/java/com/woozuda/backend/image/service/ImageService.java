@@ -75,6 +75,11 @@ public class ImageService {
         return new ImageDto(imgUrl);
     }
 
+    public void deleteImage(String filename){
+        AmazonS3 s3 = s3Client.getAmazonS3();
+        s3.deleteObject(s3Client.getBucketName(), filename);
+    }
+
     // urlContent 를 가공해주는 메서드
     public List<String> makeImgsUrl(ImageType imageType, String urlContent){
 
