@@ -11,6 +11,8 @@ import com.woozuda.backend.diary.dto.response.DiaryNameResponseDto;
 import com.woozuda.backend.diary.dto.response.SingleDiaryResponseDto;
 import com.woozuda.backend.diary.entity.Diary;
 import com.woozuda.backend.diary.repository.DiaryRepository;
+import com.woozuda.backend.image.service.ImageService;
+import com.woozuda.backend.image.type.ImageType;
 import com.woozuda.backend.note.dto.request.NoteCondRequestDto;
 import com.woozuda.backend.note.dto.response.NoteEntryResponseDto;
 import com.woozuda.backend.note.dto.response.NoteResponseDto;
@@ -40,6 +42,7 @@ public class DiaryService {
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
     private final NoteRepository noteRepository;
+    private final ImageService imageService;
 
     @Transactional(readOnly = true)
     public DiaryListResponseDto getDairyList(String username) {
@@ -100,6 +103,10 @@ public class DiaryService {
         }
 
         Diary savedDiary = diaryRepository.save(diary);
+
+        // 이미지 테이블 변경(다이어리 생성 시)
+        imageService.afterCreate(ImageType.DIARY, savedDiary.getId(), requestDto.getImgUrl());
+
         return new DiaryIdResponseDto(savedDiary.getId());
     }
 
@@ -122,6 +129,9 @@ public class DiaryService {
             diary.change(requestDto.getTitle(), tags, requestDto.getImgUrl());
         }
 
+        // 이미지 테이블 반영 (다이어리 변경 시)
+        imageService.afterUpdate(ImageType.DIARY, diaryId, requestDto.getImgUrl());
+
         return new DiaryIdResponseDto(foundDiary.get().getId());
     }
 
@@ -133,6 +143,9 @@ public class DiaryService {
         if (!diary.getUser().getUsername().equals(username)) {
             throw new IllegalArgumentException("This diary does not belong to the user.");
         }
+
+        // 이미지 테이블 반영 (다이어리 삭제 시)
+        imageService.afterDelete(ImageType.DIARY, diaryId);
 
         diaryRepository.deleteById(diaryId);
     }
