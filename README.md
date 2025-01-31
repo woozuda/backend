@@ -33,32 +33,43 @@ MZ 세대는 블로그를 통해 일기를 작성하는 경향이 있습니다. 
 
 ## 기술 스택
 #### Language
-- Java
+<img src="https://img.shields.io/badge/Java-007396?style=flat-square&logo=Java&logoColor=white">
 
 #### Framework & Server
-- Spring
-- Spring Security
-- NCloud Server
-- GitHub Actions
+ <div>
+  <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=Spring&logoColor=white">
+  <img src="https://img.shields.io/badge/springboot-6DB33F?style=flat-square&logo=springboot&logoColor=white">
+  <img src="https://img.shields.io/badge/springsecurity-6DB33F?style=flat-square&logo=springsecurity&logoColor=white">
+  <img src="https://img.shields.io/badge/NCloud Server-03C75A?style=flat-square&logo=naver&logoColor=white">
+  <img src="https://img.shields.io/badge/githubactions-2088FF?style=flat-square&logo=githubactions&logoColor=white">
+</div>
 
 #### DB
-- MySQL 
+<img src="https://img.shields.io/badge/mysql-4479A1?style=flat-square&logo=mysql&logoColor=white"> 
 
 #### IDE
-- IntelliJ
+<img src="https://img.shields.io/badge/intellijidea-000000?style=flat-square&logo=intellijidea&logoColor=white"> 
 
 #### Documentation
-- Swaager
-- Notion
-- ERD Cloud 
+<div>
+   <img src="https://img.shields.io/badge/swagger-85EA2D?style=flat-square&logo=swagger&logoColor=white"> 
+  <img src="https://img.shields.io/badge/notion-000000?style=flat-square&logo=notion&logoColor=white"> 
+  <img src="https://img.shields.io/badge/ERD Cloud-800080?style=flat-square&logo=icloud&logoColor=white"> 
+</div>
 
 #### API
-- Open Ai
-- NCloud Object Storage
+<div>
+  <img src="https://img.shields.io/badge/openai-412991?style=flat-square&logo=openai&logoColor=white">
+  <img src="https://img.shields.io/badge/NCloud Object Storage-03C75A?style=flat-square&logo=naver&logoColor=white">
+</div>
 
 #### Monitoring
-- Prometheus
-- Loki Stack
+<div>
+  <img src="https://img.shields.io/badge/prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white"> 
+  <img src="https://img.shields.io/badge/LokiStack-FFC800?style=flat-square&logo=LokiStack&logoColor=white"> 
+
+</div>
+
 <br>
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d3319c54-633b-4661-be74-d6cd3c6f054d" width="700" />
