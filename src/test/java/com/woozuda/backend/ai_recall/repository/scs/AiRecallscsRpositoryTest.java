@@ -3,7 +3,6 @@ package com.woozuda.backend.ai_recall.repository.scs;
 import com.woozuda.backend.account.entity.AiType;
 import com.woozuda.backend.account.entity.UserEntity;
 import com.woozuda.backend.account.repository.UserRepository;
-import com.woozuda.backend.ai_recall.dto.Airecall_Pmi_DTO;
 import com.woozuda.backend.ai_recall.dto.Airecll_Scs_DTO;
 import com.woozuda.backend.ai_recall.entity.Airecall_scs;
 import org.junit.jupiter.api.BeforeEach;

@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -71,7 +70,7 @@ public class DiaryAnalysisService {
                     denial: 20.0
                     suggestion: 일정 속에서 조금 더 휴식을 취하고, 자신만의 시간을 갖는 것이 중요해 보입니다.
                 """;
-        log.info("사용자 메시지 내용 Diary: {}", userMessage.toString());
+        log.info("사용자 메시지 내용 Diary: {}", userMessage);
 
         // ChatGPT API 호출
         String response = chatGptService.analyzeDiaryUsingGPT(systemMessage, userMessage.toString());
