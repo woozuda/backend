@@ -59,7 +59,7 @@ class AiCreationRepositoryTest {
 
     @DisplayName("AI 창작 분석")
     @Test
-    void AI창작분석() {
+    void AICreation() {
         // 주어진 아이디로 AI 창작을 찾기
         AiCreation found = aiCreationRepository.findById(aiCreation.getAi_creation_id())
                 .orElseThrow(() -> new RuntimeException("AI 창작 데이터를 찾을 수 없습니다."));

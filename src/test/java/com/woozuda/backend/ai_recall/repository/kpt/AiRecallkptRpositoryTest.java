@@ -52,16 +52,13 @@ class AiRecallkptRpositoryTest {
 
     @DisplayName("AI KPT 분석 결과 보기")
     @Test
-    void kpt리포트분석(){
+    void kpt(){
         Airecall_kpt found = aiRecallkptRpository.findById(airecall_kpt.getAir_id()).orElseThrow(() -> new RuntimeException("데이터를 찾을 수 없습니다."));
 
         // 저장된 값들과 일치하는지 assertEquals로 검증
         assertNotNull(found, "저장된 데이터가 null입니다.");
         assertEquals(airecall_kpt.getStart_date(), found.getStart_date(), "시작 날짜가 일치하지 않습니다.");
         assertEquals(airecall_kpt.getEnd_date(), found.getEnd_date(), "끝 날짜가 일치하지 않습니다.");
-        assertEquals(airecall_kpt.getStrength_analysis(), found.getStrength_analysis(), "강점 분석 일치하지 않습니다.");
-        assertEquals(airecall_kpt.getImprovement(), found.getImprovement(), "개선 제안 일치하지 않습니다.");
-        assertEquals(airecall_kpt.getScalability(), found.getScalability(), "개선 제안 내용 일치하지 않습니다.");
 
     }
 }

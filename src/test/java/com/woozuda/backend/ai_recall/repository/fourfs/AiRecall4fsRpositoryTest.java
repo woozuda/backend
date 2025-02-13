@@ -54,7 +54,7 @@ class AiRecall4fsRpositoryTest {
 
     @DisplayName("AI 4fs분석 결과 보기")
     @Test
-    void ffs리포트분석(){
+    void FFS(){
         Airecall_4fs found = aiRecall4fsRpository.findById(airecall_4fs.getAir_id()).orElseThrow(() -> new RuntimeException("데이터를 찾을 수 없습니다."));
 
         // 저장된 값들과 일치하는지 assertEquals로 검증

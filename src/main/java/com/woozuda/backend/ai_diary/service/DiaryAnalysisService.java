@@ -3,7 +3,6 @@ package com.woozuda.backend.ai_diary.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.woozuda.backend.ai.config.ChatGptService;
-import com.woozuda.backend.ai.config.NaverCLOVAConfig;
 import com.woozuda.backend.ai_diary.dto.AiDiaryDTO;
 import com.woozuda.backend.forai.dto.NonRetroNoteEntryResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -140,9 +139,8 @@ public class DiaryAnalysisService {
         }
     }
     private LocalDate convertStringToDate(String date) {
-        if (date != null) {
-            date = date.replaceAll("\"", ""); // 따옴표 제거
-        }
+        date = date.replaceAll("\"", ""); // 따옴표 제거
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
             return LocalDate.parse(date, formatter);

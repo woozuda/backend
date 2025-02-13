@@ -59,7 +59,7 @@ class AiDiaryRepositoryTest {
 
     @DisplayName("AI 분석 결과 보기")
     @Test
-    void AI일기단일분석결과() {
+    void AIDiary() {
         // when
         AiDiary result = aiDiaryRepository.findByAiDiary(aiDiary.getStart_date(),aiDiary.getEnd_date() , aiDiary.getUser().getUsername())
                 .orElseThrow(() -> new RuntimeException("AiDiary not found"));
