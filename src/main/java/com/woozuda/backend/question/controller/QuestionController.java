@@ -1,7 +1,7 @@
-package com.woozuda.backend.note.controller;
+package com.woozuda.backend.question.controller;
 
-import com.woozuda.backend.note.dto.response.QuestionResponseDto;
-import com.woozuda.backend.note.service.QuestionService;
+import com.woozuda.backend.question.dto.response.QuestionResponseDto;
+import com.woozuda.backend.question.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

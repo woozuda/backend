@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RequestMapping("/api/image")
 @RequiredArgsConstructor
@@ -27,6 +28,14 @@ public class ImageController {
         ImageDto responseDto = imageService.uploadImage(multipartFile);
         return ResponseEntity.ok(responseDto);
     }
+
+    /*
+    @PostMapping("/delete")
+    public void deleteImage(){
+        String url = "https://kr.object.ncloudstorage.com/woozuda-image/test-dummy.png";
+        imageService.deleteImage(url.split("/")[4]);
+    }
+    */
 
     // 랜덤 이미지 추출
     @GetMapping("/random")

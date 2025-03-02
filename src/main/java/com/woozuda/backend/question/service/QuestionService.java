@@ -1,8 +1,8 @@
-package com.woozuda.backend.note.service;
+package com.woozuda.backend.question.service;
 
-import com.woozuda.backend.note.dto.response.QuestionResponseDto;
-import com.woozuda.backend.note.entity.Question;
-import com.woozuda.backend.note.repository.QuestionRepository;
+import com.woozuda.backend.question.dto.response.QuestionResponseDto;
+import com.woozuda.backend.question.entity.Question;
+import com.woozuda.backend.question.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

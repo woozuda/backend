@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -60,27 +59,26 @@ public class DiaryAnalysisService {
                 8. 위의 내용을 포함하여 각 항목을 반환해주세요. 예:
                     start_date: 2024-12-01
                     end_date: 2024-12-31
-                    place: "장소1, 장소2"
-                    activity: "활동1, 활동2"
-                    emotion: "주요감정1" , "주요감정2"
-                    weather: "비가 올때는 눈물이 난다. 날씨가 맑을때 기분이 좋다."
+                    place: 장소1, 장소2
+                    activity: 활동1, 활동2
+                    emotion: 주요감정1" , "주요감정2
+                    weather: 비가 올때는 눈물이 난다. 날씨가 맑을때 기분이 좋다.
                     weekdayAt: 50.0
                     weekendAt: 50.0
                     positive: 80.0
                     denial: 20.0
-                    suggestion: "일정 속에서 조금 더 휴식을 취하고, 자신만의 시간을 갖는 것이 중요해 보입니다."
+                    suggestion: 일정 속에서 조금 더 휴식을 취하고, 자신만의 시간을 갖는 것이 중요해 보입니다.
                 """;
-        log.info("사용자 메시지 내용 Diary: {}", userMessage.toString());
+        log.info("사용자 메시지 내용 Diary: {}", userMessage);
 
         // ChatGPT API 호출
         String response = chatGptService.analyzeDiaryUsingGPT(systemMessage, userMessage.toString());
 
+
         // 로그: AI가 응답한 내용 출력
         log.info("AI 응답 내용: {}", response);
-
         // GPT 응답을 AiDiaryDTO로 매핑
         AiDiaryDTO aiDiaryDTO = mapResponseToAiDiaryDTO(response , username);
-
         // DB에 저장
         aiDiaryService.saveAiDiary(aiDiaryDTO);
 
@@ -141,9 +139,8 @@ public class DiaryAnalysisService {
         }
     }
     private LocalDate convertStringToDate(String date) {
-        if (date != null) {
-            date = date.replaceAll("\"", ""); // 따옴표 제거
-        }
+        date = date.replaceAll("\"", ""); // 따옴표 제거
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
             return LocalDate.parse(date, formatter);

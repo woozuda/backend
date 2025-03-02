@@ -1,4 +1,4 @@
-package com.woozuda.backend.note.entity;
+package com.woozuda.backend.question.entity;
 
 import com.woozuda.backend.global.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
