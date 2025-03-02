@@ -64,10 +64,16 @@ ncp:
     accessKey: "${object_storage_access_key}"
     secretKey: "${object_storage_secret_key}"
     bucketName: "${object_storage_bucket_name}"
+  clova-studio:
+    question-creator:
+      url: "${question_creator_url}"
+      api-key: "${question_creator_api_key}"
+      apigw-key: "${question_creator_apigw_key}"
 
 openai:
   api:
     key: "${openai_api_key}"  # 환경 변수에서 OPENAI_API_KEY를 가져옵니다.
+    url: "${openai.api.url}"
     chat:
       options:
         model: gpt-3.5-turbo  # 사용할 AI 모델 (예: gpt-3.5-turbo)
@@ -86,3 +92,8 @@ management:
 
 logging:
   config: "classpath:./logback-release.xml"
+
+allow-ips: "${allow_ips}"
+
+aes:
+  password: "${aes_password}"
