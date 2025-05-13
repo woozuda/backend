@@ -82,6 +82,7 @@ MZ 세대는 블로그를 통해 일기를 작성하는 경향이 있습니다. 
   - main -> release -> develop -> feature/기능 -> fix/기능
   - main: 실제 운영 환경 (product), release: 운영 환경과 유사한 테스트 환경 (QA)
 
+
 #### Pull Request
 - 기능 단위별로 PR 요청
 - PR 요청이 올라오면 다른 두 명의 백엔드 팀원이 코드 리뷰
