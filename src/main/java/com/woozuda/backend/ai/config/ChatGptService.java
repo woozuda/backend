@@ -24,36 +24,28 @@ public class ChatGptService {
 
     private static final int MAX_CONTEXT_TOKENS = 4096; // max 토큰 값 설정
 
-    public String analyzeDiaryUsingGPT(String systemMessage, String userMessage) {
+    public Mono<String> analyzeDiaryUsingGPT(String systemMessage, String userMessage) {
         int systemMessageTokens = estimateTokenCount(systemMessage);
         int remainingTokens = MAX_CONTEXT_TOKENS - systemMessageTokens;
 
-        // userMessage의 토큰 수가 남은 토큰 수를 초과하지 않도록 계산
         int userMessageTokens = estimateTokenCount(userMessage);
         int maxTokens = remainingTokens - userMessageTokens;
+        maxTokens = Math.max(maxTokens, 50);
 
-        // maxTokens가 0보다 작지 않도록 확인
-        maxTokens = Math.max(maxTokens, 50); // 최소 50 토큰은 남겨두기
-
-        // 요청 데이터 구성
         Map<String, Object> requestBody = Map.of(
-                "model", "gpt-3.5-turbo", // GPT 3.5 모델 사용
+                "model", "gpt-3.5-turbo",
                 "messages", new Object[]{
                         Map.of("role", "system", "content", systemMessage),
                         Map.of("role", "user", "content", userMessage)
                 },
-                "max_tokens", maxTokens // 응답에 사용할 최대 토큰 수 설정
+                "max_tokens", maxTokens
         );
 
-        // WebClient로 요청 보내기
-        Mono<String> responseMono = webClient.post()
-                .uri(apiUrl)  // 실제 엔드포인트 경로로 수정
+        return webClient.post()
+                .uri(apiUrl)
                 .bodyValue(requestBody)
                 .retrieve()
-                .bodyToMono(String.class);
-
-        // 동기적으로 응답을 기다리기 위해 block() 사용
-        return responseMono.block();
+                .bodyToMono(String.class); // 비동기 응답 그대로 반환
     }
 
     private int estimateTokenCount(String text) {
